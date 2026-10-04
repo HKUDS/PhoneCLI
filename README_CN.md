@@ -64,9 +64,9 @@
 - **每任务 9.9 vs 12.0 步**、**51.7k vs 70.0k tokens** —— 效果更好的同时模型调用更少。
 - **执行一条已编译命令只需 0 次模型调用**：导航以确定性回放完成，亚秒级。
 
-➜ **[iOS 真机完整文档](./phonecli/README.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
+➜ **[iOS 真机完整文档](./phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
 
-➜ **[AndroidLab 评测文档](./phonecli_android/README.md)** —— 官方 AndroidLab 套件（9 个 app / 138 个任务）、每个 app 一张编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
+➜ **[AndroidLab 评测文档](./phonecli_android/README_CN.md)** —— 官方 AndroidLab 套件（9 个 app / 138 个任务）、每个 app 一张编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
 
 ➜ **[PhoneCLI 论文](https://arxiv.org/abs/2609.35671)** — arXiv:2609.35671 &nbsp;·&nbsp; **[OpenPhone 论文](https://arxiv.org/abs/2510.22009)** — arXiv:2510.22009
 
@@ -171,9 +171,9 @@ python phonecli/run.py --interactive
 
 仓库自带 **8 个 app 的预构建 map**（微博、foodpanda、Calendar、京东、Dianping、小红书、Music、Settings）。每张覆盖至多 50 个屏幕——50 是爬虫的默认上限——单个 app 含 400–1,300 个元素：**合计 400 个屏幕、6,366 个元素**。
 
-➜ **[iOS 真机完整文档](./phonecli/README.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
+➜ **[iOS 真机完整文档](./phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
 
-➜ **[AndroidLab 评测文档](./phonecli_android/README.md)** —— 官方 AndroidLab 基准（9 个 app / 138 个任务）、编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
+➜ **[AndroidLab 评测文档](./phonecli_android/README_CN.md)** —— 官方 AndroidLab 基准（9 个 app / 138 个任务）、编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
 
 ---
 ## 📱 端侧优先：CLI → 端侧模型 → 云端
@@ -268,8 +268,8 @@ CLI 路径**完全不需要模型**，回退路径**接受任意**模型——�
 
 | | |
 |---|---|
-| 🖥 **Harness（iOS）** | [`phonecli/`](./phonecli/README.md) —— 构建 app map、运行任务、交互式 daemon |
-| 🧪 **Harness（Android）** | [`phonecli_android/`](./phonecli_android/README.md) —— AndroidLab 基准，9 个 app / 138 个任务 |
+| 🖥 **Harness（iOS）** | [`phonecli/`](./phonecli/README_CN.md) —— 构建 app map、运行任务、交互式 daemon |
+| 🧪 **Harness（Android）** | [`phonecli_android/`](./phonecli_android/README_CN.md) —— AndroidLab 基准，9 个 app / 138 个任务 |
 | 🤖 **模型** | [OpenPhone-3B](https://huggingface.co/hkuds/OpenPhone_model)，训练配方见 [`model_training/`](./model_training/README.md) |
 | 🔧 **数据** | 合成数据流水线：[`prepare_data/`](./prepare_data/README.md) |
 
@@ -317,7 +317,7 @@ python eval.py -n all_cloud_v1_hyper -c ./configs/example_xml_cloud_hyper.yaml
 
 在 138 个 AndroidLab 任务之外，仓库还提供**额外 25 个任务**，覆盖另外四个移动 app（Chrome、Gmail、TikTok、Reddit）——见[更多 App 文档](./docs/new_apps.md)。
 
-Android 侧的 harness 在 [`phonecli_android/`](./phonecli_android/README.md) 中自带编译好的 app map 与运行器：9 个 app / 138 个任务，每个 app 一张 map（其中八张覆盖 9–50 个屏幕；Maps.me 只有单屏，因此更依赖 VLM 回退），并包含下文对比所用的纯 VLM 基线。
+Android 侧的 harness 在 [`phonecli_android/`](./phonecli_android/README_CN.md) 中自带编译好的 app map 与运行器：9 个 app / 138 个任务，每个 app 一张 map（其中八张覆盖 9–50 个屏幕；Maps.me 只有单屏，因此更依赖 VLM 回退），并包含下文对比所用的纯 VLM 基线。
 
 ### 判分
 

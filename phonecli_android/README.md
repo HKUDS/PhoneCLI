@@ -1,5 +1,7 @@
 # phonecli_android
 
+**English** · [中文文档](./README_CN.md)
+
 Android GUI-agent harness for the **AndroidLab** benchmark (9 apps / 138 tasks).
 It runs two agents over the same task suite:
 

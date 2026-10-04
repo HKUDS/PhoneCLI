@@ -1,5 +1,7 @@
 # phonecli
 
+**English** · [中文文档](./README_CN.md)
+
 Coordinate-based iOS phone agent toolkit. Uses WebDriverAgent (WDA) for device
 control, LLM/VLM for understanding and classification, and app maps for
 deterministic macro routing.

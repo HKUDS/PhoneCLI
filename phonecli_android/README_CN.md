@@ -1,5 +1,7 @@
 # phonecli_android
 
+[English](./README.md) · **中文文档**
+
 面向 **AndroidLab** 基准测试（9 个 app / 138 个任务）的 Android GUI 智能体测试框架。
 它在同一套任务上并排运行两个智能体：
 

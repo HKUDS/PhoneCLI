@@ -1,5 +1,7 @@
 # phonecli
 
+[English](./README.md) · **中文文档**
+
 基于坐标的 iOS 手机自动化工具包。使用 WebDriverAgent (WDA) 进行设备控制，
 使用 LLM/VLM 进行理解和分类，使用 app map 进行确定性宏回放。
 
