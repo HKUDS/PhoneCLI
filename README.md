@@ -58,6 +58,12 @@ So we did not build a bigger model. We built the **model and the harness togethe
 | **② 📱 On-device first**<br/>*one request, three tiers* | A request is served by **CLI → on-device model → cloud**: the CLI tier absorbs navigation at zero model cost, and only the remaining steps ever reach a model. End to end this cuts cloud calls by **~10%**, and an efficient memory (**10–20 steps of context**) is what lets a single phone keep running. |
 | **③ 🤖 Model**<br/>*open and replaceable* | The CLI path needs **no model at all**, and the fallback path takes **any** model — a general LLM or a GUI-tuned one. The open 3B on-device model we ship is the engine, not the headline. |
 
+**What it buys, measured** — AndroidLab, 9 apps / 138 tasks, Qwen3.7-Plus as the cloud model, one judge throughout:
+
+- **63.0% vs 49.6%** task success — **+13.4 points** over the pure-VLM loop.
+- **9.9 vs 12.0 steps** and **51.7k vs 70.0k tokens** per task — better results *and* fewer model calls.
+- **0 model calls** to execute a compiled command: navigation replays deterministically, in sub-second time.
+
 ➜ **[Full iOS real-device documentation](./phonecli/README.md)** — setup, WebDriverAgent, app map building, CLI reference, troubleshooting.
 
 ➜ **[AndroidLab evaluation documentation](./phonecli_android/README.md)** — the official AndroidLab suite (9 apps / 138 tasks), one compiled app map per app, the macro agent and its pure-VLM baseline, and judging.
