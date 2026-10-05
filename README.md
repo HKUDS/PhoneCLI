@@ -15,10 +15,6 @@
 </div>
 
 <div align="center">
-  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="The harness driving an Android emulator on the AndroidLab benchmark">
-</div>
-
-<div align="center">
   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; text-align: center;">
     <p>
       <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
@@ -96,6 +92,10 @@ So we did not build a bigger model. We built the **model and the harness togethe
 - [🌟 Citation](#-citation)
 - [🔗 Related Projects](#-related-projects)
 - [📜 License](#-license)
+
+<div align="center">
+  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="The harness driving an Android emulator on the AndroidLab benchmark">
+</div>
 
 ## 🎯 The Bottleneck Is Not Model Size
 
