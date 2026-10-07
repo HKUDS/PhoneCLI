@@ -56,8 +56,8 @@ So we did not build a bigger model. We built the **model and the harness togethe
 
 **What it buys, measured** — AndroidLab, 9 apps / 138 tasks, Qwen3.7-Plus as the cloud model, one judge throughout:
 
-- **63.0% vs 49.6%** task success — **+13.4 points** over the pure-VLM loop.
-- **9.9 vs 12.0 steps** and **51.7k vs 70.0k tokens** per task — better results *and* fewer model calls.
+- **63.0% vs 50.7%** task success — **+12.3 points** over the pure-VLM loop.
+- **7.52 → 6.72 steps (−11%)** and **40.1k → 34.4k tokens (−14%)** — same tasks, fewer model calls.
 - **0 model calls** to execute a compiled command: navigation replays deterministically, in sub-second time.
 
 ➜ **[Full iOS real-device documentation](./phonecli/README.md)** — setup, WebDriverAgent, app map building, CLI reference, troubleshooting.
