@@ -15,10 +15,6 @@
 </div>
 
 <div align="center">
-  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="harness 在 AndroidLab 基准上驱动 Android 模拟器">
-</div>
-
-<div align="center">
   <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; padding: 25px; text-align: center;">
     <p>
       <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
@@ -96,6 +92,10 @@
 - [🌟 引用](#-引用)
 - [🔗 相关项目](#-相关项目)
 - [📜 许可证](#-许可证)
+
+<div align="center">
+  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="harness 在 AndroidLab 基准上驱动 Android 模拟器">
+</div>
 
 ## 🎯 瓶颈从来不是模型不够大
 
