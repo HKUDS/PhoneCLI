@@ -417,6 +417,25 @@ OpenPhone builds upon excellent open-source projects. We sincerely thank their a
 - [R1-V](https://github.com/StarsfieldAI/R1-V) - Implementation details for the GRPO training methodology.
 - [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) - The unified training framework enabling efficient model fine-tuning.
 
+## 🤝 Contributing
+
+We welcome contributions! PhoneCLI/OpenPhone is designed to be extensible:
+
+- 🗺 **New app maps** — Add compiled navigation maps for more mobile apps
+- 📱 **New device backends** — Extend CLI replay to additional platforms
+- 🤖 **Model improvements** — Better on-device or cloud models for OpenPhone
+- 📖 **Documentation** — Tutorials, integration guides, best practices
+
+### How to contribute
+
+1. Fork the repository and clone your fork.
+2. Create a topic branch from `main`: `git switch -c your-topic-branch`.
+3. Make your change and commit it with a clear message.
+4. Push the branch to your fork: `git push origin your-topic-branch`.
+5. Open a pull request against `HKUDS/PhoneCLI:main` and describe what changed and why.
+
+Please keep changes small and focused so they are easy to review. Documentation improvements, typo fixes, and new app maps are great first contributions.
+
 ---
 
 ## 📜 License
