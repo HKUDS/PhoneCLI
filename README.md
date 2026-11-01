@@ -6,7 +6,7 @@
 
 <div align="center">
 
-# ✨PhoneCLI✨: Making ALL Mobile Apps Agent-Native
+# PhoneCLI: Making Mobile Apps Agent-Native
 
 </div>
 
