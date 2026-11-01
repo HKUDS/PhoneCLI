@@ -36,10 +36,6 @@
   <div style="width: 100%; height: 2px; margin: 20px 0; background: linear-gradient(90deg, transparent, #00d9ff, transparent);"></div>
 </div>
 
-<div align="center">
-  <img src="./figures/phone_cli.png" width="78%" alt="PhoneCLI: build phase (offline) and runtime phase (online)" />
-</div>
-
 **The bottleneck of phone agents was never model size.** Nearly every GUI agent today runs the same loop — screenshot, call a vision-language model (VLM), emit an action. It is slow (2–5 s per step), expensive (every screenshot is an API call), brittle (VLMs hallucinate coordinates), and it has to be online: your screen leaves the device. That is at odds with what a phone is — on-device, real-time, private. And most of what that loop does is **navigation**, which is static, ordered, and repeated ten thousand times.
 
 So we did not build a bigger model. We built the **model and the harness together**:
