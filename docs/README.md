@@ -1,65 +1,79 @@
-# 文档索引
+English · [中文](README.zh.md)
 
-这里放两件东西：**这个 App 是什么**，以及**地图流水线怎么工作的**。开发日志、里程碑复盘和对比
-笔记不随仓库发布（见文末），所以你在别处看到的旧链接可能已经失效。
+# Documentation index
 
-## 产品与地图
+Two things live here: **what this app is**, and **how the map pipeline works**.
+The development log, the milestone write-ups and the comparison notes are not
+published with the repository (see the last section), so old links to them may
+no longer resolve.
 
-| 文件 | 内容 |
+## Product and maps
+
+| File | Contents |
 |---|---|
-| [product-app.md](product-app.md) | PhoneGo 是什么：一个 APK，对话式界面 + 虚拟屏执行；包名、工程名和三块代码的关系 |
-| [map-building.md](map-building.md) | 爬虫流水线：每一处改动对应的真实故障、实测数字、负面结果 |
+| [product-app.md](product-app.md) | What PhoneGo is: one APK, a chat interface, execution on a virtual display; how the package name, the project name and the three code trees relate |
+| [map-building.md](map-building.md) | The crawl pipeline: the real failure behind every change, the measured numbers, and the negative results |
 
-## 演示素材
+## Showcase
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | 同一句话、同一台手机，两种模式并排 3×（时长 55 秒，带步数计数器） |
+| [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | One instruction, one phone, both modes side by side at 3× (55 s, with a live step counter) |
 
-左边是**自动**（地图 + 宏回放）：17 步 / 64 秒 / 92.3k token；右边是**纯看图**（每步都靠截图决策）：
-32 步 / 146 秒 / 207.1k token。两条都完成了任务。
+The left half is the **map mode** (app map + macro replay): 17 steps, 64 s,
+92.3k tokens. The right half is **vision only** (every step decided from a
+screenshot): 32 steps, 146 s, 207.1k tokens. Both finished the task.
 
-## 参考源码
+## Reference source
 
-| 路径 | 内容 |
+| Path | Contents |
 |---|---|
-| [reference/aosp-pairing/](reference/aosp-pairing/) | AOSP 的无线调试配对实现（SPAKE2 / TLS / AES-GCM），移植 `phoneagent/devices/pairing` 时的对照 |
+| [reference/aosp-pairing/](reference/aosp-pairing/) | AOSP's wireless-debugging pairing implementation (SPAKE2 / TLS / AES-GCM), kept as the reference `phoneagent/devices/pairing` was ported against |
 
-## 上游文档（PhoneCLI 原仓库带来）
+## Upstream pages (from the original PhoneCLI repository)
 
-| 文件 | 内容 |
+| File | Contents |
 |---|---|
-| [modify_androidlab.md](modify_androidlab.md) | AndroidLab 评测环境的改造说明 |
-| [new_apps.md](new_apps.md) | 上游新增 App 的流程 |
-| [prepare_for_linux.md](prepare_for_linux.md) / [prepare_for_mac.md](prepare_for_mac.md) | 上游环境准备 |
+| [modify_androidlab.md](modify_androidlab.md) | Changes made to the AndroidLab evaluation environment |
+| [new_apps.md](new_apps.md) | How upstream adds a new app |
+| [prepare_for_linux.md](prepare_for_linux.md) / [prepare_for_mac.md](prepare_for_mac.md) | Upstream environment setup |
 
-## 命令行工具各管什么（名字相近，容易混）
+## What each command-line tool does (the names are easy to mix up)
 
-| 命令 | 作用 | 什么时候用 |
+| Command | Purpose | When to run it |
 |---|---|---|
-| `python -m phoneagent.probe` | 设备连通性探针（可选回放一条宏） | 换设备/换系统后先跑这个 |
-| `python -m phoneagent.build_map` | 爬一个 App 生成地图 | 要新地图时 |
-| `python -m phoneagent.bench` | 回放采样操作，量"落点" | 地图改过之后 |
-| `python -m phoneagent.check` | 离线跑一遍地图的图/操作（不连设备） | 提交前冒烟 |
-| `python -m phoneagent.validate` | 离线查结构/宏/隐私 | 发布地图前 |
-| `python -m phoneagent.redact` | 把地图里的个人数据做成公开副本 | 地图要分享/提交时 |
-| `python -m phoneagent.core.profile` | 按 App 的 profile 标出"动态文本"，让它们不进指纹 | 爬个人手机时 |
-| `python -m phoneagent.run` | 一条任务端到端（路由→回放→校验） | 调算法层时 |
-| `python -m phoneagent.demo` | 完全离线的演示 | 没有设备时 |
+| `python -m phoneagent.probe` | Device connectivity probe (can replay one macro) | First thing after changing device or ROM |
+| `python -m phoneagent.build_map` | Crawl one app into a map | When you need a new map |
+| `python -m phoneagent.bench` | Replay sampled operations and measure landing rate | After changing a map |
+| `python -m phoneagent.check` | Walk a map's screens and operations offline, no device | Smoke test before committing |
+| `python -m phoneagent.validate` | Check structure, macros and privacy offline | Before publishing a map |
+| `python -m phoneagent.redact` | Produce a shareable copy with personal data removed | When a map leaves the machine |
+| `python -m phoneagent.core.profile` | Mark an app's dynamic text per profile so it stays out of fingerprints | When crawling your own phone |
+| `python -m phoneagent.run` | One task end to end (route → replay → verify) | When working on the algorithm |
+| `python -m phoneagent.demo` | Fully offline demonstration | When there is no device |
 
-`check` 和 `validate` 不重复：前者跑图、验证"每个操作能不能走通"，后者看结构、宏定义和
-隐私字段。`redact` 和 `profile` 也不重复：前者产出分享用的副本，后者影响抓取时哪些文本
-进指纹。
+`check` and `validate` do not overlap: the first walks the graph and answers
+"can every operation be reached", the second inspects structure, macro
+definitions and privacy fields. `redact` and `profile` differ the same way: one
+produces a copy for sharing, the other decides which text enters the
+fingerprint during a crawl.
 
-## 代码里的说明
+## Notes in the code
 
-两处注释比文档更可靠，因为它们就在被描述的那行代码旁边：
+Two comments are more reliable than documentation, because they sit next to the
+line they describe:
 
-- `phoneagent/build_map.py` 顶部：爬虫与上游 BFS 的关系、每处校验的由来
-- `android-app/app/src/main/java/com/phoneagent/app/AgentService.kt`：服务、虚拟屏、唤醒锁的取舍
+- Top of `phoneagent/build_map.py`: how this crawl relates to the upstream BFS,
+  and where each verification step came from
+- `android-app/app/src/main/java/com/phoneagent/app/AgentService.kt`: the
+  trade-offs around the service, the virtual display and the wake lock
 
-## 不在这份索引里的内容
+## What is not in this index
 
-开发日志（逐条记录问题与决策）、里程碑计划（配对、上机、进 APK）、实测报告和设计评审都在
-开发过程中写过，但它们的价值主要在过程中：数字和结论已经进了上面的两份文档和代码注释，
-剩下的日期细节对读代码的人没有帮助，因此不随仓库发布。需要时可以在提交历史里找到。
+The development log (one entry per problem and decision), the milestone
+write-ups (pairing, first device, agent inside the APK), the measurement
+reports and the design reviews were written while deciding things. Their
+numbers and conclusions now live in the two documents above and in the code
+comments; the date-by-date detail does not help anyone reading the code, so it
+is not published with the repository. It can still be found in the commit
+history.

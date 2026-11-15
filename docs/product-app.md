@@ -1,97 +1,110 @@
-# PhoneGo：对话式 App + 虚拟屏执行
+English · [中文](product-app.zh.md)
 
-**PhoneGo**（工程名仍是 `phonecli` / `phoneagent`，包名 `com.phoneagent.app` 不变）。
+# PhoneGo: a chat app that executes on a virtual display
 
-目标：一个 APK，打开是对话界面；用户说一句话，agent 在一块看不见的虚拟屏上
-操作目标 App 完成任务，主屏不受打扰。对标 Mika，但**导航层沿用 PhoneCLI 的
-app map + 宏**（编译一次、确定性重放），而不是全靠 VLM 逐步试探。
+**PhoneGo** (the project names stay `phonecli` / `phoneagent`, the package stays
+`com.phoneagent.app`).
 
-## 分层
+Goal: one APK that opens as a chat. The user says one sentence; the agent
+operates the target app on an invisible virtual display and finishes the task,
+leaving the main screen alone. The reference point is Mika, but **navigation
+still comes from PhoneCLI's app maps + macros** (compiled once, replayed
+deterministically) rather than from the VLM exploring step by step.
+
+## Layers
 
 ```
 ┌───────────────────────────────────────────────┐
-│ ① 对话界面（Compose）                          │  用户说话、看步骤、接管审批
+│ ① Chat UI (Compose)                           │  the user speaks, watches steps, takes over
 ├───────────────────────────────────────────────┤
-│ ② 任务服务（前台 Service + 通知 + 队列）        │  后台跑、可插话、可取消
+│ ② Task service (foreground Service + queue)   │  runs in the background, interruptible, cancellable
 ├───────────────────────────────────────────────┤
-│ ③ agent 核心（phoneagent/，Python 现有代码）    │  路由 → 宏重放 → 校验 → VLM 兜底
+│ ③ Agent core (phoneagent/, the Python code)   │  route → macro replay → verify → VLM fallback
 ├───────────────────────────────────────────────┤
-│ ④ 设备层（PhoneDevice 协议）                    │  adb（电脑）/ on-device（手机内）
+│ ④ Device layer (PhoneDevice protocol)         │  adb (from a computer) / on-device (inside the phone)
 ├───────────────────────────────────────────────┤
-│ ⑤ 设备内 shell + 虚拟屏 helper                  │  唯一全新的大件
+│ ⑤ In-device shell + virtual-display helper    │  the only genuinely new piece
 └───────────────────────────────────────────────┘
 ```
 
-① ② ⑤ 是新的；③ ④ 已经有了，且有 83 个测试兜底。
+① ② ⑤ are new; ③ ④ already existed and came with 83 tests.
 
-## 关键决策：Python 怎么进 APK
+## Key decision: how Python gets into the APK
 
-| 方案 | 做法 | 优点 | 代价 |
+| Option | Approach | Upside | Cost |
 |---|---|---|---|
-| **A. Chaquopy**（推荐先走） | Gradle 插件把 CPython 打进 APK，`phoneagent/` **原样复用** | 一周内能跑通端到端；算法层零重写；调参/迭代仍在电脑上 | 包体 +20MB；启动慢 1–2s；JNI 边界调试麻烦 |
-| **B. Kotlin 重写** | agent / app_map / macro 全部翻译 | 启动快、包小、可上架 | 2–4 人月；两套实现会漂移 |
+| **A. Chaquopy** (do this first) | A Gradle plugin packages CPython into the APK; `phoneagent/` is **reused as is** | End to end within a week; zero rewrite of the algorithm; tuning still happens on the host | +20 MB, 1–2 s slower start, awkward JNI debugging |
+| **B. Rewrite in Kotlin** | Translate agent / app_map / macro entirely | Fast start, small APK, could be published | 2–4 person-months; two implementations drift apart |
 
-**建议：先 A 后 B。** 先用 Chaquopy 把产品链路跑通（对话 → 任务 → 虚拟屏 →
-完成），验证交互和可靠性；等形态稳定了再考虑把热路径翻成 Kotlin。
+**Recommendation: A first, B later.** Get the product path working with
+Chaquopy (chat → task → virtual display → done) and validate the interaction
+and the reliability; only then consider moving the hot path to Kotlin.
 
-Python 侧要做的最小改动：`OnDeviceDevice`（实现 `PhoneDevice`，通过 JNI 调
-Kotlin 的 helper 客户端），以及把 `print` 换成回调。
+The minimum Python-side change is `OnDeviceDevice` (implementing `PhoneDevice`
+by calling the Kotlin helper client through JNI) plus replacing `print` with
+callbacks.
 
-## 里程碑
+## Milestones
 
-| 阶段 | 内容 | 可验证的结果 | 依赖 |
+| Stage | Contents | What you can check | Depends on |
 |---|---|---|---|
-| **M0** | 空壳 APK：Compose 对话页 + 前台 Service，假 agent 回显 | 手机上能装、能对话 | JDK + SDK |
-| **M1** | 虚拟屏 helper（`app_process`）+ 手工拉起：建屏 → 把设置拉上去 → `screencap -d` 出图 → `input -d` 点击 | 命令行跑通"后台操作一个 App" | 无 APK 依赖 |
-| **M2** | Chaquopy 集成：APK 里跑 `PhoneAgent`，设备层换成 Java 桥 | 对话触发一次真实宏重放 | M0+M1 |
-| **M3** | 设备内 shell（先 Shizuku） | 拔掉电脑也能跑 | M2 |
-| **M4** | 会话体验：步骤流、插话、接管、审批 | 像 Mika 那样"边看边管" | M3 |
-| **M5** | 自配对无线调试（去 Shizuku） | 零外部依赖 | M3 |
+| **M0** | Empty-shell APK: Compose chat page + foreground Service, a fake agent echoes | Installs, holds a conversation | JDK + SDK |
+| **M1** | Virtual-display helper (`app_process`) driven by hand: create display → move Settings onto it → `screencap -d` → `input -d` | "Operating an app in the background" from the command line | nothing from the APK |
+| **M2** | Chaquopy integration: `PhoneAgent` runs inside the APK, device layer swapped for the Java bridge | One real macro replay triggered from the chat | M0+M1 |
+| **M3** | In-device shell (Shizuku first) | Works with the computer unplugged | M2 |
+| **M4** | Conversation experience: step flow, interrupt, takeover, approval | "Watch and steer", like Mika | M3 |
+| **M5** | Self-paired wireless debugging (drop Shizuku) | No external dependency | M3 |
 
-M1 和 M3 是硬骨头（各 1–2 周 / 3–5 天），其余是把已有能力搬进壳里。
+M1 and M3 are the hard parts (1–2 weeks and 3–5 days); the rest is moving
+capabilities that already exist into the shell.
 
-## 现在就能复用的
+## What can be reused today
 
-| 模块 | 复用方式 |
+| Module | How |
 |---|---|
-| `core/app_map.py` | 原样，YAML 格式不变 |
-| `core/macro.py` | 原样，新增 `OnDeviceDevice` 即可 |
-| `core/agent.py` | 原样（路由/兜底/重试/planner 都已就绪） |
-| `core/llm.py` | 原样（OpenAI 兼容，可指向任何服务商） |
-| `build_map.py` / `validate.py` / `redact.py` | 原样，可作为"手机上重建地图"的工具 |
-| `devices/base.py` | 就是 ①→⑤ 的接口，`OnDeviceDevice` 实现它 |
+| `core/app_map.py` | As is; the YAML format does not change |
+| `core/macro.py` | As is; only `OnDeviceDevice` has to be added |
+| `core/agent.py` | As is (routing, fallback, retries and the planner are already there) |
+| `core/llm.py` | As is (OpenAI-compatible, can point at any provider) |
+| `build_map.py` / `validate.py` / `redact.py` | As is; they become the "rebuild a map on the phone" tools |
+| `devices/base.py` | This is the ①→⑤ interface that `OnDeviceDevice` implements |
 
-## 与 Mika 的差异（也是卖点）
+## How this differs from Mika (and why it matters)
 
-Mika 的路线是**从成功运行里学路线**（在线、需先成功一次）。
-我们的路线是**离线编译 app map**（一次编译、多次 0 模型调用重放），
-实测 depth1 落点 100%、每操作 10.6 s、0 次模型调用。
+Mika learns routes **from successful runs** (online, needs one success first).
+This project **compiles app maps offline** (compile once, replay many times
+with zero model calls): measured, depth 1 lands 100% of the time, 10.6 s per
+operation, 0 model calls.
 
-两者可以互补：编译覆盖不到的界面，退回 VLM 逐步探索；探索成功的轨迹再固化成宏。
+The two are complementary: screens the compiled map cannot cover fall back to
+the VLM exploring, and a trajectory that succeeds can be frozen into a macro.
 
-## 风险
+## Risks
 
-1. **虚拟屏权限**：`DisplayManager`/`SurfaceControl` 属灰区，厂商可能收紧（HyperOS
-   已经把 `cmd display` 裁过）。
-2. **设备内 shell**：无线调试自配对是周级工作，Shizuku 让用户多装一个 App。
-3. **Python 包体**：Chaquopy 方案 APK ≈ 60–80MB，需评估是否可接受。
-4. **后台存活**：国产 ROM 的省电策略是长期敌人，参考 Mika 的"兼容性自检"思路。
+1. **Virtual-display permission**: `DisplayManager`/`SurfaceControl` sit in a
+   grey area and vendors may tighten it (HyperOS already trimmed `cmd display`).
+2. **In-device shell**: self-pairing wireless debugging is weeks of work, and
+   Shizuku makes the user install another app.
+3. **Python footprint**: the Chaquopy APK is ≈ 60–80 MB; whether that is
+   acceptable has to be decided.
+4. **Background survival**: power management on Chinese ROMs is a permanent
+   enemy; Mika's "compatibility self-check" is a good model.
 
 ---
 
-## M2 完成：Python 跑进 APK（2026-11-05）
+## M2 done: Python inside the APK (2026-11-05)
 
-### 环境准备（全部绕开沙箱限制）
+### Environment (every obstacle worked around)
 
-| 障碍 | 解法 |
+| Obstacle | Workaround |
 |---|---|
-| Homebrew 目录不可写 | 用 Android Studio 自带的 JBR 21 作 JDK |
-| Gradle 下载 5KB/s | 用户开代理后 3.1MB/s；`GRADLE_USER_HOME` 指到工作区内 |
-| AGP 要写 `$SDK/.android` | 把 SDK 复制进工作区（345MB），`ANDROID_USER_HOME` 指到工作区 |
-| `ANDROID_SDK_HOME` 与 `ANDROID_USER_HOME` 冲突 | 只保留后者 |
-| Chaquopy 无 Kotlin-DSL srcDir | `sync-python.sh` 把 `phoneagent/` 同步进 `app/src/main/python/` |
+| Homebrew directories not writable | Use the JBR 21 that ships with Android Studio as the JDK |
+| Gradle downloads at 5 KB/s | A proxy brought it to 3.1 MB/s; `GRADLE_USER_HOME` points inside the workspace |
+| AGP writes to `$SDK/.android` | Copy the SDK into the workspace (345 MB), point `ANDROID_USER_HOME` there |
+| `ANDROID_SDK_HOME` conflicts with `ANDROID_USER_HOME` | Keep only the latter |
+| Chaquopy has no Kotlin-DSL srcDir | `sync-python.sh` copies `phoneagent/` into `app/src/main/python/` |
 
-### 结果
+### Result
 
 ```
 Python 已就绪：3.8.20 (default, Oct 12 2024, 20:34:19)
@@ -99,11 +112,12 @@ phoneagent 0.1.0
 app_map 模块：已加载
 ```
 
-- APK 14MB（arm64-v8a），含 `libpython3.8.so` + 我们的包
-- `phoneagent/core/prompts.py` 改为**自包含**（vendored 自 `phonecli/prompts.py`），
-  因为 APK 里没有上游 `phonecli` 包
+- APK 14 MB (arm64-v8a), containing `libpython3.8.so` and our package
+- `phoneagent/core/prompts.py` became **self-contained** (vendored from
+  `phonecli/prompts.py`), because the APK does not carry the upstream
+  `phonecli` package
 
-### 构建命令
+### Build commands
 
 ```bash
 cd android-app && ./sync-python.sh
@@ -115,7 +129,7 @@ export ANDROID_USER_HOME="$PWD/../.toolchain/android-home"
 ../.toolchain/gradle-8.11.1/bin/gradle --no-daemon assembleDebug
 ```
 
-### 还差什么
+### What was still missing
 
-- App 里调用 `PhoneAgent.run()` 需要设备通道（shell）→ M3
-- 目前 App 只验证了"Python 能起、包能 import"
+- Calling `PhoneAgent.run()` from the app needed a device channel (shell) → M3
+- At that point the app only proved that Python starts and the packages import
