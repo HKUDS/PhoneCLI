@@ -4,3 +4,27 @@
 # Python bytecode / caches
 __pycache__/
 *.py[cod]
+
+# pytest
+.pytest_cache/
+
+# local probe/bench artifacts
+.probe/
+
+# device-built maps contain device-specific data (account names, phone
+# numbers, device names) - keep them local
+phoneagent/maps/
+.toolchain/
+android-app/.gradle/
+android-app/build/
+android-app/app/build/
+android-app/local.properties
+debug.keystore
+android-app/app/src/main/python/
+# The helper's build script ships with the app; its output does not.
+build-helper/*
+!build-helper/build.sh
+
+# The release key belongs to whoever publishes the app, never to the repo.
+android-app/keystore.properties
+android-app/*.jks
