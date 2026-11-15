@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The same palette at night. Every drawable refers to these names, so nothing in
+  the layout or the code has to know which theme is active.
+-->
+<resources>
+    <color name="bg">#101215</color>
+    <color name="surface">#1A1D22</color>
+    <color name="ink">#ECEEF1</color>
+    <color name="ink_soft">#99A0AA</color>
+    <color name="line">#2A2E35</color>
+    <color name="accent">#6E9BFF</color>
+    <color name="accent_soft">#1B2740</color>
+    <color name="bubble_user">#2F6BFF</color>
+    <color name="bubble_user_ink">#FFFFFF</color>
+    <color name="bubble_agent">#1A1D22</color>
+    <color name="ok">#34D399</color>
+    <color name="warn">#FBBF24</color>
+    <color name="err">#F87171</color>
+    <color name="white">#FFFFFF</color>
+</resources>
