@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug builds only.
+
+  The two services are exported again so that
+  `adb shell am start-foreground-service -n com.phoneagent.app/.AgentService`
+  with the dev extras (tap, mock, dump) keeps working during development. That
+  is a deliberate hole in debug builds and absent from the release manifest, so
+  the exported-service warning is suppressed here rather than in the main file.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+        <service
+            android:name=".AgentService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            tools:replace="android:exported"
+            tools:ignore="ExportedService" />
+        <service
+            android:name=".PairingService"
+            android:exported="true"
+            android:foregroundServiceType="specialUse"
+            tools:replace="android:exported"
+            tools:ignore="ExportedService" />
+    </application>
+</manifest>

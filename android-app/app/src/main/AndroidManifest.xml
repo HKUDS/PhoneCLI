@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.phoneagent.app">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Both services are foreground services: without the per-type permission
+         Android 14 refuses startForeground() for an app that targets 34. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Needed on MIUI/HyperOS: without an exemption the system freezes the
+         agent's process and the task dies mid-run (measured on the K90). Play
+         policy would object; this app is installed from an APK. -->
+    <uses-permission
+        android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS"
+        tools:ignore="BatteryLife" />
+    <!-- HyperOS freezes a background app even with a foreground service; the
+         wake lock is what keeps the task server alive while a task runs. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Android 11 hides other installed apps by default. This one has to know
+         them to answer "open the calendar": the package list is how a name
+         becomes something it can try to launch. -->
+    <!-- App visibility, the narrow way: everything with a launcher entry is
+         what the agent can start by name, and that is exactly what this
+         declaration grants. QUERY_ALL_PACKAGES did the same thing but is a
+         Play policy problem and wider than needed. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
+    </queries>
+    <!-- The floating capsule: a picture of the agent's screen over other apps.
+         The user grants this in Settings, it cannot be requested at runtime. -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:usesCleartextTraffic="true"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!-- Must stay exported: the agent opens pages by starting this activity
+             with the display flag, and a shell uid cannot start a non-exported
+             activity. It shows a page and nothing else, so the exposure is a URL
+             being opened in our WebView. -->
+        <activity
+            android:name=".BrowserActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+
+        <!-- Not exported. They used to be, so that `adb shell
+             am start-foreground-service` could pass the dev extras (tap, mock,
+             dump), and that also let any app on the phone start the agent. A
+             debug-only manifest overlay turns them back on for that workflow
+             (see app/src/debug/AndroidManifest.xml); the shipped build does not
+             expose them. -->
+        <service
+            android:name=".CapsuleService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="shows a floating live view of the agent's screen" />
+        </service>
+        <service
+            android:name=".PairingService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="keeps the pairing watcher alive while the user opens the system dialog" />
+        </service>
+        <service
+            android:name=".AgentService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="runs an on-device automation agent on a secondary display" />
+        </service>
+        <service
+            android:name=".PhoneAgentAccessibilityService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+    </application>
+
+</manifest>

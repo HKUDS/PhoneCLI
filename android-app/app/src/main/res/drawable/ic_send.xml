@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The arrow as a shape rather than a glyph: "↑" is drawn by whatever font the
+  system picks, so it changed weight and baseline between devices, and the text
+  view's font metrics were what pushed the circle's top edge out of the view.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,4.2 L18.4,11 L13.7,11 L13.7,19.8 L10.3,19.8 L10.3,11 L5.6,11 Z" />
+</vector>

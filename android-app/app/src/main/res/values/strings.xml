@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">PhoneGo</string>
+    <string name="hint">发消息给 PhoneGo…</string>
+    <string name="send">发送</string>
+    <string name="settings">设置</string>
+    <string name="maps">地图</string>
+    <string name="cancel">取消</string>
+    <string name="running">执行中…</string>
+    <string name="frame">虚拟屏画面</string>
+    <string name="frame_label">虚拟屏 · 点一下放大</string>
+    <string name="subtitle">手机上的 AI 助手</string>
+    <string name="welcome_title">想让手机做什么？</string>
+    <string name="welcome_hint">它会在后台的另一块屏上操作，你可以继续用手机</string>
+    <string name="chip_wlan">打开 WLAN 设置</string>
+    <string name="chip_weather">查一下明天上海的天气</string>
+    <string name="chip_bluetooth">打开蓝牙设置</string>
+    <string name="agent_mark">✦</string>
+    <string name="usage">用量</string>
+    <!-- 用户看得懂的说法：不再出现 CLI / GUI 这类词 -->
+    <string name="mode_auto">⚡ 自动</string>
+    <string name="mode_vision">👁 看图</string>
+    <string name="mode_title">怎么操作手机</string>
+    <string name="mode_auto_hint">有地图走已知路径，没有就看屏幕</string>
+    <string name="mode_vision_hint">不用地图，每一步都重新看屏幕</string>
+    <string name="mode_auto_toast">已切到自动：优先按已知路径，失败再看屏幕</string>
+    <string name="mode_vision_toast">已切到看图：每一步都重新看屏幕</string>
+    <string name="hands_off_label">用你的屏幕操作（托管）</string>
+    <string name="hands_off_hint">打开后会在你自己的屏幕上操作，你能看到每一步。京东、淘宝这类 App 只能这样跑。</string>
+    <string name="hands_off_on_toast">已打开托管：会在你自己的屏幕上操作</string>
+    <string name="hands_off_off_toast">已关闭托管：回到后台的虚拟屏</string>
+    <string name="accessibility_description">读取虚拟显示屏上的控件树，让 PhoneGo 知道每个按钮是什么，而不是盲目点击坐标。</string>
+    <string name="capsule">虚拟屏</string>
+    <string name="session_current" translatable="false">●</string>
+    <string name="dot_filled" translatable="false">●</string>
+    <string name="dot_hollow" translatable="false">○</string>
+    <string name="subtitle_with_arrow">%1$s  ▾</string>
+    <string name="crawl_about">%1$s（%2$s）\n新地图会写到 %1$s.yaml，爬完不会自动顶掉正在用的那份——到时候列表里点「固定使用这份」。</string>
+    <string name="crawl_hint">✅ 可以爬　📌 已有地图　⚠️ 可能起不来（可试）　⛔ 试过，起不来\n爬取在虚拟屏上进行，手机可以正常使用。</string>
+    <string name="viewer_hint">双指缩放 · 双击放大 · 拖动平移</string>
+    <string name="crawl_screens">50</string>
+    <string name="crawl_minutes">30</string>
+    <string name="usage_task_row">%1$s    %2$d 次    %3$s</string>
+    <string name="usage_model_row">%1$s    %2$d 次    %3$s</string>
+    <string name="usage_more">展开全部（共 %1$d 项）</string>
+    <string name="usage_calls">%1$d 次调用</string>
+    <string name="mode_option">%1$s\n%2$s</string>
+    <string name="frame_step">虚拟屏 · 第 %1$d 步</string>
+</resources>

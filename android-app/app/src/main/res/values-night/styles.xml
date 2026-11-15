@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- At night the bars are dark, so their icons have to be light. -->
+    <style name="AppTheme" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:statusBarColor">@color/bg</item>
+        <item name="android:navigationBarColor">@color/bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:windowBackground">@color/bg</item>
+        <!-- Dialogs inherit the platform accent by default (teal in the dark
+             theme); the app's own blue is what every other control uses. -->
+        <item name="android:colorAccent">@color/accent</item>
+        <item name="android:colorBackgroundFloating">@color/surface</item>
+        <item name="android:colorControlActivated">@color/accent</item>
+    </style>
+</resources>

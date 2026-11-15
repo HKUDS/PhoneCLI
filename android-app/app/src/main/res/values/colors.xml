@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#F5F6F8</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="ink">#1A1A1A</color>
+    <color name="ink_soft">#6B7280</color>
+    <color name="line">#E6E8EB</color>
+    <color name="accent">#2F6BFF</color>
+    <color name="accent_soft">#E8EFFF</color>
+    <color name="bubble_user">#2F6BFF</color>
+    <color name="bubble_user_ink">#FFFFFF</color>
+    <color name="bubble_agent">#FFFFFF</color>
+    <color name="ok">#16A34A</color>
+    <color name="warn">#D97706</color>
+    <color name="err">#DC2626</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,5 +1,10 @@
 """OpenAI-compatible API client for text LLM and vision (VLM) calls."""
 
+# The app runs this file on Python 3.8 (Chaquopy), where `list[str]` in an
+# annotation is evaluated at def time and fails; the future import makes
+# annotations strings on every version.
+from __future__ import annotations
+
 import base64
 import sys
 from typing import Optional

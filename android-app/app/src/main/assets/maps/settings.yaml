@@ -1,0 +1,2194 @@
+app: 设置new
+package: com.android.settings
+screen_w: 1280
+screen_h: 2772
+screens:
+- id: screen_0
+  description: Main settings menu listing various system configuration options including
+    network, display, security, and device management.
+  elements:
+  - text: 搜索系统设置项
+    center:
+    - 0.5559
+    - 0.1625
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - search settings
+    - find setting
+    - settings search
+    semantic_type: input
+  - text: 账号、云服务、会员权益等
+    center:
+    - 0.3984
+    - 0.2572
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_1
+    aliases:
+    - account
+    - cloud service
+    - member benefits
+    - user profile
+    semantic_type: menu_item
+  - text: 我的设备
+    center:
+    - 0.2687
+    - 0.3178
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - my device
+    - device info
+    - about phone
+    semantic_type: menu_item
+  - text: 散热风扇
+    center:
+    - 0.2687
+    - 0.3835
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_3
+    aliases:
+    - cooling fan
+    - thermal management
+    - fan control
+    semantic_type: setting
+  - text: WLAN
+    center:
+    - 0.2473
+    - 0.4636
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_4
+    aliases:
+    - Wi-Fi
+    - wireless network
+    - wifi
+    semantic_type: setting
+  - text: 蓝牙
+    center:
+    - 0.2258
+    - 0.5292
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_5
+    aliases:
+    - Bluetooth
+    - BT
+    - bluetooth settings
+    semantic_type: setting
+  - text: 移动网络
+    center:
+    - 0.2687
+    - 0.5949
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_6
+    aliases:
+    - mobile network
+    - cellular data
+    - SIM card
+    semantic_type: setting
+  - text: 设备互联
+    center:
+    - 0.2687
+    - 0.6605
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - device interconnection
+    - connect devices
+    - cross-device
+    semantic_type: setting
+  - text: 更多连接
+    center:
+    - 0.2687
+    - 0.7262
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - more connections
+    - other networks
+    - NFC
+    - VPN
+    semantic_type: setting
+  - text: 小米澎湃AI
+    center:
+    - 0.2918
+    - 0.8063
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_3
+    aliases:
+    - Xiaomi HyperOS AI
+    - Hyper AI
+    - AI features
+    semantic_type: setting
+  - text: 系统个性化
+    center:
+    - 0.2902
+    - 0.8864
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - system personalization
+    - customization
+    - theme
+    semantic_type: setting
+  - text: 锁屏
+    center:
+    - 0.2258
+    - 0.952
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - lock screen
+    - screen lock
+    - wallpaper
+    semantic_type: setting
+  - text: 通知与状态栏
+    center:
+    - 0.3117
+    - 1.0022
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - notifications and status bar
+    - notification settings
+    - status bar
+    semantic_type: setting
+  - text: 桌面
+    center:
+    - 0.2258
+    - 1.035
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - home screen
+    - launcher
+    - desktop
+    semantic_type: setting
+  - text: 显示与亮度
+    center:
+    - 0.2902
+    - 1.0678
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - display and brightness
+    - screen settings
+    - brightness
+    semantic_type: setting
+  - text: 声音与触感
+    center:
+    - 0.2902
+    - 1.1006
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - sound and vibration
+    - audio settings
+    - haptics
+    semantic_type: setting
+  - text: 设置
+    center:
+    - 0.1469
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - settings
+    - options
+    - preferences
+    semantic_type: label
+  - text: 指纹、面部与密码
+    center:
+    - 0.3547
+    - 0.6201
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - fingerprint, face and password
+    - biometrics
+    - security lock
+    semantic_type: setting
+  - text: 隐私与安全
+    center:
+    - 0.2902
+    - 0.6847
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - privacy and security
+    - permissions
+    - app protection
+    semantic_type: setting
+  - text: 应用设置
+    center:
+    - 0.2687
+    - 0.7504
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - app settings
+    - application manager
+    - apps
+    semantic_type: setting
+  - text: 省电与电池
+    center:
+    - 0.2902
+    - 0.816
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - battery and power saving
+    - power management
+    - battery usage
+    semantic_type: setting
+  - text: 健康使用手机
+    center:
+    - 0.3117
+    - 0.8954
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - digital wellbeing
+    - screen time
+    - phone health
+    semantic_type: setting
+  - text: 未成年人模式
+    center:
+    - 0.3117
+    - 0.961
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - teen mode
+    - kids mode
+    - parental controls
+    semantic_type: setting
+  - text: 辅助功能
+    center:
+    - 0.2687
+    - 1.0067
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - accessibility
+    - assistive features
+    - a11y
+    semantic_type: setting
+  - text: 更多设置
+    center:
+    - 0.2687
+    - 0.8283
+    fixed: false
+    found_at_scroll: 2
+    aliases:
+    - more settings
+    - advanced settings
+    - system updates
+    semantic_type: setting
+  - text: 问题反馈
+    center:
+    - 0.2687
+    - 0.9084
+    fixed: false
+    found_at_scroll: 2
+    aliases:
+    - feedback
+    - report issue
+    - bug report
+    semantic_type: button
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_1
+  description: Xiaomi Account settings page displaying profile options, cloud services,
+    security management, and logout functionality.
+  package: com.xiaomi.account
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - previous
+    semantic_type: button
+  - text: 小米账号
+    center:
+    - 0.2281
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Mi Account
+    - Xiaomi Account
+    - user account
+    semantic_type: setting
+  - text: 设置头像
+    center:
+    - 0.1523
+    - 0.1908
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - set avatar
+    - change profile picture
+    - edit photo
+    semantic_type: button
+  - text: 小米云服务
+    center:
+    - 0.1988
+    - 0.3734
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Mi Cloud
+    - cloud service
+    - xiao mi cloud
+    semantic_type: menu_item
+  - text: 家人服务
+    center:
+    - 0.7641
+    - 0.2915
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - family services
+    - family sharing
+    - relative service
+    semantic_type: menu_item
+  - text: 查找设备
+    center:
+    - 0.7641
+    - 0.3972
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - find device
+    - locate phone
+    - device finder
+    semantic_type: menu_item
+  - text: 会员权益
+    center:
+    - 0.5
+    - 0.4906
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - membership benefits
+    - member privileges
+    - vip rights
+    semantic_type: menu_item
+  - text: 我的账号
+    center:
+    - 0.5
+    - 0.6115
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - my account
+    - account info
+    - profile
+    semantic_type: menu_item
+  - text: 登录与安全
+    center:
+    - 0.1785
+    - 0.6649
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - login and security
+    - security settings
+    - auth settings
+    semantic_type: menu_item
+  - text: 账号帮助中心
+    center:
+    - 0.2
+    - 0.7305
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - account help center
+    - support
+    - help
+    semantic_type: link
+  - text: 找回账号密码
+    center:
+    - 0.775
+    - 0.7305
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - recover password
+    - reset password
+    - forgot password
+    semantic_type: link
+  - text: 登录设备管理
+    center:
+    - 0.2
+    - 0.7962
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - manage login devices
+    - device management
+    - trusted devices
+    semantic_type: menu_item
+  - text: 关于小米账号
+    center:
+    - 0.2
+    - 0.8618
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - about Mi Account
+    - account info
+    - version info
+    semantic_type: menu_item
+  - text: 退出登录
+    center:
+    - 0.5
+    - 0.9715
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - log out
+    - sign out
+    - logout
+    semantic_type: button
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_2
+  description: Device information page displaying hardware specifications, system
+    details, and options for data management, backup, and factory reset.
+  package: ''
+  elements:
+  - text: 设备名称
+    center:
+    - 0.157
+    - 0.5516
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_8
+    aliases:
+    - Device Name
+    - Phone Name
+    - Model Name
+    semantic_type: setting
+  - text: 存储空间
+    center:
+    - 0.157
+    - 0.6115
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_9
+    aliases:
+    - Storage
+    - Internal Storage
+    - Memory Usage
+    semantic_type: setting
+  - text: OS版本
+    center:
+    - 0.1465
+    - 0.6714
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - OS Version
+    - System Version
+    - Android Version
+    - MIUI Version
+    semantic_type: label
+  - text: 保修期
+    center:
+    - 0.1355
+    - 0.7312
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Warranty Period
+    - Warranty Status
+    - Service Warranty
+    semantic_type: label
+  - text: 本机权益
+    center:
+    - 0.157
+    - 0.7911
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Device Benefits
+    - Member Rights
+    - Exclusive Perks
+    semantic_type: link
+  - text: 处理器
+    center:
+    - 0.1133
+    - 0.9461
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Processor
+    - CPU
+    - Chipset
+    semantic_type: label
+  - text: 运行内存
+    center:
+    - 0.1273
+    - 0.9957
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - RAM
+    - Memory
+    - Running Memory
+    semantic_type: label
+  - text: 电池容量
+    center:
+    - 0.1273
+    - 1.0227
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Battery Capacity
+    - Battery Size
+    - mAh
+    semantic_type: label
+  - text: 分辨率
+    center:
+    - 0.1133
+    - 1.0498
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Resolution
+    - Screen Resolution
+    - Display Resolution
+    semantic_type: label
+  - text: 屏幕尺寸
+    center:
+    - 0.1273
+    - 1.0768
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Screen Size
+    - Display Size
+    - Diagonal
+    semantic_type: label
+  - text: 影像参数
+    center:
+    - 0.143
+    - 1.1044
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Camera Specs
+    - Imaging Parameters
+    - Photo Settings
+    semantic_type: menu_item
+  - text: 摄像头
+    center:
+    - 0.1168
+    - 1.1156
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Camera
+    - Lens
+    - Rear Camera
+    - Front Camera
+    semantic_type: label
+  - text: 全部参数与信息
+    center:
+    - 0.2215
+    - 1.1679
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - All Specs
+    - Full Specifications
+    - Device Info
+    semantic_type: link
+  - text: 小米换机
+    center:
+    - 0.157
+    - 1.2008
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Mi Mover
+    - Xiaomi Transfer
+    - Data Migration
+    semantic_type: link
+  - text: 备份与恢复
+    center:
+    - 0.1785
+    - 1.2336
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Backup and Restore
+    - Cloud Backup
+    - Data Recovery
+    semantic_type: link
+  - text: 售后服务
+    center:
+    - 0.157
+    - 1.2664
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - After-sales Service
+    - Support
+    - Customer Service
+    semantic_type: link
+  - text: 维修模式
+    center:
+    - 0.157
+    - 1.2992
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Repair Mode
+    - Maintenance Mode
+    - Service Mode
+    semantic_type: toggle
+  - text: 恢复出厂设置
+    center:
+    - 0.2
+    - 1.3321
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Factory Reset
+    - Reset Device
+    - Erase All Data
+    semantic_type: button
+  - text: 认证信息
+    center:
+    - 0.157
+    - 1.3721
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Certification Info
+    - Regulatory Info
+    - Compliance
+    semantic_type: link
+  - text: 注释：以上硬件数据，包括：处理器、电池容量、屏幕尺寸、分辨率和摄像头，均为我司实验室数据、设计技术参数及供应商所提供数据。
+    center:
+    - 0.5
+    - 1.4069
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_2
+    aliases:
+    - Disclaimer
+    - Note on Hardware Data
+    - Technical Note
+    semantic_type: label
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - Back
+    - Go Back
+    - Return
+    semantic_type: button
+  - text: 我的设备
+    center:
+    - 0.5
+    - 0.0326
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - My Device
+    - About Phone
+    - Device Info
+    semantic_type: tab
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_3
+  description: A minimal screen containing only a back navigation button.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - previous
+    - 后退
+    semantic_type: button
+  scrollable: false
+  scroll_direction: ''
+- id: screen_4
+  description: WLAN settings page with options to scan QR codes, manage networks,
+    and access advanced configurations.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - 后退
+    semantic_type: button
+  - text: 扫描二维码
+    center:
+    - 0.9137
+    - 0.0326
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_10
+    aliases:
+    - scan QR code
+    - QR scan
+    - 扫码
+    semantic_type: button
+  - text: WLAN
+    center:
+    - 0.1852
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Wi-Fi
+    - WiFi
+    - 无线局域网
+    - wireless network
+    semantic_type: setting
+  - text: 网络加速
+    center:
+    - 0.157
+    - 0.2359
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_11
+    aliases:
+    - network acceleration
+    - speed up network
+    - net boost
+    semantic_type: toggle
+  - text: 点击分享密码
+    center:
+    - 0.2742
+    - 0.3387
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_4
+    aliases:
+    - share password
+    - tap to share pwd
+    - password sharing
+    semantic_type: button
+  - text: 选取附近的WLAN
+    center:
+    - 0.2168
+    - 0.3911
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_4
+    aliases:
+    - select nearby Wi-Fi
+    - choose local network
+    - nearby networks
+    semantic_type: link
+  - text: 刷新
+    center:
+    - 0.893
+    - 0.1356
+    fixed: false
+    found_at_scroll: 1
+    leads_to: screen_4
+    aliases:
+    - refresh
+    - reload
+    - update list
+    semantic_type: button
+  - text: 添加网络
+    center:
+    - 0.5
+    - 0.8088
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - add network
+    - join network
+    - new wifi
+    semantic_type: button
+  - text: 更多设置
+    center:
+    - 0.5
+    - 0.8763
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - more settings
+    - additional options
+    - advanced config
+    semantic_type: menu_item
+  - text: 高级设置
+    center:
+    - 0.157
+    - 0.9297
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - advanced settings
+    - expert mode
+    - deep config
+    semantic_type: menu_item
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_5
+  description: Bluetooth settings page displaying device name, version, available
+    devices list, and advanced configuration options.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - previous
+    semantic_type: button
+  - text: 连接帮助
+    center:
+    - 0.8984
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_12
+    aliases:
+    - connection help
+    - pairing help
+    - help center
+    semantic_type: link
+  - text: 蓝牙
+    center:
+    - 0.1469
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - BT
+    - bluetooth settings
+    - wireless connection
+    semantic_type: toggle
+  - text: 设备名称
+    center:
+    - 0.157
+    - 0.2496
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_8
+    aliases:
+    - device name
+    - phone name
+    - rename device
+    semantic_type: input
+  - text: 蓝牙版本
+    center:
+    - 0.157
+    - 0.3294
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - bluetooth version
+    - bt version
+    semantic_type: label
+  - text: 可用设备
+    center:
+    - 0.4422
+    - 0.412
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - available devices
+    - nearby devices
+    - paired devices list
+    semantic_type: menu_item
+  - text: 更多设置
+    center:
+    - 0.5
+    - 0.5624
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_5
+    aliases:
+    - more settings
+    - advanced options
+    - other settings
+    semantic_type: menu_item
+  - text: 高级设置
+    center:
+    - 0.157
+    - 0.6158
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_13
+    aliases:
+    - advanced settings
+    - expert settings
+    - pro settings
+    semantic_type: menu_item
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_6
+  description: Dial-up settings page with options for Xiaomi internet service, global
+    roaming, and other configuration items.
+  package: com.android.phone
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - return
+    semantic_type: button
+  - text: 拨号设置
+    center:
+    - 0.5
+    - 0.5029
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - dial settings
+    - call settings
+    - phone dialing config
+    semantic_type: menu_item
+  - text: 小米上网服务
+    center:
+    - 0.5
+    - 0.6623
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_3
+    aliases:
+    - Mi Internet Service
+    - Xiaomi data service
+    - mi internet
+    semantic_type: menu_item
+  - text: 全球上网
+    center:
+    - 0.157
+    - 0.7128
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_6
+    aliases:
+    - Global Roaming
+    - World Data
+    - global internet
+    semantic_type: menu_item
+  - text: 其他设置
+    center:
+    - 0.5
+    - 0.7998
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_3
+    aliases:
+    - Other Settings
+    - More Options
+    - misc settings
+    semantic_type: menu_item
+  - text: 漫游设置
+    center:
+    - 0.157
+    - 0.8503
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_3
+    aliases:
+    - Roaming Settings
+    - roam config
+    - network roaming
+    semantic_type: menu_item
+  scrollable: false
+  scroll_direction: ''
+- id: screen_7
+  description: Lock screen settings page allowing users to configure auto-lock, wake
+    gestures, shortcuts, wallpaper rotation, and other lock screen behaviors.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_0
+    aliases:
+    - back
+    - go back
+    - return
+    semantic_type: button
+  - text: 锁屏
+    center:
+    - 0.1469
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - lock screen
+    - screen lock
+    - 锁定屏幕
+    semantic_type: setting
+  - text: 锁屏设置
+    center:
+    - 0.5
+    - 0.1576
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - lock screen settings
+    - screen lock config
+    - 锁屏配置
+    semantic_type: menu_item
+  - text: 自动锁屏
+    center:
+    - 0.157
+    - 0.211
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_14
+    aliases:
+    - auto lock
+    - sleep timeout
+    - 自动息屏
+    semantic_type: setting
+  - text: 抬起亮屏
+    center:
+    - 0.5
+    - 0.2767
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - lift to wake
+    - raise to wake
+    - 抬腕唤醒
+    semantic_type: toggle
+  - text: 锁屏双击亮屏与息屏 双击息屏功能仅在经典和无界主题的锁屏下生效
+    center:
+    - 0.5
+    - 0.3617
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - double tap to wake and sleep description
+    - lock screen double tap info
+    semantic_type: label
+  - text: 锁屏双击亮屏与息屏
+    center:
+    - 0.2645
+    - 0.3395
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - double tap to wake/sleep
+    - tap to wake and sleep
+    - 双击唤醒与息屏
+    semantic_type: toggle
+  - text: 双击息屏功能仅在经典和无界主题的锁屏下生效
+    center:
+    - 0.4277
+    - 0.375
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - double tap sleep restriction note
+    - theme limitation for double tap
+    semantic_type: label
+  - text: 自定义快捷功能
+    center:
+    - 0.2215
+    - 0.4437
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - custom shortcuts
+    - lock screen shortcuts
+    - 快捷方式自定义
+    semantic_type: menu_item
+  - text: 仅在经典和无界主题的锁屏下生效
+    center:
+    - 0.3406
+    - 0.4683
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - valid only in classic and boundless themes
+    - theme compatibility note
+    semantic_type: label
+  - text: 锁屏显示
+    center:
+    - 0.5
+    - 0.5307
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - lock screen display
+    - show on lock screen
+    - 锁屏界面显示
+    semantic_type: menu_item
+  - text: 长按锁屏编辑样式 长按锁屏编辑时钟和壁纸样式
+    center:
+    - 0.5
+    - 0.5924
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - long press to edit style description
+    - edit clock and wallpaper hint
+    semantic_type: label
+  - text: 长按锁屏编辑样式
+    center:
+    - 0.243
+    - 0.5812
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - long press to edit style
+    - edit lock screen style
+    - 长按编辑
+    semantic_type: link
+  - text: 长按锁屏编辑时钟和壁纸样式
+    center:
+    - 0.3047
+    - 0.6057
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - long press to edit clock and wallpaper
+    - edit clock wallpaper style
+    semantic_type: label
+  - text: 锁屏画报
+    center:
+    - 0.157
+    - 0.6634
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_15
+    aliases:
+    - lock screen magazine
+    - wallpaper carousel
+    - 锁屏杂志
+    semantic_type: menu_item
+  - text: 精美壁纸自动更换
+    center:
+    - 0.2148
+    - 0.688
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_15
+    aliases:
+    - auto change beautiful wallpapers
+    - wallpaper rotation
+    - 自动换壁纸
+    semantic_type: toggle
+  - text: 其他
+    center:
+    - 0.5
+    - 0.7504
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - others
+    - more options
+    - 其它
+    semantic_type: menu_item
+  - text: 急速相机 锁屏后快速双击音量下键打开相机
+    center:
+    - 0.5
+    - 0.812
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - quick camera description
+    - volume down double tap camera info
+    semantic_type: label
+  - text: 急速相机
+    center:
+    - 0.157
+    - 0.8009
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - quick camera
+    - fast launch camera
+    - 快速启动相机
+    semantic_type: toggle
+  - text: 锁屏后快速双击音量下键打开相机
+    center:
+    - 0.3406
+    - 0.8254
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - double press volume down to open camera
+    - camera shortcut instruction
+    semantic_type: label
+  - text: 防误触模式 利用感应器，防止手机在口袋中由于挤压或织物滑动引起的误操作
+    center:
+    - 0.5
+    - 0.9053
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - pocket mode description
+    - accidental touch prevention info
+    semantic_type: label
+  - text: 防误触模式
+    center:
+    - 0.1785
+    - 0.8831
+    fixed: false
+    found_at_scroll: 0
+    leads_to: screen_7
+    aliases:
+    - pocket mode
+    - accidental touch protection
+    - 防误触
+    semantic_type: toggle
+  - text: 利用感应器，防止手机在口袋中由于挤压或织物滑动引起的误操作
+    center:
+    - 0.4277
+    - 0.9187
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - sensor based pocket detection
+    - prevents accidental touches in pocket
+    semantic_type: label
+  - text: 在查找其他设置吗？
+    center:
+    - 0.5
+    - 0.9858
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - looking for other settings?
+    - search hint
+    - find more settings
+    semantic_type: label
+  - text: 指纹、面部与密码
+    center:
+    - 0.243
+    - 0.7186
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - fingerprint, face and password
+    - biometrics and passwords
+    - 安全设置
+    semantic_type: menu_item
+  - text: 息屏
+    center:
+    - 0.1141
+    - 0.7843
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - screen off
+    - sleep screen
+    - 熄屏
+    semantic_type: setting
+  - text: 锁屏样式
+    center:
+    - 0.157
+    - 0.8499
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - lock screen style
+    - screen lock theme
+    - 锁屏主题
+    semantic_type: menu_item
+  - text: 注视感知
+    center:
+    - 0.157
+    - 0.9156
+    fixed: false
+    found_at_scroll: 1
+    aliases:
+    - attention aware
+    - gaze detection
+    - 智能注视
+    semantic_type: setting
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_8
+  description: Dialog for modifying the device name with input field and cancel/confirm
+    buttons
+  package: ''
+  elements:
+  - text: 取消
+    center:
+    - 0.1016
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Cancel
+    - Close
+    - Dismiss
+    semantic_type: button
+  - text: 确定
+    center:
+    - 0.8984
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - OK
+    - Confirm
+    - Done
+    - Save
+    semantic_type: button
+  - text: 修改设备名称
+    center:
+    - 0.3094
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Edit Device Name
+    - Rename Device
+    - Device Name Settings
+    semantic_type: setting
+  - text: 在使用互传接收发送文件、蓝牙设备互联、首次建立共享热点等操作时，都会看到您的设备名称
+    center:
+    - 0.5
+    - 0.2399
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Device name visibility info
+    - About device name
+    - Name usage description
+    semantic_type: label
+  scrollable: false
+  scroll_direction: ''
+- id: screen_9
+  description: Storage management screen listing data categories like apps, images,
+    and system files with options to clean up or optimize storage.
+  package: com.miui.securitycenter
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - back
+    - go back
+    - previous
+    semantic_type: button
+  - text: 应用和数据
+    center:
+    - 0.7109
+    - 0.2338
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Apps and Data
+    - App Storage
+    - Application Data
+    semantic_type: label
+  - text: 图片
+    center:
+    - 0.7109
+    - 0.3099
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Images
+    - Photos
+    - Pictures
+    semantic_type: label
+  - text: 音频
+    center:
+    - 0.7109
+    - 0.386
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Audio
+    - Music
+    - Sound Files
+    semantic_type: label
+  - text: 视频
+    center:
+    - 0.7109
+    - 0.4621
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Videos
+    - Movies
+    - Video Files
+    semantic_type: label
+  - text: 安装包
+    center:
+    - 0.7109
+    - 0.5382
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Installers
+    - APKs
+    - Setup Files
+    semantic_type: label
+  - text: 文档
+    center:
+    - 0.7109
+    - 0.6144
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Documents
+    - Files
+    - Docs
+    semantic_type: label
+  - text: 系统数据
+    center:
+    - 0.7109
+    - 0.6905
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - System Data
+    - OS Data
+    - Cache
+    semantic_type: label
+  - text: 系统固件
+    center:
+    - 0.7109
+    - 0.7666
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - System Firmware
+    - Firmware
+    - ROM
+    semantic_type: label
+  - text: 立即清理
+    center:
+    - 0.5
+    - 0.9129
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Clean Now
+    - Clear Immediately
+    - Start Cleaning
+    semantic_type: button
+  - text: 更多手机清理工具
+    center:
+    - 0.5
+    - 0.9926
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - More Phone Cleaner Tools
+    - Additional Cleanup Utilities
+    - Other Cleaners
+    semantic_type: link
+  - text: 深度清理
+    center:
+    - 0.4988
+    - 1.0267
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Deep Clean
+    - Advanced Cleanup
+    - Thorough Scan
+    semantic_type: button
+  - text: 了解存储优化工具
+    center:
+    - 0.5
+    - 1.0608
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Learn about Storage Optimization
+    - About Storage Tools
+    - Info on Optimizer
+    semantic_type: link
+  - text: 焕新存储
+    center:
+    - 0.5
+    - 1.0949
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Refresh Storage
+    - Storage Rejuvenation
+    - New Storage Tech
+    semantic_type: setting
+  - text: UFS存储扩容技术
+    center:
+    - 0.5
+    - 1.129
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - UFS Expansion Technology
+    - UFS Storage Extension
+    - Virtual RAM/Storage
+    semantic_type: label
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_10
+  description: WLAN Quick Connect settings page allowing users to configure automatic
+    Wi-Fi connection preferences.
+  package: ''
+  elements:
+  - text: WLAN快连
+    center:
+    - 0.4996
+    - 0.8032
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Wi-Fi Quick Connect
+    - WLAN Fast Connect
+    - 无线快速连接
+    - WiFi一键连接
+    semantic_type: setting
+  scrollable: false
+  scroll_direction: ''
+- id: screen_11
+  description: Network acceleration settings page with options for dual WLAN, network
+    switching, and data acceleration.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Back
+    - Go back
+    - Previous
+    semantic_type: button
+  - text: 网络加速
+    center:
+    - 0.5
+    - 0.0326
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Network Acceleration
+    - Net Boost
+    - Speed Up Network
+    semantic_type: menu_item
+  - text: 双WLAN加速
+    center:
+    - 0.2051
+    - 0.0956
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Dual WLAN Acceleration
+    - Dual WiFi Boost
+    - 2x WiFi Speed
+    semantic_type: toggle
+  - text: 网络切换
+    center:
+    - 0.157
+    - 0.1919
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Network Switching
+    - Switch Network
+    - Auto Switch
+    semantic_type: menu_item
+  - text: 数据加速
+    center:
+    - 0.157
+    - 0.3102
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Data Acceleration
+    - Mobile Data Boost
+    - Cellular Speed Up
+    semantic_type: toggle
+  scrollable: false
+  scroll_direction: ''
+- id: screen_12
+  description: Bluetooth connection help page listing device categories such as headphones,
+    car systems, wearables, and mobile devices.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - back
+    - go back
+    - previous
+    - 后退
+    semantic_type: button
+  - text: 连接帮助
+    center:
+    - 0.2281
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - connection help
+    - pairing help
+    - troubleshooting
+    - 配对指南
+    semantic_type: link
+  - text: 耳机/音箱
+    center:
+    - 0.5
+    - 0.1557
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - headphones/speakers
+    - audio devices
+    - earbuds
+    - 蓝牙音频
+    semantic_type: menu_item
+  - text: 车载
+    center:
+    - 0.5
+    - 0.362
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - car
+    - vehicle
+    - automotive
+    - 汽车互联
+    semantic_type: menu_item
+  - text: 可穿戴设备
+    center:
+    - 0.5
+    - 0.528
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - wearables
+    - smartwatch
+    - band
+    - 手表手环
+    semantic_type: menu_item
+  - text: 手机/平板/电脑
+    center:
+    - 0.5
+    - 0.6939
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - phone/tablet/computer
+    - mobile devices
+    - PCs
+    - 其他设备
+    semantic_type: menu_item
+  scrollable: false
+  scroll_direction: ''
+- id: screen_13
+  description: Advanced Bluetooth settings page with options for connection, audio,
+    and display configurations.
+  package: ''
+  elements:
+  - text: 返回
+    center:
+    - 0.1117
+    - 0.0328
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - back
+    - go back
+    - previous
+    semantic_type: button
+  - text: 高级设置
+    center:
+    - 0.2281
+    - 0.0954
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - advanced settings
+    - more settings
+    - expert options
+    semantic_type: menu_item
+  - text: 连接设置
+    center:
+    - 0.5
+    - 0.1576
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - connection settings
+    - connectivity
+    - network settings
+    semantic_type: menu_item
+  - text: 小米快连
+    center:
+    - 0.157
+    - 0.2082
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Xiaomi Quick Connect
+    - Mi Link
+    - quick connect
+    semantic_type: setting
+  - text: 来电铃声同步播放
+    center:
+    - 0.243
+    - 0.3124
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - sync ringtone playback
+    - ringtone sync
+    - play ringtones on all devices
+    semantic_type: toggle
+  - text: 蓝牙设备黑名单
+    center:
+    - 0.2215
+    - 0.4416
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - bluetooth blacklist
+    - blocked devices
+    - ignore list
+    semantic_type: menu_item
+  - text: 音频广播
+    center:
+    - 0.157
+    - 0.5043
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - audio broadcast
+    - sound sharing
+    - broadcast audio
+    semantic_type: setting
+  - text: 显示设置
+    center:
+    - 0.5
+    - 0.6133
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - display settings
+    - visibility settings
+    - show options
+    semantic_type: menu_item
+  - text: 显示没有名称的蓝牙设备
+    center:
+    - 0.5
+    - 0.6667
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - show unnamed bluetooth devices
+    - display nameless devices
+    - show anonymous devices
+    semantic_type: toggle
+  - text: “控制中心”蓝牙关闭时
+    center:
+    - 0.2816
+    - 0.7294
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - when bluetooth is off in control center
+    - control center bt off state
+    - bt disabled via quick panel
+    semantic_type: label
+  - text: 允许系统服务连接
+    center:
+    - 0.7391
+    - 0.7406
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - allow system service connection
+    - permit system services to connect
+    - system service access
+    semantic_type: toggle
+  scrollable: false
+  scroll_direction: ''
+- id: screen_14
+  description: Auto-lock screen timeout selection dialog with options ranging from
+    15 seconds to 10 minutes and a cancel button.
+  package: ''
+  elements:
+  - text: 自动锁屏
+    center:
+    - 0.5
+    - 0.4425
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Auto Lock Screen
+    - Lock Screen Timeout
+    - 屏幕超时
+    semantic_type: setting
+  - text: 15 秒
+    center:
+    - 0.5
+    - 0.5296
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 15 seconds
+    - 15s
+    semantic_type: menu_item
+  - text: 30 秒
+    center:
+    - 0.5
+    - 0.5916
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 30 seconds
+    - 30s
+    semantic_type: menu_item
+  - text: 1 分钟
+    center:
+    - 0.5
+    - 0.6537
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 1 minute
+    - 1m
+    semantic_type: menu_item
+  - text: 2 分钟
+    center:
+    - 0.5
+    - 0.7157
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 2 minutes
+    - 2m
+    semantic_type: menu_item
+  - text: 5 分钟
+    center:
+    - 0.5
+    - 0.7778
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 5 minutes
+    - 5m
+    semantic_type: menu_item
+  - text: 10 分钟
+    center:
+    - 0.5
+    - 0.8398
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - 10 minutes
+    - 10m
+    semantic_type: menu_item
+  - text: 取消
+    center:
+    - 0.5
+    - 0.9284
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Cancel
+    - Close
+    - Dismiss
+    semantic_type: button
+  scrollable: false
+  scroll_direction: ''
+- id: screen_15
+  description: Agreement confirmation dialog with 'Exit' and 'Agree' buttons.
+  package: com.miui.securitycenter
+  elements:
+  - text: 退出
+    center:
+    - 0.2777
+    - 0.9378
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Exit
+    - Quit
+    - Log out
+    - Sign out
+    semantic_type: button
+  - text: 同意
+    center:
+    - 0.7219
+    - 0.9378
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Agree
+    - Accept
+    - Consent
+    - OK
+    semantic_type: button
+  scrollable: false
+  scroll_direction: ''
+screen_macros:
+  screen_0:
+  - &id001
+    action: force_stop
+    package: com.android.settings
+    wait: 0.5
+  - &id002
+    action: launch
+    package: com.android.settings
+    wait: 3.0
+  screen_1:
+  - *id001
+  - *id002
+  - action: tap
+    x: 640
+    y: 676
+    text: 账号、云服务、会员权益等
+    wait: 1.5
+    screen: screen_0
+  screen_2:
+  - *id001
+  - *id002
+  - &id003
+    action: tap
+    x: 640
+    y: 881
+    text: 我的设备
+    wait: 1.5
+    screen: screen_0
+  screen_3:
+  - *id001
+  - *id002
+  - action: tap
+    x: 640
+    y: 1063
+    text: 散热风扇
+    wait: 1.5
+    screen: screen_0
+  screen_4:
+  - *id001
+  - *id002
+  - &id004
+    action: tap
+    x: 640
+    y: 1285
+    text: WLAN
+    wait: 1.5
+    screen: screen_0
+  screen_5:
+  - *id001
+  - *id002
+  - &id005
+    action: tap
+    x: 640
+    y: 1467
+    text: 蓝牙
+    wait: 1.5
+    screen: screen_0
+  screen_6:
+  - *id001
+  - *id002
+  - action: tap
+    x: 640
+    y: 1649
+    text: 移动网络
+    wait: 1.5
+    screen: screen_0
+  screen_7:
+  - *id001
+  - *id002
+  - &id006
+    action: tap
+    x: 640
+    y: 2639
+    text: 锁屏
+    wait: 1.5
+    screen: screen_0
+  screen_8:
+  - *id001
+  - *id002
+  - *id003
+  - action: tap
+    x: 640
+    y: 1529
+    text: 设备名称
+    wait: 1.5
+    screen: screen_2
+  screen_9:
+  - *id001
+  - *id002
+  - *id003
+  - action: tap
+    x: 640
+    y: 1695
+    text: 存储空间
+    wait: 1.5
+    screen: screen_2
+  screen_10:
+  - *id001
+  - *id002
+  - *id004
+  - action: tap
+    x: 1169
+    y: 90
+    text: 扫描二维码
+    wait: 1.5
+    screen: screen_4
+  screen_11:
+  - *id001
+  - *id002
+  - *id004
+  - action: tap
+    x: 640
+    y: 654
+    text: 网络加速
+    wait: 1.5
+    screen: screen_4
+  screen_12:
+  - *id001
+  - *id002
+  - *id005
+  - action: tap
+    x: 1150
+    y: 91
+    text: 连接帮助
+    wait: 1.5
+    screen: screen_5
+  screen_13:
+  - *id001
+  - *id002
+  - *id005
+  - action: tap
+    x: 640
+    y: 1707
+    text: 高级设置
+    wait: 1.5
+    screen: screen_5
+  screen_14:
+  - *id001
+  - *id002
+  - *id006
+  - action: tap
+    x: 640
+    y: 585
+    text: 自动锁屏
+    wait: 1.5
+    screen: screen_7
+  screen_15:
+  - *id001
+  - *id002
+  - *id006
+  - action: tap
+    x: 640
+    y: 1870
+    text: 锁屏画报
+    wait: 1.5
+    screen: screen_7
+launch_behavior: always_home
+common_tasks:
+- Connect to or manage Wi-Fi networks
+- Pair with Bluetooth devices
+- Check device storage usage and clean up files
+- View device information and system version
+- Configure lock screen timeout and gestures
+- Manage Xiaomi account settings and cloud services
+- Adjust network acceleration and dual WLAN settings
+- Rename the device
+known_limitations:
+- Some advanced settings are nested within sub-menus requiring multiple navigation
+  steps
+- Dialogs for renaming devices or setting timeouts may obscure underlying options
+  until dismissed
+- Agreement confirmation dialogs can interrupt workflow if not expected
