@@ -20,6 +20,11 @@ Usage:
     )
 """
 
+# The app runs this file on Python 3.8 (Chaquopy), where `list[str]` in an
+# annotation is evaluated at def time and fails; the future import makes
+# annotations strings on every version.
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -241,6 +246,79 @@ def _extract_json(text: str) -> dict:
     return {}
 
 
+def _parse_json_items(rsp: str):
+    """Pull JSON objects out of a model reply, whatever shape it chose.
+
+    Expecting one object per line silently dropped everything when the model
+    answered with a JSON array, a fenced block, a numbered list, or an object
+    wrapping the list ("{"elements": [...]}"). None of those raise: the map
+    saves, it just has no aliases and no semantic types, and the only evidence
+    is a reply that parsed to zero items.
+    """
+    text = (rsp or "").strip()
+    if not text:
+        return []
+
+    def as_list(value):
+        if isinstance(value, dict):
+            # {"elements": [...]} -- unwrap a single list of objects
+            for inner in value.values():
+                if (isinstance(inner, list) and inner
+                        and all(isinstance(i, dict) for i in inner)):
+                    return inner
+            return [value]
+        if isinstance(value, list):
+            return [v for v in value if isinstance(v, dict)]
+        return []
+
+    def parse_chunk(chunk: str):
+        chunk = (chunk or "").strip()
+        if not chunk:
+            return []
+        try:
+            items = as_list(json.loads(chunk))
+            if items:
+                return items
+        except (json.JSONDecodeError, TypeError):
+            pass
+
+        # Scan for objects instead of splitting on lines: the model often
+        # pretty-prints, and one object then spans twenty lines. raw_decode
+        # reads exactly one object and reports where it ended, so the next
+        # scan starts after it -- this handles one-per-line, numbered lists,
+        # pretty-printed blocks and stray prose with the same code.
+        decoder = json.JSONDecoder()
+        out = []
+        index = 0
+        while index < len(chunk):
+            start = chunk.find("{", index)
+            if start < 0:
+                break
+            try:
+                value, end = decoder.raw_decode(chunk[start:])
+            except json.JSONDecodeError:
+                index = start + 1
+                continue
+            if isinstance(value, dict):
+                out.append(value)
+            index = start + end
+        return out
+
+    items = parse_chunk(text)
+    if items:
+        return items
+
+    # a fenced block, which may itself hold one object per line
+    for block in text.split("```")[1::2]:
+        body = block.strip()
+        if body.startswith("json"):
+            body = body[4:].strip()
+        items = parse_chunk(body)
+        if items:
+            return items
+    return []
+
+
 def _enrich_map(
     output_data: dict,
     app_name: str,
@@ -275,14 +353,15 @@ def _enrich_map(
                 api_key=api_key, api_base=api_base, model=model,
                 max_tokens=2048, temperature=0.0, label="enrich_elem",
             )
-            for line in rsp.strip().splitlines():
-                line = line.strip()
-                if not line.startswith("{"):
-                    continue
-                try:
-                    item = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
+            items = _parse_json_items(rsp)
+            # A reply that parses to nothing is a silent quality loss: the map
+            # still builds, it just has no aliases, and nothing in the log says
+            # why. One line per screen makes that visible.
+            print(f"[Enrich] {screen.get('id', '?')}: "
+                  f"{len(rsp or '')} chars -> {len(items)} items")
+            if not items and (rsp or "").strip():
+                print(f"[Enrich] unparsed reply: {rsp.strip()[:200]!r}")
+            for item in items:
                 orig_text = item.get("text", "")
                 aliases = item.get("aliases", [])
                 stype = item.get("semantic_type", "")
