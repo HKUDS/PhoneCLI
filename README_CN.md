@@ -27,7 +27,6 @@
       <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
       <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
       <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
-      <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img alt="PhoneGo APK" src="https://img.shields.io/badge/%F0%9F%93%B1PhoneGo-APK%20v0.2.0-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
       <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧English-1f6feb?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
       <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='PhoneCLI 论文 —— arXiv:2609.35671'></a>
       <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='OpenPhone 论文 —— arXiv:2510.22009（ACL 2026 Findings）'></a>
@@ -45,19 +44,20 @@
   <img src="./figures/phone_cli.png" width="78%" alt="PhoneCLI：离线构建阶段与在线运行阶段" />
 </div>
 
+<div align="center">
+
 ## 🆕 Update — PhoneGo：把这套 harness 搬进手机
 
-[![PhoneGo APK](https://img.shields.io/badge/%F0%9F%93%B1PhoneGo-%E4%B8%8B%E8%BD%BD%20APK-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk)
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.2.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="下载 PhoneGo 0.2.0（Android）"></a>
+
+<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.zh.md">它是什么</a> &nbsp;·&nbsp; <a href="android-app/README.zh.md">构建与运行</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">并排演示</a></sub>
+
+</div>
 
 **PhoneGo** 是 PhoneCLI 算法在安卓上的 App 落地实现：agent 直接跑在手机里，目标 App 被
-驱动在一块用户看不见的虚拟屏上——你手里的屏始终是你自己的。它保留了同一套骨架（离线编译
-app map、重放宏、只有地图覆盖不到时才退回 GUI），只是传输层从数据线换成了手机自己的 `adbd`。
-
+驱动在一块用户看不见的虚拟屏上——你手里的屏始终是你自己的。骨架完全一样（离线编译 app
+map、重放宏、只有地图覆盖不到时才退回 GUI），只是传输层从数据线换成了手机自己的 `adbd`。
 同一句话、同一台手机：**有地图 17 步 / 64 秒**，**纯看图 32 步 / 146 秒**，两条都完成了任务。
-
-[⬇ 下载 APK](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk)（v0.2.0，18 MB，Android 14+，arm64）·
-[它是什么](docs/product-app.zh.md) · [构建与运行](android-app/README.zh.md) ·
-[并排演示](docs/showcase/app-xhs-hku-compare-3x.mp4)
 
 **手机智能体的瓶颈，从来不是"模型不够大"。** 今天几乎所有 GUI 智能体都在跑同一个循环：截图 → 调用视觉语言模型（VLM）→ 发出动作。它慢（每步 2–5 秒）、贵（每张截图都是一次 API 调用）、脆（VLM 会编造坐标），而且必须联网——你的屏幕内容要离开设备。这与手机的本质——端侧、实时、私有——天生冲突。而这套循环里做的绝大部分事，其实是**导航**；导航是静态的、有序的、被重复一万遍的。
 

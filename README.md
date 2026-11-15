@@ -23,7 +23,6 @@
       <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
       <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
       <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
-      <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img alt="PhoneGo APK" src="https://img.shields.io/badge/%F0%9F%93%B1PhoneGo-APK%20v0.2.0-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
       <a href="./README_CN.md"><img src="https://img.shields.io/badge/📖中文文档-e74c3c?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
       <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='PhoneCLI paper - arXiv:2609.35671'></a>
       <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='OpenPhone paper - arXiv:2510.22009 (ACL 2026 Findings)'></a>
@@ -37,22 +36,22 @@
   <div style="width: 100%; height: 2px; margin: 20px 0; background: linear-gradient(90deg, transparent, #00d9ff, transparent);"></div>
 </div>
 
-## 🆕 Update — PhoneGo: this harness, running on the phone itself
+<div align="center">
 
-[![PhoneGo APK](https://img.shields.io/badge/%F0%9F%93%B1PhoneGo-Download%20APK-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk)
+## 🆕 Update — PhoneGo: the harness, on the phone itself
+
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.2.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="Download PhoneGo 0.2.0 for Android"></a>
+
+<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.md">What it is</a> &nbsp;·&nbsp; <a href="android-app/README.md">Build and run</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">Side-by-side demo</a></sub>
+
+</div>
 
 **PhoneGo** is PhoneCLI's algorithm as an Android app: the agent runs *inside* the
-phone, and the target app is driven on a virtual display the user never sees — your
-own screen stays yours. It keeps the same backbone (compile an app map offline, replay
-the macro, fall back to GUI only when the map does not apply); the transport is simply
-the phone's own `adbd` instead of a cable.
-
-One instruction, one phone: **17 steps / 64 s** with the map versus **32 steps / 146 s**
-with pure vision — both successful.
-
-[⬇ Download the APK](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk) (v0.2.0, 18 MB, Android 14+, arm64) ·
-[What it is](docs/product-app.md) · [Build and run](android-app/README.md) ·
-[Side-by-side demo](docs/showcase/app-xhs-hku-compare-3x.mp4)
+phone, and the target app is driven on a virtual display the user never sees — your own
+screen stays yours. Same backbone (compile an app map offline, replay the macro, fall
+back to GUI only when the map does not apply); the transport is just the phone's own
+`adbd` instead of a cable. One instruction, one phone: **17 steps / 64 s** with the map
+versus **32 steps / 146 s** with pure vision, both successful.
 
 **The bottleneck of phone agents was never model size.** Nearly every GUI agent today runs the same loop — screenshot, call a vision-language model (VLM), emit an action. It is slow (2–5 s per step), expensive (every screenshot is an API call), brittle (VLMs hallucinate coordinates), and it has to be online: your screen leaves the device. That is at odds with what a phone is — on-device, real-time, private. And most of what that loop does is **navigation**, which is static, ordered, and repeated ten thousand times.
 
