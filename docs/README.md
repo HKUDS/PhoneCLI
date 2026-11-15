@@ -1,34 +1,37 @@
 # 文档索引
 
-这个仓库里同时躺着三种文档，混在一起看很容易把"历史记录"当成"当前事实"。
-按用途分：
+这里放两件东西：**这个 App 是什么**，以及**地图流水线怎么工作的**。开发日志、里程碑复盘和对比
+笔记不随仓库发布（见文末），所以你在别处看到的旧链接可能已经失效。
 
-## 当前事实（先看这两份）
+## 产品与地图
 
 | 文件 | 内容 |
 |---|---|
-| [status.md](status.md) | 现状与已知问题。按日期分节，**以最新一节为准**，前面的小节保留不改（能看出当时的判断和后来被推翻的地方） |
+| [product-app.md](product-app.md) | PhoneGo 是什么：一个 APK，对话式界面 + 虚拟屏执行；包名、工程名和三块代码的关系 |
 | [map-building.md](map-building.md) | 爬虫流水线：每一处改动对应的真实故障、实测数字、负面结果 |
 
-## 历史记录（当时写的，不再更新）
+## 演示素材
 
-| 文件 | 时期 |
+| 文件 | 内容 |
 |---|---|
-| [m3-pairing-port.md](m3-pairing-port.md) | 无线调试配对移植 |
-| [m4-on-device.md](m4-on-device.md) | 首次上真机 |
-| [m5-in-app-agent.md](m5-in-app-agent.md) | agent 进入 APK |
-| [s4-ondevice.md](s4-ondevice.md) | 端侧运行 |
-| [bench-android-2026-11-04.md](bench-android-2026-11-04.md) | 2026-11-04 的性能记录 |
-| [product-app.md](product-app.md) | 产品形态设想 |
+| [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | 同一句话、同一台手机，两种模式并排 3×（时长 55 秒，带步数计数器） |
 
-## 上游参考资料（PhoneCLI 原仓库带来）
+左边是**自动**（地图 + 宏回放）：17 步 / 64 秒 / 92.3k token；右边是**纯看图**（每步都靠截图决策）：
+32 步 / 146 秒 / 207.1k token。两条都完成了任务。
+
+## 参考源码
+
+| 路径 | 内容 |
+|---|---|
+| [reference/aosp-pairing/](reference/aosp-pairing/) | AOSP 的无线调试配对实现（SPAKE2 / TLS / AES-GCM），移植 `phoneagent/devices/pairing` 时的对照 |
+
+## 上游文档（PhoneCLI 原仓库带来）
 
 | 文件 | 内容 |
 |---|---|
 | [modify_androidlab.md](modify_androidlab.md) | AndroidLab 评测环境的改造说明 |
 | [new_apps.md](new_apps.md) | 上游新增 App 的流程 |
 | [prepare_for_linux.md](prepare_for_linux.md) / [prepare_for_mac.md](prepare_for_mac.md) | 上游环境准备 |
-| [reference/aosp-pairing/](reference/aosp-pairing/) | AOSP 配对协议源码，移植时的对照 |
 
 ## 命令行工具各管什么（名字相近，容易混）
 
@@ -54,3 +57,9 @@
 
 - `phoneagent/build_map.py` 顶部：爬虫与上游 BFS 的关系、每处校验的由来
 - `android-app/app/src/main/java/com/phoneagent/app/AgentService.kt`：服务、虚拟屏、唤醒锁的取舍
+
+## 不在这份索引里的内容
+
+开发日志（逐条记录问题与决策）、里程碑计划（配对、上机、进 APK）、实测报告和设计评审都在
+开发过程中写过，但它们的价值主要在过程中：数字和结论已经进了上面的两份文档和代码注释，
+剩下的日期细节对读代码的人没有帮助，因此不随仓库发布。需要时可以在提交历史里找到。

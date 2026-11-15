@@ -1,0 +1,1738 @@
+app: 小红书
+package: com.xingin.xhs
+screen_w: 1280
+screen_h: 2772
+screens:
+- id: screen_0
+  description: Xiaohongshu home feed screen with top category tabs, recommended content
+    cards, and bottom navigation bar.
+  selected:
+  - 发现
+  - 首页
+  elements:
+  - text: 推荐
+    center:
+    - 0.0664
+    - 0.1299
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Recommended
+    - For You
+    - Home Feed
+    semantic_type: tab
+  - text: RED
+    center:
+    - 0.1945
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Xiaohongshu Logo
+    - App Name
+    semantic_type: label
+  - text: 直播
+    center:
+    - 0.3227
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Live
+    - Livestreaming
+    - Broadcast
+    semantic_type: link
+  - text: 短剧
+    center:
+    - 0.4555
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Short Drama
+    - Mini Series
+    - Short Video Series
+    semantic_type: link
+  - text: 穿搭
+    center:
+    - 0.5883
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Outfit
+    - Fashion
+    - Style
+    - Clothing Match
+    semantic_type: link
+  - text: 科学科普
+    center:
+    - 0.7562
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Science Popularization
+    - Sci-Pop
+    - Scientific Knowledge
+    semantic_type: link
+  - text: 情感
+    center:
+    - 0.8906
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Emotion
+    - Relationships
+    - Feelings
+    - Love & Life
+    semantic_type: link
+  - text: 吃吃喝喝
+    center:
+    - 0.2301
+    - 0.5032
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Food & Drink
+    - Eating Out
+    - Gourmet
+    - Dining
+    semantic_type: link
+  - text: '10'
+    center:
+    - 0.4527
+    - 0.5032
+    fixed: true
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 10
+    - Likes 10
+    - Views 10
+    semantic_type: label
+  - text: 狗尾草GO
+    center:
+    - 0.7152
+    - 0.5032
+    fixed: true
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Foxtail GO
+    - 'User: 狗尾草GO'
+    semantic_type: link
+  - text: '963'
+    center:
+    - 0.9379
+    - 0.5032
+    fixed: true
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 963
+    - Likes 963
+    - Comments 963
+    semantic_type: label
+  - text: 超级困困困
+    center:
+    - 0.2215
+    - 0.9062
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Super Sleepy
+    - 'User: 超级困困困'
+    semantic_type: link
+  - text: '436'
+    center:
+    - 0.4441
+    - 0.9062
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 436
+    - Likes 436
+    - Views 436
+    semantic_type: label
+  - text: kk动物园区
+    center:
+    - 0.707
+    - 0.9062
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - KK Animal Park
+    - 'User: kk动物园区'
+    semantic_type: link
+  - text: '2652'
+    center:
+    - 0.9297
+    - 0.9062
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 2652
+    - Likes 2652
+    - Followers 2652
+    semantic_type: label
+  - text: 肚肚50斤
+    center:
+    - 0.2137
+    - 1.1228
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Belly 50 Jin
+    - 'User: 肚肚50斤'
+    semantic_type: link
+  - text: '1352'
+    center:
+    - 0.4363
+    - 1.1228
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 1352
+    - Likes 1352
+    - Views 1352
+    semantic_type: label
+  - text: 3zero
+    center:
+    - 0.7234
+    - 1.1106
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Three Zero
+    - 'User: 3zero'
+    semantic_type: link
+  - text: '53'
+    center:
+    - 0.9461
+    - 1.1106
+    fixed: false
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Count 53
+    - Likes 53
+    - Comments 53
+    semantic_type: label
+  - text: 刚刚在看的内容
+    center:
+    - 0.5
+    - 0.1907
+    fixed: true
+    found_at_scroll: 0
+    dynamic: true
+    aliases:
+    - Recently Viewed
+    - Just Watched
+    - History
+    semantic_type: label
+  - text: 菜单
+    center:
+    - 0.0688
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_1
+    aliases:
+    - Menu
+    - Options
+    - More
+    semantic_type: button
+  - text: 关注
+    center:
+    - 0.3469
+    - 0.0808
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Following
+    - Subscriptions
+    - Feed
+    semantic_type: tab
+  - text: 发现
+    center:
+    - 0.5
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Discover
+    - Explore
+    - Search
+    semantic_type: tab
+  - text: 同城
+    center:
+    - 0.6531
+    - 0.0808
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Nearby
+    - Local
+    - City
+    semantic_type: tab
+  - text: 搜索
+    center:
+    - 0.9313
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Search
+    - Find
+    - Query
+    semantic_type: input
+    leads_to: screen_search
+  - text: 首页
+    center:
+    - 0.1
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Home
+    - Main Page
+    - Index
+    semantic_type: tab
+  - text: 市集
+    center:
+    - 0.3
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Marketplace
+    - Shop
+    - Store
+    semantic_type: tab
+  - text: 发布
+    center:
+    - 0.5
+    - 0.9737
+    fixed: true
+    found_at_scroll: 0
+    leads_to: screen_1
+    aliases:
+    - Post
+    - Publish
+    - Create
+    - Upload
+    semantic_type: button
+  - text: 消息
+    center:
+    - 0.7
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Messages
+    - Inbox
+    - Notifications
+    - Chat
+    semantic_type: tab
+  - text: 我
+    center:
+    - 0.9
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Me
+    - Profile
+    - Account
+    - My
+    semantic_type: tab
+  - text: ZyNail指钰日式美睫美甲
+    center:
+    - 0.2223
+    - 0.9982
+    fixed: false
+    found_at_scroll: 1
+    dynamic: true
+    leads_to: screen_2
+    aliases:
+    - ZyNail Japanese Eyelash & Nail
+    - 'User: ZyNail...'
+    semantic_type: link
+  - text: '101'
+    center:
+    - 0.4449
+    - 0.9982
+    fixed: false
+    found_at_scroll: 1
+    dynamic: true
+    aliases:
+    - Count 101
+    - Likes 101
+    - Views 101
+    semantic_type: label
+  - text: 千玺玩数码
+    center:
+    - 0.7156
+    - 0.9856
+    fixed: false
+    found_at_scroll: 1
+    dynamic: true
+    leads_to: screen_3
+    aliases:
+    - Qianxi Plays Digital
+    - 'User: 千玺玩数码'
+    semantic_type: link
+  - text: '105'
+    center:
+    - 0.9383
+    - 0.9856
+    fixed: false
+    found_at_scroll: 1
+    dynamic: true
+    aliases:
+    - Count 105
+    - Likes 105
+    - Comments 105
+    semantic_type: label
+  - text: 世泳Swim
+    center:
+    - 0.2219
+    - 0.7702
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    aliases:
+    - Shi Yong Swim
+    - 'User: 世泳Swim'
+    semantic_type: link
+  - text: '134'
+    center:
+    - 0.4445
+    - 0.7702
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    aliases:
+    - Count 134
+    - Likes 134
+    - Views 134
+    semantic_type: label
+  - text: Muradil🎾
+    center:
+    - 0.7152
+    - 0.7695
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    aliases:
+    - Muradil Tennis
+    - 'User: Muradil🎾'
+    semantic_type: link
+  - text: '533'
+    center:
+    - 0.9379
+    - 0.7695
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    aliases:
+    - Count 533
+    - Likes 533
+    - Followers 533
+    semantic_type: label
+  - text: Forever永远
+    center:
+    - 0.2117
+    - 1.0422
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    leads_to: screen_1
+    aliases:
+    - Forever Always
+    - 'User: Forever永远'
+    semantic_type: link
+  - text: 1.4万
+    center:
+    - 0.4344
+    - 1.0422
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    leads_to: screen_1
+    aliases:
+    - 14k
+    - 14,000
+    - Ten Thousand Four Hundred
+    semantic_type: label
+  - text: Royalty
+    center:
+    - 0.7078
+    - 1.0418
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    leads_to: screen_1
+    aliases:
+    - Royal
+    - 'User: Royalty'
+    semantic_type: link
+  - text: '1132'
+    center:
+    - 0.9305
+    - 1.0418
+    fixed: false
+    found_at_scroll: 2
+    dynamic: true
+    leads_to: screen_1
+    aliases:
+    - Count 1132
+    - Likes 1132
+    - Views 1132
+    semantic_type: label
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_1
+  description: Home feed page displaying recommended content categories and user posts
+    with a bottom navigation bar.
+  selected:
+  - 发现
+  - 首页
+  package: ''
+  elements:
+  - text: 推荐
+    center:
+    - 0.0664
+    - 0.1299
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Recommended
+    - For You
+    - Feed
+    semantic_type: tab
+  - text: RED
+    center:
+    - 0.1945
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Red Note
+    - Xiaohongshu Logo
+    - Brand Name
+    semantic_type: label
+  - text: 直播
+    center:
+    - 0.3227
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Live
+    - Livestream
+    - Broadcast
+    semantic_type: tab
+  - text: 短剧
+    center:
+    - 0.4555
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Short Drama
+    - Mini Series
+    - Skits
+    semantic_type: tab
+  - text: 穿搭
+    center:
+    - 0.5883
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Outfit
+    - Fashion
+    - Style
+    semantic_type: tab
+  - text: 舞蹈
+    center:
+    - 0.7211
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Dance
+    - Choreography
+    semantic_type: tab
+  - text: 健身塑型
+    center:
+    - 0.8555
+    - 0.1297
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Fitness
+    - Body Shaping
+    - Workout
+    semantic_type: tab
+  - text: Ksir同学
+    center:
+    - 0.2383
+    - 0.3986
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - User Ksir
+    - Creator Ksir
+    semantic_type: link
+  - text: '1'
+    center:
+    - 0.4609
+    - 0.3986
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Count 1
+    - Item 1
+    semantic_type: label
+  - text: Akon
+    center:
+    - 0.2137
+    - 0.7771
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - User Akon
+    - Creator Akon
+    semantic_type: link
+  - text: '1255'
+    center:
+    - 0.4363
+    - 0.7771
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Likes 1255
+    - Views 1255
+    semantic_type: label
+  - text: 闲🥚超仁
+    center:
+    - 0.7316
+    - 0.5278
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - User XianDanChaoRen
+    - Creator XianDanChaoRen
+    semantic_type: link
+  - text: '4'
+    center:
+    - 0.9543
+    - 0.5278
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Count 4
+    - Item 4
+    semantic_type: label
+  - text: Kelly于文文
+    center:
+    - 0.2117
+    - 1.046
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - User Kelly Yu Wenwen
+    - Creator Kelly
+    semantic_type: link
+  - text: 1.8万
+    center:
+    - 0.4344
+    - 1.046
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - 18k
+    - '18000'
+    - Popularity
+    semantic_type: label
+  - text: 热点
+    center:
+    - 0.7656
+    - 0.8743
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Hot Topics
+    - Trending
+    - News
+    semantic_type: tab
+  - text: 中国新闻社
+    center:
+    - 0.7074
+    - 0.9473
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - China News Service
+    - CNS
+    semantic_type: link
+  - text: '2914'
+    center:
+    - 0.9301
+    - 0.9473
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Likes 2914
+    - Views 2914
+    semantic_type: label
+  - text: 菜单
+    center:
+    - 0.0688
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Menu
+    - Options
+    - More
+    semantic_type: button
+  - text: 关注
+    center:
+    - 0.3469
+    - 0.0808
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Following
+    - Followed
+    semantic_type: tab
+  - text: 发现
+    center:
+    - 0.5
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Discover
+    - Explore
+    semantic_type: tab
+  - text: 同城
+    center:
+    - 0.6531
+    - 0.0808
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Nearby
+    - Local
+    - City
+    semantic_type: tab
+  - text: 搜索
+    center:
+    - 0.9313
+    - 0.0808
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Search
+    - Find
+    semantic_type: button
+  - text: 首页
+    center:
+    - 0.1
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Home
+    - Main Page
+    semantic_type: tab
+  - text: 市集
+    center:
+    - 0.3
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Marketplace
+    - Shop
+    - Store
+    semantic_type: tab
+  - text: 发布
+    center:
+    - 0.5
+    - 0.9737
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Post
+    - Create
+    - Upload
+    - Publish
+    semantic_type: button
+  - text: 消息
+    center:
+    - 0.7
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Messages
+    - Inbox
+    - Notifications
+    semantic_type: tab
+  - text: 我
+    center:
+    - 0.9
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Me
+    - Profile
+    - My Account
+    semantic_type: tab
+  - text: 返回
+    center:
+    - 0.391
+    - 0.0399
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Back
+    - Go Back
+    semantic_type: button
+  - text: 添加好友
+    center:
+    - 0.391
+    - 0.1126
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Add Friend
+    - New Contact
+    semantic_type: menu_item
+  - text: 创作者中心
+    center:
+    - 0.391
+    - 0.1876
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Creator Center
+    - Studio
+    - Dashboard
+    semantic_type: menu_item
+  - text: 我的草稿
+    center:
+    - 0.391
+    - 0.2614
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - My Drafts
+    - Drafts
+    semantic_type: menu_item
+  - text: 浏览记录
+    center:
+    - 0.391
+    - 0.3232
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - History
+    - Browsing History
+    - Viewed
+    semantic_type: menu_item
+  - text: 我的下载
+    center:
+    - 0.391
+    - 0.3851
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Downloads
+    - My Downloads
+    semantic_type: menu_item
+  - text: 订单
+    center:
+    - 0.391
+    - 0.4576
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Orders
+    - My Orders
+    semantic_type: menu_item
+  - text: 购物车
+    center:
+    - 0.391
+    - 0.5195
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Cart
+    - Shopping Cart
+    semantic_type: menu_item
+  - text: 钱包
+    center:
+    - 0.391
+    - 0.5813
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Wallet
+    - Balance
+    semantic_type: menu_item
+  - text: 小程序
+    center:
+    - 0.391
+    - 0.6551
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Mini Programs
+    - Apps
+    semantic_type: menu_item
+  - text: 社区公约
+    center:
+    - 0.391
+    - 0.7302
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Community Guidelines
+    - Rules
+    semantic_type: menu_item
+  - text: 扫一扫
+    center:
+    - 0.1504
+    - 0.9105
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Scan
+    - QR Code Scanner
+    semantic_type: button
+  - text: 帮助与客服
+    center:
+    - 0.3906
+    - 0.9105
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Help & Support
+    - Customer Service
+    - FAQ
+    semantic_type: menu_item
+  - text: 设置
+    center:
+    - 0.6312
+    - 0.9105
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Settings
+    - Preferences
+    - Config
+    semantic_type: menu_item
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_2
+  description: E-commerce marketplace home screen featuring category tabs, promotional
+    banners for travel and products, and a feed of recommended items with prices and
+    sales data.
+  selected:
+  - 发现
+  - 推荐
+  - 市集
+  package: ''
+  elements:
+  - text: 搜索
+    center:
+    - 0.9039
+    - 0.0804
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Search
+    - Find
+    - 查找
+    semantic_type: button
+  - text: 推荐
+    center:
+    - 0.0766
+    - 0.132
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Recommended
+    - For You
+    - Home Feed
+    semantic_type: tab
+  - text: 穿搭
+    center:
+    - 0.2094
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Outfit
+    - Fashion
+    - Clothing
+    semantic_type: menu_item
+  - text: 运动
+    center:
+    - 0.3422
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Sports
+    - Fitness
+    - Exercise
+    semantic_type: menu_item
+  - text: 食饮
+    center:
+    - 0.475
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Food & Drink
+    - Dining
+    - Gourmet
+    semantic_type: menu_item
+  - text: 生鲜
+    center:
+    - 0.6078
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Fresh Produce
+    - Groceries
+    - Raw Food
+    semantic_type: menu_item
+  - text: 潮玩
+    center:
+    - 0.7406
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Trendy Toys
+    - Collectibles
+    - Designer Toys
+    semantic_type: menu_item
+  - text: 家居
+    center:
+    - 0.8734
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Home Decor
+    - Furniture
+    - Living
+    semantic_type: menu_item
+  - text: 文玩
+    center:
+    - 0.9648
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Cultural Artifacts
+    - Antiques
+    - Scholar's Objects
+    semantic_type: menu_item
+  - text: 数码
+    center:
+    - 1.0312
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Digital Products
+    - Electronics
+    - Tech
+    semantic_type: menu_item
+  - text: 美护
+    center:
+    - 1.0977
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Beauty & Care
+    - Skincare
+    - Cosmetics
+    semantic_type: menu_item
+  - text: 亲子
+    center:
+    - 1.1641
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Parenting
+    - Family
+    - Kids
+    semantic_type: menu_item
+  - text: 资质规则
+    center:
+    - 1.2305
+    - 0.1322
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Qualification Rules
+    - Terms
+    - Regulations
+    semantic_type: link
+  - text: 首页
+    center:
+    - 0.1
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Home
+    - Main Page
+    - Index
+    semantic_type: tab
+  - text: 市集
+    center:
+    - 0.3
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Marketplace
+    - Shop
+    - Store
+    semantic_type: tab
+  - text: 发布
+    center:
+    - 0.5
+    - 0.9737
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Post
+    - Publish
+    - Create
+    semantic_type: button
+  - text: 消息
+    center:
+    - 0.7
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Messages
+    - Notifications
+    - Inbox
+    semantic_type: tab
+  - text: 我
+    center:
+    - 0.9
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Me
+    - Profile
+    - Account
+    semantic_type: tab
+  - text: 直播中
+    center:
+    - 0.4148
+    - 0.8732
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - Live Now
+    - Streaming
+    - On Air
+    semantic_type: label
+  - text: 快抢！99元盲盒机票随机飞
+    center:
+    - 0.2531
+    - 1.0501
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - Grab! 99 Yuan Blind Box Flight Ticket Random Fly
+    - Flash Sale Flight Ticket
+    semantic_type: link
+  - text: 去哪儿机票优选
+    center:
+    - 0.2422
+    - 1.0676
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - Qunar Flight Ticket Selection
+    - Qunar Preferred Flights
+    semantic_type: label
+  - text: '5'
+    center:
+    - 0.4598
+    - 1.0676
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - Five
+    - Count 5
+    semantic_type: label
+  - text: “牙膏挺不错的，牙龈出血...”
+    center:
+    - 0.7668
+    - 1.018
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - '"Toothpaste is quite good, gum bleeding..."'
+    - User Review Snippet
+    semantic_type: label
+  - text: 舒客+·小苏打健齿牙膏
+    center:
+    - 0.7168
+    - 1.0317
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - Saky Pro Baking Soda Toothpaste
+    - Shuke Plus Toothpaste
+    semantic_type: link
+  - text: 900+人加购 晚发必赔
+    center:
+    - 0.6914
+    - 1.046
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - 900+ Added to Cart, Late Delivery Compensation
+    - Cart Count & Guarantee
+    semantic_type: label
+  - text: ¥78已售2233
+    center:
+    - 0.6414
+    - 1.0593
+    fixed: false
+    dynamic: true
+    found_at_scroll: 1
+    aliases:
+    - ¥78 Sold 2233
+    - Price and Sales Volume
+    semantic_type: label
+  - text: 小香风外套
+    center:
+    - 0.1996
+    - 0.0803
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Chanel Style Jacket
+    - Little Fragrance Wind Coat
+    semantic_type: link
+  - text: 维达·超韧三层抽纸
+    center:
+    - 0.1965
+    - 0.7691
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Vinda Ultra Strong 3-Ply Tissue
+    - Vinda Paper Towels
+    semantic_type: link
+  - text: 24小时销量飙升 假一赔四
+    center:
+    - 0.2273
+    - 0.7942
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - 24h Sales Surge, Fake One Compensate Four
+    - Sales Trend & Authenticity Guarantee
+    semantic_type: label
+  - text: ¥301已售1000+包
+    center:
+    - 0.1777
+    - 0.8258
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - ¥301 Sold 1000+ Packs
+    - Price and Sales Volume
+    semantic_type: label
+  - text: “毛巾很柔软，摸起来很舒...”
+    center:
+    - 0.273
+    - 1.0207
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - '"Towel is very soft, feels comfortable..."'
+    - User Review Snippet
+    semantic_type: label
+  - text: 洁丽雅·纯棉素简毛巾
+    center:
+    - 0.2141
+    - 1.0345
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Grace Pure Cotton Simple Towel
+    - Jieliya Towel
+    semantic_type: link
+  - text: 6000+人加购 假一赔四
+    center:
+    - 0.2059
+    - 1.0489
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - 6000+ Added to Cart, Fake One Compensate Four
+    - Cart Count & Guarantee
+    semantic_type: label
+  - text: ¥89已售1.1万+
+    center:
+    - 0.157
+    - 1.0624
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - ¥89 Sold 11k+
+    - Price and Sales Volume
+    semantic_type: label
+  - text: “味道不错，很正宗，很满...”
+    center:
+    - 0.7668
+    - 0.763
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - '"Taste is good, authentic, satisfying..."'
+    - User Review Snippet
+    semantic_type: label
+  - text: 农夫山泉·红盖天然饮用水
+    center:
+    - 0.743
+    - 0.7929
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Nongfu Spring Red Cap Natural Water
+    - Nongfu Spring Water
+    semantic_type: link
+  - text: 限时立减11.1元 退货包运费
+    center:
+    - 0.7312
+    - 0.818
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Limited Time Discount 11.1 Yuan, Free Return Shipping
+    - Promo & Service Info
+    semantic_type: label
+  - text: 券后¥139已售65.5万+瓶
+    center:
+    - 0.7188
+    - 0.8496
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - After Coupon ¥139 Sold 655k+ Bottles
+    - Discounted Price & Sales
+    semantic_type: label
+  - text: “收货完好无损，没有破损...”
+    center:
+    - 0.7668
+    - 1.0326
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - '"Received in perfect condition, no damage..."'
+    - User Review Snippet
+    semantic_type: label
+  - text: 舒客+·专效亮白去渍牙膏
+    center:
+    - 0.7344
+    - 1.0464
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - Saky Pro Whitening Stain Removal Toothpaste
+    - Shuke Plus Toothpaste
+    semantic_type: link
+  - text: 店铺新客立减2元 晚发必赔
+    center:
+    - 0.7281
+    - 1.0608
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - New Customer Instant Discount 2 Yuan, Late Delivery Compensation
+    - Promo & Guarantee
+    semantic_type: label
+  - text: 券后¥69已售2194
+    center:
+    - 0.6738
+    - 1.0743
+    fixed: false
+    dynamic: true
+    found_at_scroll: 2
+    aliases:
+    - After Coupon ¥69 Sold 2194
+    - Discounted Price & Sales
+    semantic_type: label
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_3
+  description: Messages notification center displaying categories like likes, follows,
+    comments, and activity messages with bottom navigation tabs.
+  selected:
+  - 消息
+  package: ''
+  elements:
+  - text: 消息
+    center:
+    - 0.5
+    - 0.0806
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Messages
+    - Inbox
+    - 通知
+    semantic_type: tab
+  - text: 赞和收藏按钮
+    center:
+    - 0.1938
+    - 0.1667
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Like and Save Button
+    - 互动按钮
+    semantic_type: button
+  - text: 赞和收藏
+    center:
+    - 0.1938
+    - 0.2053
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Likes and Saves
+    - 点赞收藏
+    semantic_type: label
+  - text: 新增关注按钮
+    center:
+    - 0.5
+    - 0.1667
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - New Follow Button
+    - 关注按钮
+    semantic_type: button
+  - text: 新增关注
+    center:
+    - 0.5
+    - 0.2053
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - New Followers
+    - 新粉丝
+    semantic_type: label
+  - text: 评论和@按钮
+    center:
+    - 0.8063
+    - 0.1667
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Comment and Mention Button
+    - 回复按钮
+    semantic_type: button
+  - text: 评论和@
+    center:
+    - 0.8059
+    - 0.2053
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Comments and Mentions
+    - 回复与提及
+    semantic_type: label
+  - text: 活动消息，，欢迎来到小红书！跟着薯队长一起来探索，昨天
+    center:
+    - 0.5
+    - 0.2897
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Activity Message Preview
+    - 系统欢迎通知
+    semantic_type: menu_item
+  - text: 活动消息
+    center:
+    - 0.2668
+    - 0.267
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Activity Messages
+    - 官方通知
+    semantic_type: label
+  - text: 昨天
+    center:
+    - 0.9289
+    - 0.267
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Yesterday
+    - 时间戳
+    semantic_type: label
+  - text: 欢迎来到小红书！跟着薯队长一起来探索
+    center:
+    - 0.5215
+    - 0.2983
+    fixed: true
+    dynamic: true
+    found_at_scroll: 0
+    aliases:
+    - Welcome to Xiaohongshu! Explore with Captain Shu
+    - 欢迎语
+    semantic_type: label
+  - text: 标为未读
+    center:
+    - 1.0
+    - 0.2897
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Mark as Unread
+    - 设为未读
+    semantic_type: button
+  - text: 首页
+    center:
+    - 0.1
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Home
+    - Feed
+    - 发现
+    semantic_type: tab
+  - text: 市集
+    center:
+    - 0.3
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Marketplace
+    - Shop
+    - 商城
+    semantic_type: tab
+  - text: 发布
+    center:
+    - 0.5
+    - 0.9737
+    fixed: true
+    found_at_scroll: 0
+    aliases:
+    - Post
+    - Create
+    - Publish
+    - +
+    semantic_type: button
+  - text: 我
+    center:
+    - 0.9
+    - 0.9737
+    fixed: false
+    found_at_scroll: 0
+    aliases:
+    - Me
+    - Profile
+    - 我的
+    semantic_type: tab
+  scrollable: true
+  scroll_direction: vertical
+- id: screen_search
+  description: 'Xiaohongshu search page: a search box at the top with the hint 搜索笔记，用户和商品,
+    a 搜索 button beside it, and suggested hot searches below'
+  elements:
+  - text: 搜索笔记，用户和商品
+    center:
+    - 0.484
+    - 0.085
+    fixed: true
+    found_at_scroll: 0
+  - text: 搜索
+    center:
+    - 0.901
+    - 0.08
+    fixed: true
+    found_at_scroll: 0
+  - text: 猜你想搜
+    center:
+    - 0.09
+    - 0.15
+    fixed: true
+    found_at_scroll: 0
+  - text: 小红书热点
+    center:
+    - 0.12
+    - 0.19
+    fixed: true
+    found_at_scroll: 0
+screen_macros:
+  screen_0:
+  - &id001
+    action: force_stop
+    package: com.xingin.xhs
+    wait: 0.5
+  - &id002
+    action: launch
+    package: com.xingin.xhs
+    wait: 3.0
+  screen_1:
+  - *id001
+  - *id002
+  - action: tap
+    x: 88
+    y: 224
+    text: 菜单
+    wait: 1.5
+    screen: screen_0
+  screen_2:
+  - *id001
+  - *id002
+  - action: swipe
+    x1: 640
+    y1: 1940
+    x2: 640
+    y2: 554
+    duration: 400
+    wait: 0.5
+  - action: tap
+    x: 284
+    y: 2767
+    text: ZyNail指钰日式美睫美甲
+    wait: 1.5
+    screen: screen_0
+  screen_3:
+  - *id001
+  - *id002
+  - action: swipe
+    x1: 640
+    y1: 1940
+    x2: 640
+    y2: 554
+    duration: 400
+    wait: 0.5
+  - action: tap
+    x: 916
+    y: 2732
+    text: 千玺玩数码
+    wait: 1.5
+    screen: screen_0
+  screen_search:
+  - action: force_stop
+    package: com.xingin.xhs
+    wait: 0.5
+  - action: launch
+    package: com.xingin.xhs
+    wait: 3.0
+  - action: tap
+    x: 1183
+    y: 216
+    wait: 2.0
+    text: 搜索
+coverage:
+  screens: 4
+  queued: 81
+  depth_limit: 3
+  stopped: time_budget
+  complete: false
+launch_behavior: always_home
+common_tasks:
+- Browse the recommended content feed on the home screen
+- Switch between different content categories using top tabs
+- View and interact with user posts including likes and comments
+- Navigate to the e-commerce marketplace to browse products and prices
+- Check notification center for likes, follows, and comments
+- Access activity messages and system notifications
+- Use bottom navigation bar to switch between main app sections
+known_limitations:
+- Content feed is infinite scroll which may make finding specific older posts difficult
+- E-commerce section has separate category tabs that differ from the main content
+  feed
+- Notification center groups different types of interactions requiring tab switching
+  to view all alerts
+crawled_at: 2026-11-13T17:06
+bench:
+  ops: 4
+  exact: 3
+  same_app: 3
+  at: 2026-11-13T17:06

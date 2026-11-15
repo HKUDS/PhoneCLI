@@ -229,11 +229,11 @@ python3 -m phoneagent.run --serial e3fa9e60 \
 | S1 | 设备协议 + 三个后端 + 合并 app_map | ✅ 完成 |
 | S2 | 统一 agent：macro 路由 → 重放 → 验证 → VLM 兜底，进程内 | ✅ 完成 |
 | S2.5 | 记忆 / 跨 App Planner / 像素差分动作反馈 | ⬜ 未移植 |
-| S3 | 真机/模拟器验证：`probe` + `bench`（18/18 重放成功，精确落点 10/18） | ✅ 见 [实测报告](../docs/bench-android-2026-11-04.md) |
+| S3 | 真机/模拟器验证：`probe` + `bench`（18/18 重放成功，精确落点 10/18） | ✅ 18/18 重放成功，精确落点 10/18 |
 | S3.5 | 设备内编译 + 校验式爬虫（depth 2 落点 42% → 92%） | ✅ |
 | S3.6 | 脱敏（公开副本可回放 86%）、validate、宏失败重试、跨包识别 | ✅ |
 | S3.7 | 跨 App Planner（分解 + 逐子任务执行） | ✅ |
-| S4 | `OnDeviceDevice`：虚拟屏 helper + 设备内 shell（见 [实测与计划](../docs/s4-ondevice.md)） | 🟡 探针完成，实现需周级 |
+| S4 | `OnDeviceDevice`：虚拟屏 helper + 设备内 shell | 🟡 探针完成，实现需周级 |
 
 ---
 
