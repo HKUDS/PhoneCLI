@@ -37,6 +37,23 @@
   <div style="width: 100%; height: 2px; margin: 20px 0; background: linear-gradient(90deg, transparent, #00d9ff, transparent);"></div>
 </div>
 
+## 🆕 Update — PhoneGo: this harness, running on the phone itself
+
+[![PhoneGo APK](https://img.shields.io/badge/%F0%9F%93%B1PhoneGo-Download%20APK-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk)
+
+**PhoneGo** is PhoneCLI's algorithm as an Android app: the agent runs *inside* the
+phone, and the target app is driven on a virtual display the user never sees — your
+own screen stays yours. It keeps the same backbone (compile an app map offline, replay
+the macro, fall back to GUI only when the map does not apply); the transport is simply
+the phone's own `adbd` instead of a cable.
+
+One instruction, one phone: **17 steps / 64 s** with the map versus **32 steps / 146 s**
+with pure vision — both successful.
+
+[⬇ Download the APK](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk) (v0.2.0, 18 MB, Android 14+, arm64) ·
+[What it is](docs/product-app.md) · [Build and run](android-app/README.md) ·
+[Side-by-side demo](docs/showcase/app-xhs-hku-compare-3x.mp4)
+
 **The bottleneck of phone agents was never model size.** Nearly every GUI agent today runs the same loop — screenshot, call a vision-language model (VLM), emit an action. It is slow (2–5 s per step), expensive (every screenshot is an API call), brittle (VLMs hallucinate coordinates), and it has to be online: your screen leaves the device. That is at odds with what a phone is — on-device, real-time, private. And most of what that loop does is **navigation**, which is static, ordered, and repeated ten thousand times.
 
 So we did not build a bigger model. We built the **model and the harness together**:
