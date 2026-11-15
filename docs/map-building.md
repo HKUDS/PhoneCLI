@@ -29,10 +29,10 @@ build_map  →  profile cleanup  →  sync-maps.sh  →  bench replay verificati
 
 | Stage | Command |
 |---|---|
-| Crawl | `python3 -m phoneagent.build_map --serial <S> --package <P> --app <名> --llm-api-base … --llm-api-key … --output maps/<名>.yaml` |
-| Clean | `python3 -m phoneagent.core.profile --map maps/<名>.yaml --out maps/<名>_clean.yaml` |
+| Crawl | `python3 -m phoneagent.build_map --serial <S> --package <P> --app <name> --llm-api-base … --llm-api-key … --output maps/<name>.yaml` |
+| Clean | `python3 -m phoneagent.core.profile --map maps/<name>.yaml --out maps/<name>_clean.yaml` |
 | Package | `./android-app/sync-maps.sh` (copies into the APK assets) |
-| Verify | `python3 -m phoneagent.bench --map maps/<名>.yaml --limit 10 --serial <S>` |
+| Verify | `python3 -m phoneagent.bench --map maps/<name>.yaml --limit 10 --serial <S>` |
 
 ## 3. Every Change and Why
 
@@ -509,9 +509,9 @@ Whether app coverage can expand depends on the app itself:
 - **Strong permission/privacy dialogs** (Notes) — stuck at startup validation; the dialog vocabulary needs extending
 - **Simple page structure** (File Manager) — crawlable, but there is not much to navigate, so the value is low
 
-The next time we expand, we should screen by "launchMode + whether there is a first-launch dialog" first, instead of trying apps one by one.
+The next time we expand, we should filter by "launchMode + whether there is a first-launch dialog" first, instead of trying apps one by one.
 
-## 16. Screen First, Then Crawl: `GET /crawl/apps` (2026-11-09)
+## 16. Filter First, Then Crawl: `GET /crawl/apps` (2026-11-09)
 
 Trying apps one by one is too expensive (one failure costs several minutes). Now tapping "Maps" in the app asks the server first:
 
