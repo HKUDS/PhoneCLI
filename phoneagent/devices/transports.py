@@ -157,7 +157,16 @@ class SelfAdbTransport:
         self.timeout = timeout
 
     def shell(self, command: str) -> str:
-        return str(self.client.run(command))
+        # The timeout is the difference between "this screen would not dump" and
+        # "the agent stopped answering": without it a stuck command holds the
+        # thread that also serves the app's API.
+        try:
+            return str(self.client.run(command, timeout=self.timeout))
+        except Exception as exc:  # noqa: BLE001 - re-raised as a device error
+            name = type(exc).__name__
+            if "timeout" in str(exc).lower() or name in ("timeout", "TimeoutError"):
+                raise DeviceError(f"{command.strip()[:60]}: timed out") from exc
+            raise
 
     def spawn(self, command: str) -> Process:
         # `raw` matters: a pty would echo stdin back and rewrite newlines,

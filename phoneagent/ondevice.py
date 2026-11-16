@@ -107,6 +107,18 @@ def start_display(
     if _device is not None and _device.is_ready():
         return f"already running display={_device.display_id}"
 
+    # Replacing a device means abandoning the display it owns: the helper keeps
+    # it alive, and nothing else ever releases it. Every rebuild after a failed
+    # connection therefore leaked one display -- measured on this phone, 300+
+    # of them (Display3, 5, 7 ... 727) were still listed by dumpsys, which is
+    # what made the system crawl and finally stop answering.
+    if _device is not None:
+        try:
+            _device.stop()
+        except Exception:  # noqa: BLE001 - a dead device cannot be stopped
+            pass
+        _device = None
+
     from .devices.transports import SelfAdbTransport
     from .devices.virtual import HELPER_JAR, VirtualDisplayDevice
 
@@ -226,7 +238,13 @@ def display_status() -> str:
 
 
 def stop_display() -> str:
-    global _device
+    global _device, _hands_off_device
+    if _hands_off_device is not None:
+        try:
+            _hands_off_device.stop()
+        except Exception:  # noqa: BLE001
+            pass
+        _hands_off_device = None
     if _device is None:
         return "not running"
     _device.stop()

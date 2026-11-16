@@ -361,10 +361,30 @@ class AdbClient:
         with self.open_service(f"exec:{command}") as stream:
             return stream.read_all(timeout)
 
-    def run(self, command: str) -> Result:
-        """Run a command and keep stdout, stderr and the exit code apart."""
+    def run(self, command: str, timeout: Optional[float] = None) -> Result:
+        """Run a command and keep stdout, stderr and the exit code apart.
+
+        ``timeout`` bounds the whole exchange. Without it a ``dumpsys`` that
+        stopped answering blocked the calling thread forever, and because that
+        thread was the one serving the app's local API, one stuck command took
+        the whole runtime with it (measured: a task went silent for eleven
+        minutes with no way to even ask what it was doing).
+        """
         if self._sock is None:
             raise AdbError("not connected")
+        previous = self._sock.gettimeout()
+        if timeout is not None:
+            self._sock.settimeout(timeout)
+        try:
+            return self._run_frames(command)
+        except (socket.timeout, TimeoutError) as exc:
+            raise AdbError(
+                f"{command.strip()[:60]}: no answer within {timeout or 0:.0f}s"
+            ) from exc
+        finally:
+            self._sock.settimeout(previous)
+
+    def _run_frames(self, command: str) -> Result:
         local_id = self._next_id
         self._next_id += 1
         remote_id = 0
