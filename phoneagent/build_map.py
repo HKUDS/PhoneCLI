@@ -785,7 +785,7 @@ def _set_header(path: str, key: str, value) -> None:
 
 
 def _save_partial(output_path, app_name, package, width, height, screens, macros,
-                  launch_intent="") -> None:
+                  launch_intent="", display=0) -> None:
     output = {
         "app": app_name,
         "package": package,
@@ -794,7 +794,10 @@ def _save_partial(output_path, app_name, package, width, height, screens, macros
         # Which display these coordinates belong to. 0 means the phone's own
         # screen (hands-off): an app driven there can only use macros recorded
         # there, and until this was stored the agent could not tell them apart.
-        "display": 0 if getattr(device, "display_id", None) is None else int(device.display_id),
+        # The caller passes the display: this helper has no device in scope, and
+        # reading one here crashed every partial save ("name 'device' is not
+        # defined"), which is exactly the moment the map matters most.
+        "display": int(display),
         "screens": screens,
         "screen_macros": macros,
     }
@@ -1331,7 +1334,9 @@ def _crawl_verified(bm, controller, device, package, app_name, output_path,
             # every screen it already found.
             try:
                 _save_partial(output_path, app_name, package, width, height,
-                              screens, macros, controller.launch_intent)
+                              screens, macros, controller.launch_intent,
+                              display=0 if controller.display_id is None
+                              else int(controller.display_id))
                 print(f"[Verified]   partial map saved ({len(screens)} screens)")
             except Exception as exc:  # noqa: BLE001
                 print(f"[Verified]   partial save failed: {exc}")
