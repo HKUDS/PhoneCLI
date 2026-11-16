@@ -598,6 +598,12 @@ class VirtualDisplayDevice(BaseDevice):
             activity = self._resolve_activity(package)
             if not activity:
                 raise LaunchRefused(package, "no launcher activity")
+            if activity.startswith("com.phoneagent.app"):
+                # `am start -S` stops the target package first. Resolving our
+                # own component here would stop the process that is running the
+                # crawl, which is exactly how a hands-off crawl died one second
+                # after its first tap.
+                raise LaunchRefused(package, f"resolved to the agent itself: {activity}")
             self._shell(f"am start -S -n {activity}")
             # A cold start of a large app (小红书) takes longer than six seconds
             # on this phone, and the launch was being reported as refused while
@@ -628,6 +634,10 @@ class VirtualDisplayDevice(BaseDevice):
             )
         activity = intent if "/" in (intent or "") else ""
         activity = activity or self._resolve_activity(package)
+        if activity.startswith("com.phoneagent.app"):
+            raise DeviceError(
+                f"{package} resolved to the agent's own component ({activity}); "
+                "`am start -S` would stop this process")
         print(f"[launch] {package} -> {activity or '(unresolved)'} on display {self.display_id}")
         if not activity:
             self._shell(f"am force-stop {package}")
@@ -735,6 +745,9 @@ class VirtualDisplayDevice(BaseDevice):
 
 
     def force_stop(self, package: str) -> bool:
+        if package == "com.phoneagent.app":
+            print("[device] refused to force-stop the agent's own package")
+            return False
         self._shell(f"am force-stop {package}")
         return True
 
@@ -935,7 +948,25 @@ class VirtualDisplayDevice(BaseDevice):
     # -- plumbing ---------------------------------------------------------
 
     def _shell(self, command: str) -> str:
+        # The agent must never stop its own host: a crawl that force-stops
+        # com.phoneagent.app kills the process running the crawl, and the only
+        # evidence is an empty log and a dead API (measured on a hands-off
+        # crawl of 携程: the kill arrived one second after the first tap).
+        guard = self._self_stop_guard(command)
+        if guard:
+            print(f"[device] refused: {guard}")
+            return ""
         return self.transport.shell(command)
+
+    @staticmethod
+    def _self_stop_guard(command: str) -> str:
+        """Why this command would stop the app we are running in, or ""."""
+        text = (command or "").strip()
+        if "force-stop" not in text and "kill " not in text:
+            return ""
+        if "com.phoneagent.app" in text:
+            return f"would stop the agent's own process: {text[:120]}"
+        return ""
 
     def _input(self, *args) -> None:
         if self.display_id is None and not self._is_hands_off():

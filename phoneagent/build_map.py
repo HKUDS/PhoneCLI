@@ -46,6 +46,9 @@ from .devices.base import DeviceError, LaunchRefused, NeedsHandover, PhoneDevice
 REPO = Path(__file__).resolve().parents[1]
 CRAWLER = REPO / "phonecli_android" / "evaluation" / "build_map.py"
 
+#: The app this crawl may be running in (hands-off mode). Never stop it.
+AGENT_PACKAGE = "com.phoneagent.app"
+
 
 # ---------------------------------------------------------------------------
 # Adapter: PhoneDevice -> the controller surface the crawler expects
@@ -1064,7 +1067,18 @@ def _crawl_verified(bm, controller, device, package, app_name, output_path,
             front = device.current_app()
         except DeviceError:
             front = ""
-        if front and front != package and front not in (
+        if front == AGENT_PACKAGE:
+            # In hands-off mode the crawl drives the phone's own display, and
+            # the app it is running in is what sits in front. Force-stopping it
+            # stops the crawl (measured: the process died one second after the
+            # first tap), so it is sent to the background instead -- the
+            # foreground service keeps it alive.
+            try:
+                device.press_home()
+                print("[Verified]   sent the agent's own app to the background")
+            except DeviceError:
+                pass
+        elif front and front != package and front not in (
                 "com.android.systemui", "com.miui.home", "com.android.launcher3"):
             try:
                 device.force_stop(front)
