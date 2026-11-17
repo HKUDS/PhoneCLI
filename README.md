@@ -171,7 +171,7 @@ This project is released under the [MIT License](./LICENSE).
 
 <p align="center">
   <em> ❤️ Thanks for visiting ✨ PhoneGo!</em><br><br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.PhoneCLI&style=for-the-badge&color=00d4ff" alt="Views">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.OpenPhone&style=for-the-badge&color=00d4ff" alt="Views">
 </p>
 
 </div>

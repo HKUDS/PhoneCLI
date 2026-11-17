@@ -162,7 +162,7 @@ PhoneGo 建立在 PhoneCLI 与 OpenPhone 之上，二者又受益于这些优秀
 
 <p align="center">
   <em> ❤️ 感谢访问 ✨ PhoneGo！</em><br><br>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.PhoneCLI&style=for-the-badge&color=00d4ff" alt="Views">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.OpenPhone&style=for-the-badge&color=00d4ff" alt="Views">
 </p>
 
 </div>
