@@ -151,9 +151,6 @@ PhoneGo builds on PhoneCLI and OpenPhone, which in turn build upon excellent ope
 - [R1-V](https://github.com/StarsfieldAI/R1-V) - Implementation details for the GRPO training methodology.
 - [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) - The unified training framework enabling efficient model fine-tuning.
 
-The open engine behind the fallback path: [OpenPhone model](https://huggingface.co/hkuds/OpenPhone_model) ·
-[OpenPhone dataset](https://huggingface.co/datasets/hkuds/OpenPhone_dataset).
-
 The CLI side of this repository (`phonecli/`, the evaluation suites, the training recipe) is unchanged; its original README is kept at [docs/archive/README-phonecli-en.md](docs/archive/README-phonecli-en.md).
 
 ---

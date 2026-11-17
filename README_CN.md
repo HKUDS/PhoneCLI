@@ -142,9 +142,6 @@ PhoneGo 建立在 PhoneCLI 与 OpenPhone 之上，二者又受益于这些优秀
 - [R1-V](https://github.com/StarsfieldAI/R1-V) —— GRPO 训练方法的实现细节。
 - [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) —— 统一的训练框架，让微调更高效。
 
-兜底路径背后的开源引擎：[OpenPhone 模型](https://huggingface.co/hkuds/OpenPhone_model) ·
-[OpenPhone 数据集](https://huggingface.co/datasets/hkuds/OpenPhone_dataset)。
-
 仓库里的 CLI 部分（`phonecli/`、评测套件、训练配方）没有改动；原始 README 保留在 [docs/archive/README-phonecli-zh.md](docs/archive/README-phonecli-zh.md)。
 
 ---
