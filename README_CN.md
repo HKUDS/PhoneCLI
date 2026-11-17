@@ -57,8 +57,6 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
        · 需要我把这个酒店页面转到你的手机上继续操作吗？
 ```
 
-49 步、200 秒、一句话、两个 App。
-
 <p align="center">
   <img src="docs/showcase/app-xhs-ctrip.gif" width="720" alt="PhoneGo 把小红书上读到的酒店名输入携程，并报出今晚价格">
 </p>
