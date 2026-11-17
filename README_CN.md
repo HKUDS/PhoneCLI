@@ -32,8 +32,6 @@
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI 的 harness 在 AndroidLab 基准上驱动 Android 模拟器">
-  <br>
-  <sub>PhoneCLI 的 harness 在 AndroidLab 基准上驱动 Android 模拟器——这是 App 之前的 CLI 形态。</sub>
 </p>
 
 ## ✨ 它和别的不一样在哪

@@ -35,8 +35,6 @@ model about the parts a map cannot cover.
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
-  <br>
-  <sub>PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark — the CLI form the app was built from.</sub>
 </p>
 
 ## ✨ What makes it different
