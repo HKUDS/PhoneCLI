@@ -4,7 +4,7 @@ English · [Chinese](README_CN.md)
 
 # PhoneGo: Your AI Agent on Your Phone
 
-**A phone agent that works on a screen of its own — so the one in your hand stays yours.**
+**An AI agent that lives on your phone — and treats apps as callable commands.**
 
 <p>
   <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.3.0 for Android"></a>
@@ -23,15 +23,17 @@ English · [Chinese](README_CN.md)
 
 </div>
 
-You type a sentence. PhoneGo opens the app, does the work, and tells you what it
-found — while you keep using your phone. If it has to borrow your screen for an app
-that refuses to run anywhere else, it says so, and gives the screen back when the
-step is done.
+PhoneGo runs inside your phone. You type a sentence, it opens the app, does the
+work, and tells you what it found — while you keep using the phone. If it has to
+borrow your screen for an app that refuses to run anywhere else, it says so, and
+gives the screen back when the step is done.
 
-It is not another chat window over a vision model. Most of what an agent does on a
-phone is **navigation**: opening, tapping, scrolling, going back. PhoneGo compiles
-that navigation offline into a map, replays it deterministically, and only asks a
-model about the parts a map cannot cover.
+Underneath is PhoneCLI's idea. Most of what an agent does on a phone is
+**navigation** — opening, tapping, scrolling, going back — and that part is not a
+model's job. The screens a task touches are compiled offline into a map, so at run
+time the agent **calls a command** instead of asking a model what to do next: a
+replayed step costs milliseconds and gives the same result every time. The vision
+model is only asked about screens the map has never seen.
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
@@ -41,10 +43,10 @@ model about the parts a map cannot cover.
 
 | | |
 |---|---|
+| 🧭 **It calls commands, it doesn't guess** | Navigation is compiled offline into a map: one deterministic replay, **no vision calls**, a replayed tap in well under a second. |
+| 👁 **It looks only when the map runs out** | An unfamiliar screen goes to the vision model for that part alone — then you get a plain answer, not a log. |
+| 🔗 **It carries what it read across apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
 | 📵 **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
-| 🧭 **It doesn't guess every step** | Navigation comes from a map compiled offline: one deterministic replay, **no vision calls**, a replayed tap in well under a second. |
-| 👁 **It knows when to look** | When a map does not apply, PhoneGo falls back to a vision model and works that screen like a person would — then hands you a plain answer, not a log. |
-| 🔗 **It crosses apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
 | ↩️ **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
 | 🔒 **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screens it actually has to look at are sent. |
 
@@ -64,7 +66,7 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
   <img src="docs/showcase/app-xhs-ctrip.gif" width="720" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
 </p>
 
-## ⚙️ How it works
+## ⚙️ From app screens to commands
 
 ```
 offline    a crawler walks an app and compiles it into a map   (once per app)
@@ -72,9 +74,10 @@ online     route the task -> replay the map's macro            (one small routin
 fallback   unknown screen -> vision model drives that part     (only there)
 ```
 
-The routing step is one small text call. The replay is deterministic — the same
-taps, in the same order, every time. The vision model is the exception handler,
-not the engine, which is why the same task finishes in about a minute instead of two and a half.
+A map is compiled once per app: every screen becomes a node, every element that
+leads somewhere an edge, and a task turns into an ordered list of steps. Running
+that list is the fast path — 64 s instead of 146 s on the same instruction — and
+the vision model stays the exception handler, not the engine.
 
 ## 📊 Measured on a real phone
 
