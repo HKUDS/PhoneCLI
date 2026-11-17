@@ -5,8 +5,8 @@ English · [中文](getting-started.zh.md)
 Ten minutes from a downloaded APK to a finished task. You need the phone itself
 and a model API key — no computer, no cable.
 
-> The app's interface is in Chinese for now. Where a label is quoted here it is
-> given in Chinese, with its English meaning next to it.
+> The interface follows the phone's language (English or Chinese); Settings →
+> Language overrides it. Labels are quoted here in both.
 
 ## 1. Install
 

@@ -85,7 +85,7 @@ class AgentService : Service() {
         startForeground(
             2,
             Notification.Builder(this, "agent")
-                .setContentTitle("PhoneGo 正在启动")
+                .setContentTitle(Tr.t("PhoneGo 正在启动"))
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .build()
         )
@@ -129,7 +129,7 @@ class AgentService : Service() {
                 val port = explicitPort.takeIf { it > 0 }
                     ?: AdbPortScanner.discover(this)
                     ?: throw IllegalStateException(
-                        "无线调试未开启：adbd 没有监听端口。请到「设置 → 开发者选项 → 无线调试」打开"
+                        Tr.t("无线调试未开启：adbd 没有监听端口。请到「设置 → 开发者选项 → 无线调试」打开")
                     )
                 Log.i("Pairing", "agent: adbd port $port")
 
@@ -150,7 +150,7 @@ class AgentService : Service() {
                     nm.notify(
                         2,
                         Notification.Builder(this, "agent")
-                            .setContentTitle("PhoneGo 无法在此设备上运行")
+                            .setContentTitle(Tr.t("PhoneGo 无法在此设备上运行"))
                             .setContentText(reason)
                             .setStyle(Notification.BigTextStyle().bigText(reason))
                             .setSmallIcon(android.R.drawable.stat_notify_error)
@@ -238,7 +238,7 @@ class AgentService : Service() {
                 nm.notify(
                     2,
                     Notification.Builder(this, "agent")
-                        .setContentTitle("PhoneGo 运行中")
+                        .setContentTitle(Tr.t("PhoneGo 运行中"))
                         .setContentText(result)
                         .setSmallIcon(android.R.drawable.stat_sys_download)
                         .build()

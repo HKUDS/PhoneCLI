@@ -102,9 +102,9 @@ Same phone, same instruction, both successful. The recordings live in
 4. Type an instruction. Start with something that needs no login —
    *"open Settings and tell me which Wi-Fi is connected"*.
 
-The app's interface is in Chinese for now; the labels above are its English
-translations, and the walkthrough in
-[docs/getting-started.md](docs/getting-started.md) names them both ways.
+The interface is English or Chinese — it follows the phone's language, and
+Settings → Language overrides it. The walkthrough in
+[docs/getting-started.md](docs/getting-started.md) names every label both ways.
 
 Updates install in place: every release is signed with the same key. The full
 walkthrough, including what each screen should look like and the five things that

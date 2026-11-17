@@ -93,7 +93,7 @@ public class MainActivity extends Activity {
     // has already been shown
     private String currentTaskId = "";
     //: Is a poll chain alive? MIUI's power keeper froze this process mid-task
-    //: and the chain died with it, leaving "执行中…" on screen forever.
+    //: and the chain died with it, leaving Tr.t("执行中…") on screen forever.
     private boolean polling = false;
     //: What the interpreter reported at startup; shown in 设置 → 诊断.
     private String bootInfo = "";
@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
     private static final int MAX_BUBBLES = 120;
     //: When the poll chain last heard from the agent. A chain can die without
     //: saying so (an Error kills the thread past `catch (Exception)`), and the
-    //: screen then says "执行中…" forever.
+    //: screen then says Tr.t("执行中…") forever.
     private volatile long lastPollAt = 0;
     //: The task whose answer is already on screen. The watchdog can restart a
     //: chain for a task that has just finished, and without this the same
@@ -132,7 +132,7 @@ public class MainActivity extends Activity {
      * Keeps the screen honest even when the poll chain dies.
      *
      * Three times now a task finished on the phone while the chat still said
-     * "执行中…": the polling thread was gone and nothing was left to notice.
+     * Tr.t("执行中…"): the polling thread was gone and nothing was left to notice.
      * A Handler on the main looper survives that, so it re-arms the chain.
      */
     private final Runnable pollWatchdog = new Runnable() {
@@ -155,7 +155,9 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Tr.attach(this);
         setContentView(R.layout.activity_main);
+        Tr.apply(findViewById(android.R.id.content));
         TOKEN = AgentToken.INSTANCE.ensure(this);
 
         messages = findViewById(R.id.messages);
@@ -229,7 +231,7 @@ public class MainActivity extends Activity {
         if (hasIdentity()) {
             startAgentService();
         } else {
-            note("还没有配对无线调试，先完成一次配对。");
+            note(Tr.t("还没有配对无线调试，先完成一次配对。"));
             startPairingWatch();
         }
 
@@ -252,7 +254,7 @@ public class MainActivity extends Activity {
         // choice with one line of plain language each, instead of flipping
         // blindly and explaining itself in the chat.
         modeButton = findViewById(R.id.mode);
-        modeButton.setText(mapsMode() ? R.string.mode_auto : R.string.mode_vision);
+        modeButton.setText(Tr.t(mapsMode() ? getString(R.string.mode_auto) : getString(R.string.mode_vision)));
         modeButton.setOnClickListener(v -> showModeChooser());
 
         TextView settings = findViewById(R.id.settings);
@@ -276,9 +278,9 @@ public class MainActivity extends Activity {
             final String pairCode = rest.substring(0, rest.lastIndexOf(':'));
             final int pairPort = Integer.parseInt(rest.substring(rest.lastIndexOf(':') + 1));
             final String pairHost = hostArg;
-            append("你", "配对 " + pairCode + " @ " + pairHost + ":" + pairPort);
+            append(Tr.t("你"), Tr.t("配对 ") + pairCode + " @ " + pairHost + ":" + pairPort);
             new Thread(() -> {
-                note("正在与手机配对（" + pairHost + "）…");
+                note(Tr.t("正在与手机配对（") + pairHost + "）…");
                 com.phoneagent.app.pairing.Pairing.Result r =
                         com.phoneagent.app.pairing.Pairing.INSTANCE.pair(pairHost, pairPort, pairCode, null, "phoneagent", 20000, null);
                 android.util.Log.i("Pairing", "result ok=" + r.getOk() + " detail=" + r.getDetail());
@@ -289,7 +291,7 @@ public class MainActivity extends Activity {
         // handy for testing without typing: am start ... --es task "open bluetooth"
         String preset = getIntent() == null ? null : getIntent().getStringExtra("task");
         if (preset != null && !preset.trim().isEmpty()) {
-            append("你", preset);
+            append(Tr.t("你"), preset);
             startTask(preset.trim());
         }
         send.setOnClickListener(v -> {
@@ -306,11 +308,11 @@ public class MainActivity extends Activity {
                 // the agent is waiting on a question, so this is the answer
                 String id = awaitingTaskId;
                 awaitingTaskId = "";
-                append("你", text);
+                append(Tr.t("你"), text);
                 answerTask(id, text);
                 return;
             }
-            append("你", text);
+            append(Tr.t("你"), text);
             startTask(text);
         });
     }
@@ -329,13 +331,13 @@ public class MainActivity extends Activity {
             PyObject crypto = py.getModule("cryptography");
             String cryptoVersion = py.getModule("cryptography.__about__")
                     .get("__version__").toString();
-            return "Python 已就绪：" + version
+            return Tr.t("Python 已就绪：") + version
                     + "\nphoneagent " + agent.get("__version__")
-                    + "\napp_map 模块：" + (maps != null ? "已加载" : "缺失")
-                    + "\nspake2：" + (spake2 != null ? "可用" : "缺失")
+                    + Tr.t("\napp_map 模块：") + (maps != null ? Tr.t("已加载") : Tr.t("缺失"))
+                    + "\nspake2：" + (spake2 != null ? Tr.t("可用") : Tr.t("缺失"))
                     + "  cryptography：" + cryptoVersion;
         } catch (Throwable t) {
-            return "Python 启动失败：" + t;
+            return Tr.t("Python 启动失败：") + t;
         }
     }
 
@@ -389,8 +391,8 @@ public class MainActivity extends Activity {
                 break;
             }
         }
-        if (title.isEmpty() || "新会话".equals(title)) {
-            title = "会话";
+        if (title.isEmpty() || Tr.t("新会话").equals(title)) {
+            title = Tr.t("会话");
         }
         subtitle.setText(getString(R.string.subtitle_with_arrow, title));
     }
@@ -404,22 +406,22 @@ public class MainActivity extends Activity {
     /** How old something is, in the terms a person reads it. */
     private static String when(long seconds) {
         if (seconds <= 0) {
-            return "时间未知";
+            return Tr.t("时间未知");
         }
         long age = System.currentTimeMillis() / 1000 - seconds;
         if (age < 3600) {
-            return (age / 60) + " 分钟前";
+            return (age / 60) + Tr.t(" 分钟前");
         }
         if (age < 86400) {
-            return (age / 3600) + " 小时前";
+            return (age / 3600) + Tr.t(" 小时前");
         }
-        return (age / 86400) + " 天前";
+        return (age / 86400) + Tr.t(" 天前");
     }
 
     private void showSessions() {
         org.json.JSONArray sessions = readSessions();
         String[] labels = new String[sessions.length() + 1];
-        labels[0] = "＋ 新会话";
+        labels[0] = Tr.t("＋ 新会话");
         for (int i = 0; i < sessions.length(); i++) {
             org.json.JSONObject entry = sessions.optJSONObject(i);
             String id = entry == null ? "" : entry.optString("id");
@@ -428,7 +430,7 @@ public class MainActivity extends Activity {
                     + " · " + when(entry == null ? 0 : entry.optLong("updated") / 1000);
         }
         new AlertDialog.Builder(this)
-                .setTitle("会话")
+                .setTitle(Tr.t("会话"))
                 .setItems(labels, (d, which) -> {
                     if (which == 0) {
                         saveNow();
@@ -439,7 +441,7 @@ public class MainActivity extends Activity {
                         if (welcome != null) {
                             welcome.setVisibility(View.VISIBLE);
                         }
-                        note("新会话 · 之前的内容留在「会话」里");
+                        note(Tr.t("新会话 · 之前的内容留在「会话」里"));
                         return;
                     }
                     if (!currentTaskId.isEmpty()) {
@@ -447,7 +449,7 @@ public class MainActivity extends Activity {
                         // so switching mid-task wrote the answer into the wrong
                         // one and left the instruction behind in the old one.
                         android.widget.Toast.makeText(this,
-                                "任务还在执行，等它结束再切换会话。",
+                                Tr.t("任务还在执行，等它结束再切换会话。"),
                                 android.widget.Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -456,16 +458,16 @@ public class MainActivity extends Activity {
                         switchSession(entry.optString("id"));
                     }
                 })
-                .setNeutralButton("删除当前会话", (d, w) -> confirmDeleteSession())
-                .setNegativeButton("关闭", null)
+                .setNeutralButton(Tr.t("删除当前会话"), (d, w) -> confirmDeleteSession())
+                .setNegativeButton(Tr.t("关闭"), null)
                 .show();
     }
 
     private void confirmDeleteSession() {
         new AlertDialog.Builder(this)
-                .setTitle("删除这个会话？")
-                .setMessage("只删聊天记录，手机上装的地图和任务结果不受影响。")
-                .setPositiveButton("删除", (d, w) -> {
+                .setTitle(Tr.t("删除这个会话？"))
+                .setMessage(Tr.t("只删聊天记录，手机上装的地图和任务结果不受影响。"))
+                .setPositiveButton(Tr.t("删除"), (d, w) -> {
                     java.io.File file = sessionFile();
                     //noinspection ResultOfMethodCallIgnored
                     file.delete();
@@ -487,7 +489,7 @@ public class MainActivity extends Activity {
                         welcome.setVisibility(View.VISIBLE);
                     }
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
@@ -503,41 +505,41 @@ public class MainActivity extends Activity {
         about.setTextColor(getColor(R.color.ink_soft));
         box.addView(about);
 
-        box.addView(label("最多爬取屏幕数"));
+        box.addView(label(Tr.t("最多爬取屏幕数")));
         EditText screens = new EditText(this);
         screens.setText(R.string.crawl_screens);
         screens.setInputType(InputType.TYPE_CLASS_NUMBER);
         box.addView(screens);
 
-        box.addView(label("时间预算（分钟）"));
+        box.addView(label(Tr.t("时间预算（分钟）")));
         EditText minutes = new EditText(this);
         minutes.setText(R.string.crawl_minutes);
         minutes.setInputType(InputType.TYPE_CLASS_NUMBER);
         box.addView(minutes);
 
-        box.addView(label("最大深度 · 从首页最多点几下"));
+        box.addView(label(Tr.t("最大深度 · 从首页最多点几下")));
         EditText depth = new EditText(this);
         depth.setText("3");
         depth.setInputType(InputType.TYPE_CLASS_NUMBER);
         box.addView(depth);
 
         new AlertDialog.Builder(this)
-                .setTitle("重爬 " + label)
+                .setTitle(Tr.t("重爬 ") + label)
                 .setView(box)
-                .setPositiveButton("开始", (d, w) -> startCrawl(pkg, label,
+                .setPositiveButton(Tr.t("开始"), (d, w) -> startCrawl(pkg, label,
                         parseCount(screens.getText().toString(), 12),
                         parseCount(minutes.getText().toString(), 20),
                         parseCount(depth.getText().toString(), 3)))
-                .setNegativeButton("取消", null)
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
     private void confirmDelete(JSONObject row) {
         new AlertDialog.Builder(this)
-                .setTitle("删除这份地图？")
-                .setMessage(row.optString("file") + "\n\n只删手机上的这一份，删了就找不回来。")
-                .setPositiveButton("删除", (d, w) -> postMapAction("delete", row, null))
-                .setNegativeButton("取消", null)
+                .setTitle(Tr.t("删除这份地图？"))
+                .setMessage(row.optString("file") + Tr.t("\n\n只删手机上的这一份，删了就找不回来。"))
+                .setPositiveButton(Tr.t("删除"), (d, w) -> postMapAction("delete", row, null))
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
@@ -568,7 +570,7 @@ public class MainActivity extends Activity {
             }
             final String failure = problem;
             ui(() -> {
-                note(failure.isEmpty() ? "地图已更新" : "地图操作失败：" + failure);
+                note(failure.isEmpty() ? Tr.t("地图已更新") : Tr.t("地图操作失败：") + failure);
                 showMapsLibrary();         // the cards are the one place maps live
             });
         }).start();
@@ -592,7 +594,7 @@ public class MainActivity extends Activity {
                 JSONArray maps = reply.optJSONArray("maps");
                 ui(() -> renderMapsLibrary(maps == null ? new JSONArray() : maps));
             } catch (Exception e) {
-                ui(() -> append("地图", "没能读取地图列表：" + e));
+                ui(() -> append(Tr.t("地图"), Tr.t("没能读取地图列表：") + e));
             }
         }).start();
     }
@@ -604,8 +606,8 @@ public class MainActivity extends Activity {
 
         TextView intro = new TextView(this);
         intro.setText(maps.length() == 0
-                ? "还没有地图。建一张之后，同一个 App 的操作会被记下来，下次直接走已知路径。"
-                : "落点是这张图的自测成绩：在地图上随机挑几条路径重放，看是否落到记录的页面。");
+                ? Tr.t("还没有地图。建一张之后，同一个 App 的操作会被记下来，下次直接走已知路径。")
+                : Tr.t("落点是这张图的自测成绩：在地图上随机挑几条路径重放，看是否落到记录的页面。"));
         intro.setTextSize(12.5f);
         intro.setTextColor(getColor(R.color.ink_soft));
         intro.setPadding(0, 0, 0, dp(10));
@@ -620,7 +622,7 @@ public class MainActivity extends Activity {
         }
 
         TextView build = new TextView(this);
-        build.setText("＋ 构建新地图");
+        build.setText(Tr.t("＋ 构建新地图"));
         build.setTextSize(14f);
         build.setTextColor(getColor(R.color.accent));
         build.setGravity(android.view.Gravity.CENTER);
@@ -632,9 +634,9 @@ public class MainActivity extends Activity {
         scroll.addView(box);
 
         new AlertDialog.Builder(this)
-                .setTitle("地图")
+                .setTitle(Tr.t("地图"))
                 .setView(scroll)
-                .setPositiveButton("关闭", null)
+                .setPositiveButton(Tr.t("关闭"), null)
                 .show();
     }
 
@@ -658,7 +660,7 @@ public class MainActivity extends Activity {
                 ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
         if (map.optBoolean("pinned", false)) {
-            header.addView(pill("正在使用", R.color.accent, R.color.accent_soft));
+            header.addView(pill(Tr.t("正在使用"), R.color.accent, R.color.accent_soft));
         }
         card.addView(header);
 
@@ -686,29 +688,29 @@ public class MainActivity extends Activity {
         actions.setOrientation(LinearLayout.HORIZONTAL);
         actions.setGravity(android.view.Gravity.END);
 
-        TextView measure = action("重新测落点", R.color.accent);
+        TextView measure = action(Tr.t("重新测落点"), R.color.accent);
         measure.setOnClickListener(v -> startBench(map));
         actions.addView(measure);
 
         if (map.optBoolean("deletable", false)) {
-            TextView remove = action("删除", R.color.err);
+            TextView remove = action(Tr.t("删除"), R.color.err);
             remove.setOnClickListener(v -> new AlertDialog.Builder(this)
-                    .setTitle("删除地图")
-                    .setMessage("删除「" + map.optString("app") + "」的地图？\n"
-                            + "这个 App 会重新变回没有地图的状态。")
-                    .setPositiveButton("删除", (d, w) -> postMapChange("/maps/delete",
+                    .setTitle(Tr.t("删除地图"))
+                    .setMessage(Tr.t("删除「") + map.optString("app") + Tr.t("」的地图？\n")
+                            + Tr.t("这个 App 会重新变回没有地图的状态。"))
+                    .setPositiveButton(Tr.t("删除"), (d, w) -> postMapChange("/maps/delete",
                             map.optString("file", ""), false))
-                    .setNegativeButton("取消", null)
+                    .setNegativeButton(Tr.t("取消"), null)
                     .show());
             actions.addView(remove);
         }
         if (map.optBoolean("pinned", false)) {
-            TextView unpin = action("取消固定", R.color.ink_soft);
+            TextView unpin = action(Tr.t("取消固定"), R.color.ink_soft);
             unpin.setOnClickListener(v -> postMapChange("/maps/unpin",
                     map.optString("package", ""), true));
             actions.addView(unpin);
         } else {
-            TextView pin = action("固定使用", R.color.accent);
+            TextView pin = action(Tr.t("固定使用"), R.color.accent);
             pin.setOnClickListener(v -> postMapChange("/maps/pin",
                     map.optString("package", ""), true, map.optString("file", "")));
             actions.addView(pin);
@@ -724,11 +726,11 @@ public class MainActivity extends Activity {
 
     private String summaryLine(JSONObject map) {
         StringBuilder line = new StringBuilder();
-        line.append(map.optInt("screens", 0)).append(" 屏 · ")
-                .append(map.optInt("operations", 0)).append(" 条操作");
+        line.append(map.optInt("screens", 0)).append(Tr.t(" 屏 · "))
+                .append(map.optInt("operations", 0)).append(Tr.t(" 条操作"));
         JSONObject coverage = map.optJSONObject("coverage");
         if (coverage != null && coverage.optInt("queued", 0) > 0) {
-            line.append(" · 还有 ").append(coverage.optInt("queued")).append(" 个没走到");
+            line.append(Tr.t(" · 还有 ")).append(coverage.optInt("queued")).append(Tr.t(" 个没走到"));
         }
         String crawled = map.optString("crawled_at", "");
         if (!crawled.isEmpty()) {
@@ -738,26 +740,26 @@ public class MainActivity extends Activity {
         if (alternatives > 0) {
             // choose() shows one map per package; without this the others are
             // invisible even though they exist and take space.
-            line.append(" · 还有 ").append(alternatives).append(" 张同包地图");
+            line.append(Tr.t(" · 还有 ")).append(alternatives).append(Tr.t(" 张同包地图"));
         }
         return line.toString();
     }
 
-    /** "落点 4/4" -- the one number that says whether this map is worth using. */
+    /** Tr.t("落点 4/4") -- the one number that says whether this map is worth using. */
     private String benchLine(JSONObject map) {
         JSONObject bench = map.optJSONObject("bench");
         if (bench == null || bench.length() == 0) {
-            return "还没测过落点";
+            return Tr.t("还没测过落点");
         }
         int ops = bench.optInt("ops", 0);
         if (ops <= 0) {
             // Measured, but the map has no navigation to replay -- every
             // operation is an action on the screen itself. "0/0" would read as
             // a failure of the map.
-            return "没有可测的导航操作";
+            return Tr.t("没有可测的导航操作");
         }
-        return "落点 " + bench.optInt("exact", 0) + "/" + ops
-                + (bench.optBoolean("stale", false) ? "（旧数据）" : "");
+        return Tr.t("落点 ") + bench.optInt("exact", 0) + "/" + ops
+                + (bench.optBoolean("stale", false) ? Tr.t("（旧数据）") : "");
     }
 
     private int benchColour(JSONObject map) {
@@ -827,10 +829,10 @@ public class MainActivity extends Activity {
                 }
                 JSONObject reply = new JSONObject(read(conn));
                 String id = reply.optString("id", "");
-                ui(() -> append("地图", "正在重新测量「" + map.optString("app") + "」的落点…"));
+                ui(() -> append(Tr.t("地图"), Tr.t("正在重新测量「") + map.optString("app") + Tr.t("」的落点…")));
                 pollBench(map, id, 0);
             } catch (Exception e) {
-                ui(() -> append("地图", "没能开始测量：" + e));
+                ui(() -> append(Tr.t("地图"), Tr.t("没能开始测量：") + e));
             }
         }).start();
     }
@@ -850,11 +852,11 @@ public class MainActivity extends Activity {
                 if ("done".equals(status) || "failed".equals(status)) {
                     JSONObject summary = state.optJSONObject("summary");
                     String line = "failed".equals(status)
-                            ? "测量失败：" + state.optString("error", "")
-                            : "「" + map.optString("app") + "」落点 "
+                            ? Tr.t("测量失败：") + state.optString("error", "")
+                            : "「" + map.optString("app") + Tr.t("」落点 ")
                               + (summary == null ? 0 : summary.optInt("exact", 0)) + "/"
                               + (summary == null ? 0 : summary.optInt("ops", 0));
-                    ui(() -> append("地图", line));
+                    ui(() -> append(Tr.t("地图"), line));
                     showMapsLibrary();
                     return;
                 }
@@ -893,13 +895,13 @@ public class MainActivity extends Activity {
                     showMapsLibrary();
                 }
             } catch (Exception e) {
-                ui(() -> append("地图", "操作失败：" + e));
+                ui(() -> append(Tr.t("地图"), Tr.t("操作失败：") + e));
             }
         }).start();
     }
 
     private void showMapBuilder() {
-        append("构建地图", "正在读取可爬取的 App…");
+        append(Tr.t("构建地图"), Tr.t("正在读取可爬取的 App…"));
         new Thread(() -> {
             try {
                 HttpURLConnection conn =
@@ -909,7 +911,7 @@ public class MainActivity extends Activity {
                 JSONObject reply = new JSONObject(read(conn));
                 JSONArray apps = reply.optJSONArray("apps");
                 if (apps == null || apps.length() == 0) {
-                    ui(() -> append("构建地图", "本地 agent 还没有列出 App，稍后再试。"));
+                    ui(() -> append(Tr.t("构建地图"), Tr.t("本地 agent 还没有列出 App，稍后再试。")));
                     return;
                 }
                 List<String> packages = new ArrayList<>();
@@ -931,7 +933,7 @@ public class MainActivity extends Activity {
                 }
                 ui(() -> showMapDialog(labels, packages, names, states));
             } catch (Exception e) {
-                ui(() -> append("构建地图", "没能读取 App 列表：" + e));
+                ui(() -> append(Tr.t("构建地图"), Tr.t("没能读取 App 列表：") + e));
             }
         }).start();
     }
@@ -970,13 +972,13 @@ public class MainActivity extends Activity {
 
         // Labels, not hints: the fields are pre-filled, and a hint disappears
         // the moment there is text -- which left three bare numbers.
-        box.addView(label("最多爬取屏幕数 · 地图里最多记多少屏"));
+        box.addView(label(Tr.t("最多爬取屏幕数 · 地图里最多记多少屏")));
         EditText screens = new EditText(this);
         screens.setText(R.string.crawl_screens);
         screens.setInputType(InputType.TYPE_CLASS_NUMBER);
         box.addView(screens);
 
-        box.addView(label("时间预算（分钟）· 到点就收工"));
+        box.addView(label(Tr.t("时间预算（分钟）· 到点就收工")));
         EditText minutes = new EditText(this);
         minutes.setText(R.string.crawl_minutes);
         minutes.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -984,42 +986,42 @@ public class MainActivity extends Activity {
 
         // BFS depth: how many taps away from the home screen the crawl may go.
         // 1 means "open the pages the home screen lists, never tap inside them".
-        box.addView(label("最大深度 · 从首页最多点几下（1 = 只进首页列出的页面）"));
+        box.addView(label(Tr.t("最大深度 · 从首页最多点几下（1 = 只进首页列出的页面）")));
         EditText depth = new EditText(this);
         depth.setText("3");
         depth.setInputType(InputType.TYPE_CLASS_NUMBER);
         box.addView(depth);
 
         new AlertDialog.Builder(this)
-                .setTitle("构建地图")
+                .setTitle(Tr.t("构建地图"))
                 .setView(box)
-                .setPositiveButton("开始", (d, w) -> {
+                .setPositiveButton(Tr.t("开始"), (d, w) -> {
                     int index = spinner.getSelectedItemPosition();
                     if (index < 0 || index >= packages.size()) return;
                     if ("risky".equals(states.get(index))) {
                         new AlertDialog.Builder(this)
-                                .setTitle("先试一次")
-                                .setMessage(names.get(index) + " 的首页声明为 singleTask，"
-                                        + "可能起不来。爬一次就知道：起不来会立刻停下并记住，"
-                                        + "下次标成 ⛔。")
-                                .setPositiveButton("试", (d2, w2) -> {
+                                .setTitle(Tr.t("先试一次"))
+                                .setMessage(names.get(index) + Tr.t(" 的首页声明为 singleTask，")
+                                        + Tr.t("可能起不来。爬一次就知道：起不来会立刻停下并记住，")
+                                        + Tr.t("下次标成 ⛔。"))
+                                .setPositiveButton(Tr.t("试"), (d2, w2) -> {
                                     int maxScreens = parseCount(screens.getText().toString(), 12);
                                     int maxMinutes = parseCount(minutes.getText().toString(), 20);
                                     int maxDepth = parseCount(depth.getText().toString(), 3);
                                     startCrawl(packages.get(index), names.get(index),
                                             maxScreens, maxMinutes, maxDepth);
                                 })
-                                .setNegativeButton("算了", null)
+                                .setNegativeButton(Tr.t("算了"), null)
                                 .show();
                         return;
                     }
                     if ("refused".equals(states.get(index))) {
                         new AlertDialog.Builder(this)
-                                .setTitle("这个 App 爬不了")
-                                .setMessage(names.get(index) + " 的首页声明为 singleTask，"
-                                        + "系统只会把它放回自己所在的屏幕，虚拟屏上起不来。\n\n"
-                                        + "换一个标着 ✅ 的 App。")
-                                .setPositiveButton("知道了", null)
+                                .setTitle(Tr.t("这个 App 爬不了"))
+                                .setMessage(names.get(index) + Tr.t(" 的首页声明为 singleTask，")
+                                        + Tr.t("系统只会把它放回自己所在的屏幕，虚拟屏上起不来。\n\n")
+                                        + Tr.t("换一个标着 ✅ 的 App。"))
+                                .setPositiveButton(Tr.t("知道了"), null)
                                 .show();
                         return;
                     }
@@ -1030,7 +1032,7 @@ public class MainActivity extends Activity {
                     startCrawl(packages.get(index), names.get(index), maxScreens, maxMinutes,
                             parseCount(depth.getText().toString(), 3));
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
@@ -1059,8 +1061,8 @@ public class MainActivity extends Activity {
     private void startCrawl(String pkg, String name, int maxScreens, int maxMinutes,
                             int maxDepth) {
         crawlName = name;
-        append("构建地图", "开始为「" + name + "」建地图：最多 " + maxScreens
-                + " 屏、" + maxMinutes + " 分钟。");
+        append(Tr.t("构建地图"), Tr.t("开始为「") + name + Tr.t("」建地图：最多 ") + maxScreens
+                + Tr.t(" 屏、") + maxMinutes + Tr.t(" 分钟。"));
         new Thread(() -> {
             try {
                 HttpURLConnection conn = connect("/crawl");
@@ -1081,11 +1083,11 @@ public class MainActivity extends Activity {
                 JSONObject reply = new JSONObject(read(conn));
                 crawlId = reply.getString("id");
                 lastCrawlLine = "";
-                ui(() -> appendLines("进度会一行行显示在这里，完成后可以在「地图」里看到它。"
-                        + "\n正在爬取（点这里取消）"));
+                ui(() -> appendLines(Tr.t("进度会一行行显示在这里，完成后可以在「地图」里看到它。")
+                        + Tr.t("\n正在爬取（点这里取消）")));
                 pollCrawl(0);
             } catch (Exception e) {
-                ui(() -> append("构建地图", "没能开始：" + e));
+                ui(() -> append(Tr.t("构建地图"), Tr.t("没能开始：") + e));
             }
         }).start();
     }
@@ -1096,7 +1098,7 @@ public class MainActivity extends Activity {
         if (id.isEmpty()) {
             return;
         }
-        note("正在停止爬取…（已爬到的东西会保留）");
+        note(Tr.t("正在停止爬取…（已爬到的东西会保留）"));
         new Thread(() -> {
             try {
                 HttpURLConnection conn = connect("/crawl/" + id + "/cancel");
@@ -1107,7 +1109,7 @@ public class MainActivity extends Activity {
                 conn.getOutputStream().write("{}".getBytes("UTF-8"));
                 read(conn);
             } catch (Throwable t) {
-                note("取消失败：" + t);
+                note(Tr.t("取消失败：") + t);
             }
         }).start();
     }
@@ -1140,13 +1142,13 @@ public class MainActivity extends Activity {
                         if (coverage != null) screens = coverage.optInt("screens", 0);
                     }
                     final int found = screens;
-                    final String appName = crawlName.isEmpty() ? "这个 App" : crawlName;
-                    ui(() -> append("构建地图", "done".equals(status)
-                            ? "「" + appName + "」完成："
-                              + (found > 0 ? found + " 屏" : "地图已保存")
-                              + (took.isEmpty() ? "" : "，用时 " + took)
-                              + "。\n已保存，可以在「地图」里查看或固定使用。"
-                            : "「" + appName + "」没能完成：" + error));
+                    final String appName = crawlName.isEmpty() ? Tr.t("这个 App") : crawlName;
+                    ui(() -> append(Tr.t("构建地图"), "done".equals(status)
+                            ? "「" + appName + Tr.t("」完成：")
+                              + (found > 0 ? found + Tr.t(" 屏") : Tr.t("地图已保存"))
+                              + (took.isEmpty() ? "" : Tr.t("，用时 ") + took)
+                              + Tr.t("。\n已保存，可以在「地图」里查看或固定使用。")
+                            : "「" + appName + Tr.t("」没能完成：") + error));
                     crawlId = "";
                     return;
                 }
@@ -1282,7 +1284,7 @@ public class MainActivity extends Activity {
             android.app.NotificationManager manager =
                     getSystemService(android.app.NotificationManager.class);
             manager.createNotificationChannel(new android.app.NotificationChannel(
-                    "attention", "需要你", android.app.NotificationManager.IMPORTANCE_HIGH));
+                    "attention", Tr.t("需要你"), android.app.NotificationManager.IMPORTANCE_HIGH));
             android.content.Intent open = new android.content.Intent(this, MainActivity.class)
                     .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
             android.app.PendingIntent pending = android.app.PendingIntent.getActivity(
@@ -1290,7 +1292,7 @@ public class MainActivity extends Activity {
                     android.app.PendingIntent.FLAG_IMMUTABLE
                             | android.app.PendingIntent.FLAG_UPDATE_CURRENT);
             manager.notify(9, new android.app.Notification.Builder(this, "attention")
-                    .setContentTitle("PhoneGo 等你一下")
+                    .setContentTitle(Tr.t("PhoneGo 等你一下"))
                     .setContentText(question.length() > 60 ? question.substring(0, 60) + "…" : question)
                     .setStyle(new android.app.Notification.BigTextStyle().bigText(question))
                     .setSmallIcon(android.R.drawable.ic_menu_view)
@@ -1334,7 +1336,7 @@ public class MainActivity extends Activity {
                             currentTaskId = found;
                             shownSteps = 0;
                             statusRow.setVisibility(View.VISIBLE);
-                            statusText.setText("接续上次的任务…");
+                            statusText.setText(Tr.t("接续上次的任务…"));
                             poll(found, 0);
                         });
                         return;
@@ -1368,7 +1370,7 @@ public class MainActivity extends Activity {
                 JSONObject data = new JSONObject(read(conn));
                 ui(() -> renderUsage(data));
             } catch (Throwable t) {
-                ui(() -> append("用量", "读不到用量：" + t));
+                ui(() -> append(Tr.t("用量"), Tr.t("读不到用量：") + t));
             }
         }).start();
     }
@@ -1382,9 +1384,9 @@ public class MainActivity extends Activity {
         JSONObject total = data.optJSONObject("total");
         LinearLayout summary = new LinearLayout(this);
         summary.setOrientation(LinearLayout.HORIZONTAL);
-        summary.addView(usageFigure("今天", today), new LinearLayout.LayoutParams(
+        summary.addView(usageFigure(Tr.t("今天"), today), new LinearLayout.LayoutParams(
                 0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-        summary.addView(usageFigure("近 " + data.optInt("days", 7) + " 天", total),
+        summary.addView(usageFigure(Tr.t("近 ") + data.optInt("days", 7) + Tr.t(" 天"), total),
                 new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
         box.addView(summary);
 
@@ -1409,7 +1411,7 @@ public class MainActivity extends Activity {
         }
 
         TextView chartTitle = new TextView(this);
-        chartTitle.setText("每天消耗");
+        chartTitle.setText(Tr.t("每天消耗"));
         chartTitle.setTextSize(13f);
         chartTitle.setTextColor(getColor(R.color.ink_soft));
         chartTitle.setPadding(0, dp(14), 0, dp(6));
@@ -1452,7 +1454,7 @@ public class MainActivity extends Activity {
                 taskRows.add(row);
             }
         }
-        usageSection(box, "按任务", taskRows, 5);
+        usageSection(box, Tr.t("按任务"), taskRows, 5);
 
         JSONArray models = data.optJSONArray("by_model");
         java.util.List<View> modelRows = new java.util.ArrayList<>();
@@ -1471,14 +1473,14 @@ public class MainActivity extends Activity {
                 modelRows.add(row);
             }
         }
-        usageSection(box, "按模型", modelRows, 5);
+        usageSection(box, Tr.t("按模型"), modelRows, 5);
 
         ScrollView scroll = new ScrollView(this);
         scroll.addView(box);
         new AlertDialog.Builder(this)
-                .setTitle("Token 用量")
+                .setTitle(Tr.t("Token 用量"))
                 .setView(scroll)
-                .setPositiveButton("关闭", null)
+                .setPositiveButton(Tr.t("关闭"), null)
                 .show();
     }
 
@@ -1521,7 +1523,7 @@ public class MainActivity extends Activity {
             }
             box.removeView(more);
             TextView less = new TextView(this);
-            less.setText("收起");
+            less.setText(Tr.t("收起"));
             less.setTextSize(12.5f);
             less.setTextColor(getColor(R.color.accent));
             less.setPadding(0, dp(6), 0, dp(2));
@@ -1668,17 +1670,17 @@ public class MainActivity extends Activity {
         model.setSingleLine(true);
 
         EditText base = new EditText(this);
-        base.setHint("api base（例如 https://api.deepseek.com/v1）");
+        base.setHint(Tr.t("api base（例如 https://api.deepseek.com/v1）"));
         base.setText(cfg.getApiBase());
         base.setSingleLine(true);
 
         EditText vision = new EditText(this);
-        vision.setHint("视觉模型（留空则与上面相同）");
+        vision.setHint(Tr.t("视觉模型（留空则与上面相同）"));
         vision.setText(cfg.getVisionModel());
         vision.setSingleLine(true);
 
         EditText rounds = new EditText(this);
-        rounds.setHint("每条任务最多走几步（默认 35）");
+        rounds.setHint(Tr.t("每条任务最多走几步（默认 35）"));
         rounds.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
         rounds.setText(cfg.getMaxRounds() > 0 ? String.valueOf(cfg.getMaxRounds()) : "35");
         rounds.setSingleLine(true);
@@ -1698,12 +1700,12 @@ public class MainActivity extends Activity {
                 {"OpenRouter", "https://openrouter.ai/api/v1", "qwen/qwen3.8-flash"},
                 // DeepSeek's own Anthropic-protocol endpoint: the base URL is
                 // what tells the agent which protocol to speak.
-                {"DeepSeek 官方", "https://api.deepseek.com/anthropic", "deepseek-flash"},
+                {Tr.t("DeepSeek 官方"), "https://api.deepseek.com/anthropic", "deepseek-flash"},
                 {"DeepSeek", "https://api.deepseek.com/v1", "deepseek-chat"},
-                {"智谱", "https://open.bigmodel.cn/api/paas/v4", "glm-4v-flash"},
-                {"阿里百炼", "https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-vl-plus"},
-                {"硅基流动", "https://api.siliconflow.cn/v1", "Qwen/Qwen2.5-VL-72B-Instruct"},
-                {"本地", "http://localhost:8000/v1", "Qwen/Qwen2.5-VL-7B-Instruct"},
+                {Tr.t("智谱"), "https://open.bigmodel.cn/api/paas/v4", "glm-4v-flash"},
+                {Tr.t("阿里百炼"), "https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-vl-plus"},
+                {Tr.t("硅基流动"), "https://api.siliconflow.cn/v1", "Qwen/Qwen2.5-VL-72B-Instruct"},
+                {Tr.t("本地"), "http://localhost:8000/v1", "Qwen/Qwen2.5-VL-7B-Instruct"},
         };
         for (String[] choice : choices) {
             TextView chip = new TextView(this);
@@ -1724,12 +1726,12 @@ public class MainActivity extends Activity {
         }
 
         TextView test = new TextView(this);
-        test.setText("测试连接");
+        test.setText(Tr.t("测试连接"));
         test.setTextSize(13f);
         test.setTextColor(getColor(R.color.accent));
         test.setPadding(0, dp(10), 0, 0);
         test.setOnClickListener(v -> {
-            test.setText("测试中…");
+            test.setText(Tr.t("测试中…"));
             new Thread(() -> {
                 String result;
                 try {
@@ -1747,7 +1749,7 @@ public class MainActivity extends Activity {
                     conn.getOutputStream().write(body.toString().getBytes("UTF-8"));
                     org.json.JSONObject out = new org.json.JSONObject(read(conn));
                     result = out.optBoolean("ok")
-                            ? "✅ 可用：" + out.optString("detail")
+                            ? Tr.t("✅ 可用：") + out.optString("detail")
                             : "❌ " + out.optString("detail");
                 } catch (Throwable t) {
                     result = "❌ " + t;
@@ -1762,21 +1764,21 @@ public class MainActivity extends Activity {
         // floats over other apps. The old service only drew that overlay.
 
         CheckBox autonomous = new CheckBox(this);
-        autonomous.setText("自主模式：花钱前也不问");
+        autonomous.setText(Tr.t("自主模式：花钱前也不问"));
         autonomous.setChecked(autonomousMode());
 
         TextView diag = new TextView(this);
-        diag.setText("诊断：查看运行环境");
+        diag.setText(Tr.t("诊断：查看运行环境"));
         diag.setTextSize(13f);
         diag.setTextColor(getColor(R.color.ink_soft));
         diag.setPadding(0, dp(14), 0, dp(4));
         diag.setOnClickListener(v -> new AlertDialog.Builder(this)
-                .setTitle("运行环境")
-                .setMessage((bootInfo.isEmpty() ? "尚未启动" : bootInfo)
-                        + "\n\n心跳：" + beatLine())
-                .setPositiveButton("知道了", null)
-                .setNeutralButton("立即重连", (d2, w2) -> {
-                    alert("正在检查连接…");
+                .setTitle(Tr.t("运行环境"))
+                .setMessage((bootInfo.isEmpty() ? Tr.t("尚未启动") : bootInfo)
+                        + Tr.t("\n\n心跳：") + beatLine())
+                .setPositiveButton(Tr.t("知道了"), null)
+                .setNeutralButton(Tr.t("立即重连"), (d2, w2) -> {
+                    alert(Tr.t("正在检查连接…"));
                     healAgent(true);
                 })
                 .show());
@@ -1792,9 +1794,9 @@ public class MainActivity extends Activity {
         box.addView(diag);
 
         new AlertDialog.Builder(this)
-                .setTitle("模型设置")
+                .setTitle(Tr.t("模型设置"))
                 .setView(box)
-                .setPositiveButton("保存", (d, w) -> {
+                .setPositiveButton(Tr.t("保存"), (d, w) -> {
                     getSharedPreferences("agent", MODE_PRIVATE).edit()
                             .putBoolean("autonomous", autonomous.isChecked()).apply();
                     int steps;
@@ -1813,8 +1815,8 @@ public class MainActivity extends Activity {
                             vision.getText().toString().trim(),
                             steps);
                 })
-                .setNeutralButton("配对无线调试", (d, w) -> startPairingWatch())
-                .setNegativeButton("取消", null)
+                .setNeutralButton(Tr.t("配对无线调试"), (d, w) -> startPairingWatch())
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
@@ -1835,9 +1837,9 @@ public class MainActivity extends Activity {
         box.setPadding(dp(20), dp(8), dp(20), dp(4));
 
         android.widget.RadioButton autoRow = modeOption(
-                getString(R.string.mode_auto), getString(R.string.mode_auto_hint), auto);
+                Tr.t(getString(R.string.mode_auto)), Tr.t(getString(R.string.mode_auto_hint)), auto);
         android.widget.RadioButton visionRow = modeOption(
-                getString(R.string.mode_vision), getString(R.string.mode_vision_hint), !auto);
+                Tr.t(getString(R.string.mode_vision)), Tr.t(getString(R.string.mode_vision_hint)), !auto);
         box.addView(autoRow);
         box.addView(visionRow);
 
@@ -1868,7 +1870,7 @@ public class MainActivity extends Activity {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(R.string.mode_title)
                 .setView(box)
-                .setNegativeButton("取消", null)
+                .setNegativeButton(Tr.t("取消"), null)
                 .create();
 
         autoRow.setOnClickListener(v -> {
@@ -1885,9 +1887,9 @@ public class MainActivity extends Activity {
     private String beatLine() {
         long seconds = AgentHealth.beatSeconds(this);
         if (seconds < 0) {
-            return "还没有心跳记录";
+            return Tr.t("还没有心跳记录");
         }
-        return seconds <= 90 ? seconds + " 秒前（正常）" : seconds + " 秒前（可能卡住）";
+        return seconds <= 90 ? seconds + Tr.t(" 秒前（正常）") : seconds + Tr.t(" 秒前（可能卡住）");
     }
 
     private String handsOffLabel() {
@@ -1909,10 +1911,10 @@ public class MainActivity extends Activity {
     private void applyMode(boolean auto) {
         setMapsMode(auto);
         if (modeButton != null) {
-            modeButton.setText(auto ? R.string.mode_auto : R.string.mode_vision);
+            modeButton.setText(Tr.t(auto ? getString(R.string.mode_auto) : getString(R.string.mode_vision)));
         }
         android.widget.Toast.makeText(this,
-                auto ? R.string.mode_auto_toast : R.string.mode_vision_toast,
+                Tr.t(auto ? getString(R.string.mode_auto_toast) : getString(R.string.mode_vision_toast)),
                 android.widget.Toast.LENGTH_SHORT).show();
     }
 
@@ -1967,11 +1969,11 @@ public class MainActivity extends Activity {
         try {
             AgentConfig.save(this, apiKey, apiBase, model, visionModel, maxRounds, "");
             note(apiKey.isEmpty()
-                    ? "已清空密钥，agent 只能截图模式运行。"
-                    : "已保存，正在重启本地 agent…");
+                    ? Tr.t("已清空密钥，agent 只能截图模式运行。")
+                    : Tr.t("已保存，正在重启本地 agent…"));
             AgentService.restart(this);
         } catch (Exception e) {
-            append("PhoneGo", "保存失败：" + e);
+            append("PhoneGo", Tr.t("保存失败：") + e);
         }
     }
 
@@ -1981,7 +1983,7 @@ public class MainActivity extends Activity {
      */
     private void checkApiKey() {
         if (!AgentConfig.hasKey(this)) {
-            note("还没有配置模型密钥。点「设置」填入 API Key，否则任务无法执行。");
+            note(Tr.t("还没有配置模型密钥。点「设置」填入 API Key，否则任务无法执行。"));
         }
     }
 
@@ -2009,15 +2011,15 @@ public class MainActivity extends Activity {
             if (enabled) {
                 if (accessibilityWarned) {
                     accessibilityWarned = false;
-                    note("✅ 无障碍服务已就绪（启动时由 App 自动恢复）。");
+                    note(Tr.t("✅ 无障碍服务已就绪（启动时由 App 自动恢复）。"));
                 }
                 return;
             }
             if (!accessibilityWarned) {
                 accessibilityWarned = true;
-                note("提示：无障碍服务未开启。没有它，PhoneGo 无法读取配对码，"
-                        + "agent 也只能用截图（无法按文字标签点击）。"
-                        + "\n长按「设置」可以直接打开无障碍设置页。");
+                note(Tr.t("提示：无障碍服务未开启。没有它，PhoneGo 无法读取配对码，")
+                        + Tr.t("agent 也只能用截图（无法按文字标签点击）。")
+                        + Tr.t("\n长按「设置」可以直接打开无障碍设置页。"));
             }
             // The repair happens once adb is up, which can be 20 s in; keep
             // looking for a while so the warning clears itself instead of
@@ -2047,19 +2049,19 @@ public class MainActivity extends Activity {
      */
     private void startAgentService() {
         if (!hasIdentity()) {
-            note("还没有可用的配对身份，请先配对无线调试。");
+            note(Tr.t("还没有可用的配对身份，请先配对无线调试。"));
             return;
         }
         if (!wirelessDebuggingEnabled()) {
-            note("无线调试当前是关闭的，PhoneGo 连不上自己的 adbd。"
-                    + "\n请到「设置 → 开发者选项 → 无线调试」打开开关，再回到这里。");
+            note(Tr.t("无线调试当前是关闭的，PhoneGo 连不上自己的 adbd。")
+                    + Tr.t("\n请到「设置 → 开发者选项 → 无线调试」打开开关，再回到这里。"));
             return;
         }
         try {
             startForegroundService(new Intent(this, AgentService.class));
-            note("正在启动本地 agent（查找 adbd、建立虚拟屏）…");
+            note(Tr.t("正在启动本地 agent（查找 adbd、建立虚拟屏）…"));
         } catch (Throwable t) {
-            append("PhoneGo", "启动本地 agent 失败：\n" + t);
+            append("PhoneGo", Tr.t("启动本地 agent 失败：\n") + t);
         }
     }
 
@@ -2077,10 +2079,11 @@ public class MainActivity extends Activity {
      */
     private void showSystemSettings() {
         new AlertDialog.Builder(this)
-                .setTitle("系统设置")
+                .setTitle(Tr.t("系统设置"))
                 .setItems(new String[]{
-                        "无障碍服务", "电池优化（后台运行）",
-                        "导出备份（含 API Key）", "导入备份"}, (d, which) -> {
+                        Tr.t("无障碍服务"), Tr.t("电池优化（后台运行）"),
+                        Tr.t("导出备份（含 API Key）"), Tr.t("导入备份"),
+                        Tr.t("语言 / Language")}, (d, which) -> {
                     if (which == 0) {
                         startActivity(new Intent(
                                 android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS));
@@ -2088,9 +2091,37 @@ public class MainActivity extends Activity {
                         requestBatteryExemption();
                     } else if (which == 2) {
                         exportBackup();
-                    } else {
+                    } else if (which == 3) {
                         pickBackup();
+                    } else {
+                        chooseLanguage();
                     }
+                })
+                .show();
+    }
+
+    /**
+     * The interface language. "System" is the default so a Chinese phone shows
+     * Chinese without anyone choosing; English is here because the repository is
+     * read in English and the phone it runs on may not be.
+     */
+    private void chooseLanguage() {
+        String[] labels = {"跟随系统 / Follow system", "中文", "English"};
+        String[] modes = {"system", "zh", "en"};
+        String current = getSharedPreferences("agent", MODE_PRIVATE).getString("lang", "system");
+        int checked = 0;
+        for (int i = 0; i < modes.length; i++) {
+            if (modes[i].equals(current)) {
+                checked = i;
+            }
+        }
+        new AlertDialog.Builder(this)
+                .setTitle("语言 / Language")
+                .setSingleChoiceItems(labels, checked, (d, which) -> {
+                    getSharedPreferences("agent", MODE_PRIVATE).edit()
+                            .putString("lang", modes[which]).apply();
+                    d.dismiss();
+                    recreate();
                 })
                 .show();
     }
@@ -2103,23 +2134,23 @@ public class MainActivity extends Activity {
      */
     private void exportBackup() {
         new AlertDialog.Builder(this)
-                .setTitle("导出备份")
-                .setMessage("会把配对身份、爬好的地图、会话记录和模型设置打成一个 zip，"
-                        + "存到「下载」目录。\n\n"
-                        + "文件里的 API Key 是明文（它在本机是加密的，换机后无法解密），"
-                        + "请不要直接分享给别人。")
-                .setPositiveButton("导出", (d, w) -> {
-                    note("正在导出备份…");
+                .setTitle(Tr.t("导出备份"))
+                .setMessage(Tr.t("会把配对身份、爬好的地图、会话记录和模型设置打成一个 zip，")
+                        + Tr.t("存到「下载」目录。\n\n")
+                        + Tr.t("文件里的 API Key 是明文（它在本机是加密的，换机后无法解密），")
+                        + Tr.t("请不要直接分享给别人。"))
+                .setPositiveButton(Tr.t("导出"), (d, w) -> {
+                    note(Tr.t("正在导出备份…"));
                     new Thread(() -> {
                         try {
                             String name = Backup.exportToDownloads(this);
-                            runOnUiThread(() -> note("备份已保存到「下载」：" + name));
+                            runOnUiThread(() -> note(Tr.t("备份已保存到「下载」：") + name));
                         } catch (Exception e) {
-                            runOnUiThread(() -> note("导出失败：" + e.getMessage()));
+                            runOnUiThread(() -> note(Tr.t("导出失败：") + e.getMessage()));
                         }
                     }, "backup-export").start();
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton(Tr.t("取消"), null)
                 .show();
     }
 
@@ -2132,21 +2163,21 @@ public class MainActivity extends Activity {
         try {
             startActivityForResult(intent, REQUEST_BACKUP_IMPORT);
         } catch (Exception e) {
-            note("打不开文件选择器：" + e.getMessage());
+            note(Tr.t("打不开文件选择器：") + e.getMessage());
         }
     }
 
     private void importBackup(Uri uri) {
-        note("正在导入备份…");
+        note(Tr.t("正在导入备份…"));
         new Thread(() -> {
             try {
                 int files = Backup.restore(this, uri);
                 runOnUiThread(() -> {
-                    note("已恢复 " + files + " 个文件。正在重启 agent…");
+                    note(Tr.t("已恢复 ") + files + Tr.t(" 个文件。正在重启 agent…"));
                     healAgent(true);
                 });
             } catch (Exception e) {
-                runOnUiThread(() -> note("导入失败：" + e.getMessage()));
+                runOnUiThread(() -> note(Tr.t("导入失败：") + e.getMessage()));
             }
         }, "backup-import").start();
     }
@@ -2169,7 +2200,7 @@ public class MainActivity extends Activity {
     private void requestBatteryExemption() {
         PowerManager power = getSystemService(PowerManager.class);
         if (power != null && power.isIgnoringBatteryOptimizations(getPackageName())) {
-            note("已经不受电池优化限制，后台可以常驻。");
+            note(Tr.t("已经不受电池优化限制，后台可以常驻。"));
             return;
         }
         try {
@@ -2183,7 +2214,7 @@ public class MainActivity extends Activity {
                         "com.miui.securitycenter",
                         "com.miui.permcenter.autostart.AutoStartManagementActivity")));
             } catch (Exception inner) {
-                append("PhoneGo", "打不开电池设置，请手动到「设置 → 应用 → PhoneGo → 省电策略 → 无限制」。");
+                append("PhoneGo", Tr.t("打不开电池设置，请手动到「设置 → 应用 → PhoneGo → 省电策略 → 无限制」。"));
             }
         }
     }
@@ -2196,16 +2227,16 @@ public class MainActivity extends Activity {
 
     private void checkWirelessDebugging() {
         if (!wirelessDebuggingEnabled()) {
-            note("提示：无线调试是关闭的，adbd 没有监听端口。"
-                    + "\n请到「设置 → 开发者选项 → 无线调试」打开开关。");
+            note(Tr.t("提示：无线调试是关闭的，adbd 没有监听端口。")
+                    + Tr.t("\n请到「设置 → 开发者选项 → 无线调试」打开开关。"));
         }
     }
 
     private void checkBattery() {
         PowerManager power = getSystemService(PowerManager.class);
         if (power != null && !power.isIgnoringBatteryOptimizations(getPackageName())) {
-            note("提示：电池优化可能会在后台杀掉 PhoneGo。"
-                    + "\n长按「设置」→「电池优化」可以把它设为不限制。");
+            note(Tr.t("提示：电池优化可能会在后台杀掉 PhoneGo。")
+                    + Tr.t("\n长按「设置」→「电池优化」可以把它设为不限制。"));
         }
     }
 
@@ -2226,14 +2257,14 @@ public class MainActivity extends Activity {
     private void startPairingWatch() {
         if (!accessibilityEnabled()) {
             new AlertDialog.Builder(this)
-                    .setTitle("需要先开启无障碍服务")
-                    .setMessage("配对码只存在于系统的配对弹窗里，而且弹窗一关配对服务就停了，"
-                            + "所以只能由 PhoneGo 自己读取。\n\n"
-                            + "请到「设置 → 无障碍」开启 PhoneGo，再回来配对。")
-                    .setPositiveButton("打开无障碍设置", (d, w) ->
+                    .setTitle(Tr.t("需要先开启无障碍服务"))
+                    .setMessage(Tr.t("配对码只存在于系统的配对弹窗里，而且弹窗一关配对服务就停了，")
+                            + Tr.t("所以只能由 PhoneGo 自己读取。\n\n")
+                            + Tr.t("请到「设置 → 无障碍」开启 PhoneGo，再回来配对。"))
+                    .setPositiveButton(Tr.t("打开无障碍设置"), (d, w) ->
                             startActivity(new Intent(
                                     android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)))
-                    .setNegativeButton("取消", null)
+                    .setNegativeButton(Tr.t("取消"), null)
                     .show();
             return;
         }
@@ -2241,10 +2272,10 @@ public class MainActivity extends Activity {
             Intent intent = new Intent(this, PairingService.class);
             intent.putExtra("watch", true);
             startForegroundService(intent);
-            note("请打开 设置 → 开发者选项 → 无线调试 → 使用配对码配对设备。"
-                    + "\n配对码由 PhoneGo 自己读取，不用手输；弹出后两分钟内完成。");
+            note(Tr.t("请打开 设置 → 开发者选项 → 无线调试 → 使用配对码配对设备。")
+                    + Tr.t("\n配对码由 PhoneGo 自己读取，不用手输；弹出后两分钟内完成。"));
         } catch (Throwable t) {
-            append("PhoneGo", "启动配对失败：\n" + t);
+            append("PhoneGo", Tr.t("启动配对失败：\n") + t);
         }
     }
 
@@ -2287,7 +2318,7 @@ public class MainActivity extends Activity {
                 } catch (Exception e) {
                     last = e;
                     if (attempt == 0) {
-                        ui(() -> append("PhoneGo", "等待本地 agent 就绪…"));
+                        ui(() -> append("PhoneGo", Tr.t("等待本地 agent 就绪…")));
                     }
                     try {
                         Thread.sleep(1000);
@@ -2299,8 +2330,8 @@ public class MainActivity extends Activity {
             final Exception e = last;
             boolean noKey = !AgentConfig.hasKey(this);
             ui(() -> append("PhoneGo", noKey
-                    ? "任务没能提交：还没有配置模型密钥，点「设置」填入 API Key。\n" + e
-                    : "本地 agent 没有起来：\n" + e));
+                    ? Tr.t("任务没能提交：还没有配置模型密钥，点「设置」填入 API Key。\n") + e
+                    : Tr.t("本地 agent 没有起来：\n") + e));
         }).start();
     }
 
@@ -2331,7 +2362,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         // The app can come back from a freeze with its poll chain gone; ask
-        // about the task again instead of showing a stale "执行中…". The age of
+        // about the task again instead of showing a stale Tr.t("执行中…"). The age of
         // the last answer is the only trustworthy signal -- `polling` stays
         // true when the chain died silently.
         if (!currentTaskId.isEmpty()
@@ -2407,7 +2438,7 @@ public class MainActivity extends Activity {
             // seconds, so a single check at 1.2 s always finds it unready and
             // the heal would never run when it is most needed.
             if (manual) {
-                alert("agent 还在启动，请稍等十几秒再试。");
+                alert(Tr.t("agent 还在启动，请稍等十几秒再试。"));
                 return;
             }
             if (healAttempts < 10) {
@@ -2424,8 +2455,8 @@ public class MainActivity extends Activity {
         // A frozen interpreter cannot answer healthy(); asking it would hang this
         // check forever. The heartbeat file is the one signal that survives.
         if (beat > 120) {
-            alert("PhoneGo 的后台进程卡住了（" + beat + " 秒没有心跳）。"
-                    + "\n请从最近任务里划掉它，再重新打开一次。");
+            alert(Tr.t("PhoneGo 的后台进程卡住了（") + beat + Tr.t(" 秒没有心跳）。")
+                    + Tr.t("\n请从最近任务里划掉它，再重新打开一次。"));
             return;
         }
         new Thread(() -> {
@@ -2437,7 +2468,7 @@ public class MainActivity extends Activity {
                 android.util.Log.i("Pairing", "heal: healthy=" + healthy);
                 if (healthy) {
                     if (manual) {
-                        ui(() -> alert("连接正常，不需要重连。"));
+                        ui(() -> alert(Tr.t("连接正常，不需要重连。")));
                     }
                     return;
                 }
@@ -2451,12 +2482,12 @@ public class MainActivity extends Activity {
                 android.util.Log.i("Pairing", "heal: rebuilt=" + rebuilt
                         + " via " + recovery.optString("message", ""));
                 if (rebuilt) {
-                    verdict = manual ? "已重连，可以继续使用。" : "已自动重连，可以继续使用。";
+                    verdict = manual ? Tr.t("已重连，可以继续使用。") : Tr.t("已自动重连，可以继续使用。");
                 } else {
                     verdict = recovery.optString("message", "");
                 }
             } catch (Throwable t) {
-                verdict = "重连失败：" + t;
+                verdict = Tr.t("重连失败：") + t;
                 android.util.Log.w("Pairing", "heal failed", t);
             }
             final String result = verdict;
@@ -2478,8 +2509,8 @@ public class MainActivity extends Activity {
         if (attempt > 1600) {
             polling = false;
             ui(() -> {
-                append("PhoneGo", "这条任务跑了 20 分钟以上，我先停止等待了。"
-                        + "它可能还在后台跑，可以稍后在「地图/用量」里看结果。");
+                append("PhoneGo", Tr.t("这条任务跑了 20 分钟以上，我先停止等待了。")
+                        + Tr.t("它可能还在后台跑，可以稍后在「地图/用量」里看结果。"));
                 setBusy(false);
             });
             return;
@@ -2581,13 +2612,13 @@ public class MainActivity extends Activity {
                     ui(() -> {
                         awaitingTaskId = id;
                         notifyNeedsYou(question);
-                        append("PhoneGo", "需要你回答：" + question);
-                        statusText.setText("等待你的回答…");
+                        append("PhoneGo", Tr.t("需要你回答：") + question);
+                        statusText.setText(Tr.t("等待你的回答…"));
                         // the send button is the reply channel, so it has to be
                         // usable even though a task is running
                         sendButton.setEnabled(true);
                         sendButton.setAlpha(1f);
-                        input.setHint("回复 PhoneGo");
+                        input.setHint(Tr.t("回复 PhoneGo"));
                     });
                 }
 
@@ -2623,8 +2654,8 @@ public class MainActivity extends Activity {
                         ui(this::returnToChat);
                     }
                     ui(() -> {
-                        append("PhoneGo", stopped ? "已取消"
-                                : (ok ? "完成：" : (part ? "部分完成：" : "失败：")) + answer);
+                        append("PhoneGo", stopped ? Tr.t("已取消")
+                                : (ok ? Tr.t("完成：") : (part ? Tr.t("部分完成：") : Tr.t("失败："))) + answer);
                         // what this instruction cost, right under its own answer
                         if (!spend.isEmpty()) {
                             note(spend);
@@ -2640,8 +2671,8 @@ public class MainActivity extends Activity {
                     if (statusText != null && statusRow.getVisibility() == View.VISIBLE
                             && awaitingTaskId.isEmpty()) {
                         statusText.setText(stepCount > 0
-                                ? "执行中… 已完成 " + stepCount + " 步"
-                                : "执行中…");
+                                ? Tr.t("执行中… 已完成 ") + stepCount + Tr.t(" 步")
+                                : Tr.t("执行中…"));
                     }
                 });
                 ui(() -> poll(id, attempt + 1));
@@ -2651,7 +2682,7 @@ public class MainActivity extends Activity {
                 // long after it had finished.
                 polling = false;
                 ui(() -> {
-                    append("PhoneGo", "轮询失败：" + e);
+                    append("PhoneGo", Tr.t("轮询失败：") + e);
                     setBusy(false);
                 });
             }
@@ -2675,11 +2706,11 @@ public class MainActivity extends Activity {
         if (calls <= 0) {
             return "";
         }
-        String line = "本次 " + calls + " 次调用 · 输入 " + compact(prompt)
-                + " · 输出 " + compact(completion) + " token";
+        String line = Tr.t("本次 ") + calls + Tr.t(" 次调用 · 输入 ") + compact(prompt)
+                + Tr.t(" · 输出 ") + compact(completion) + " token";
         if (replays > 0) {
             // the point of the map, spelled out: these steps cost no call
-            line += " · 地图回放 " + replays + " 次";
+            line += Tr.t(" · 地图回放 ") + replays + Tr.t(" 次");
         }
         return line;
     }
@@ -2697,7 +2728,7 @@ public class MainActivity extends Activity {
             return;
         }
         final String id = currentTaskId;
-        statusText.setText("正在取消…");
+        statusText.setText(Tr.t("正在取消…"));
         new Thread(() -> {
             try {
                 HttpURLConnection conn =
@@ -2708,14 +2739,14 @@ public class MainActivity extends Activity {
                 conn.getOutputStream().close();
                 read(conn);
             } catch (Exception e) {
-                ui(() -> append("PhoneGo", "取消失败：" + e));
+                ui(() -> append("PhoneGo", Tr.t("取消失败：") + e));
             }
         }).start();
     }
 
     /** Send the user's reply to a task that is waiting on ask_user. */
     private void answerTask(String id, String text) {
-        statusText.setText("执行中…");
+        statusText.setText(Tr.t("执行中…"));
         new Thread(() -> {
             try {
                 HttpURLConnection conn = connect("/task/" + id + "/answer");
@@ -2735,7 +2766,7 @@ public class MainActivity extends Activity {
                     input.setHint(getString(R.string.hint));
                 });
             } catch (Exception e) {
-                ui(() -> append("PhoneGo", "提交回答失败：" + e));
+                ui(() -> append("PhoneGo", Tr.t("提交回答失败：") + e));
             }
         }).start();
     }
@@ -3087,7 +3118,7 @@ public class MainActivity extends Activity {
                 return;
             }
             thinkingDots = (thinkingDots + 1) % 4;
-            StringBuilder dots = new StringBuilder("正在操作手机");
+            StringBuilder dots = new StringBuilder(Tr.t("正在操作手机"));
             for (int i = 0; i < thinkingDots; i++) {
                 dots.append("·");
             }
@@ -3117,7 +3148,7 @@ public class MainActivity extends Activity {
         row.addView(avatar, avatarParams);
 
         thinkingText = new TextView(this);
-        thinkingText.setText("正在操作手机");
+        thinkingText.setText(Tr.t("正在操作手机"));
         thinkingText.setTextSize(14f);
         thinkingText.setTextColor(getColor(R.color.ink_soft));
         thinkingText.setBackground(getDrawable(R.drawable.bg_agent));
@@ -3291,11 +3322,11 @@ public class MainActivity extends Activity {
      * Screens found, screens named, warnings, the end -- those move the story.
      * Enrichment counts, launch retries and dumps do not.
      */
-    /** "… (176.1s)" -> "176 秒"; empty when the line carries no timing. */
+    /** "… (176.1s)" -> Tr.t("176 秒"); empty when the line carries no timing. */
     /**
      * A step as a sentence instead of a log fragment.
      *
-     * "蓝牙 macro ok (3/3 steps)" is what the executor reports; what happened is
+     * Tr.t("蓝牙 macro ok (3/3 steps)") is what the executor reports; what happened is
      * that it walked a known path to the Bluetooth page. The plan line is an
      * English instruction to the model, so it is dropped rather than shown.
      */
@@ -3315,86 +3346,86 @@ public class MainActivity extends Activity {
         String what = action == null ? "" : action.trim();
         String how = detail == null ? "" : detail.trim();
         if ("route".equals(kind)) {
-            return "判断：这一步用「" + how + "」";
+            return Tr.t("判断：这一步用「") + how + "」";
         }
         if ("escaped".equals(kind)) {
             String app = what.isEmpty() ? "App" : what;
-            return "「" + app + "」跑到了你自己的屏幕上";
+            return "「" + app + Tr.t("」跑到了你自己的屏幕上");
         }
         if ("follow".equals(kind)) {
             String app = what.isEmpty() ? "App" : what;
-            return "跟着「" + app + "」到你自己的屏幕上继续";
+            return Tr.t("跟着「") + app + Tr.t("」到你自己的屏幕上继续");
         }
         if ("type".equals(kind)) {
             // the search-query step the macro layer types by itself
-            return what.isEmpty() ? "输入文字" : "输入「" + what + "」";
+            return what.isEmpty() ? Tr.t("输入文字") : Tr.t("输入「") + what + "」";
         }
         if ("pull".equals(kind)) {
             // the detail is "moved back to the agent's display": what happened,
             // in words a person reading the chat would use
-            String app = what.isEmpty() ? "目标 App" : what;
-            return "「" + app + "」跳到了你的屏幕上，已搬回虚拟屏";
+            String app = what.isEmpty() ? Tr.t("目标 App") : what;
+            return "「" + app + Tr.t("」跳到了你的屏幕上，已搬回虚拟屏");
         }
         if ("verify".equals(kind)) {
             if ("mismatch".equals(what)) {
-                return "当前页面和地图记录的不一样，按眼前的页面继续";
+                return Tr.t("当前页面和地图记录的不一样，按眼前的页面继续");
             }
             if ("refused".equals(what)) {
-                return "模型没看到页面，换一屏继续看";
+                return Tr.t("模型没看到页面，换一屏继续看");
             }
-            return "核对页面内容";
+            return Tr.t("核对页面内容");
         }
         if ("shade".equals(kind)) {
-            return "下拉通知栏挡住了界面，已收起";
+            return Tr.t("下拉通知栏挡住了界面，已收起");
         }
         if ("memory".equals(kind)) {
             // the detail is the fact itself; "remembered" is the verb
-            return how.isEmpty() ? "记住了屏上的一条信息" : "记住了：" + how;
+            return how.isEmpty() ? Tr.t("记住了屏上的一条信息") : Tr.t("记住了：") + how;
         }
         if ("macro".equals(kind)) {
-            String name = what.isEmpty() ? "已知路径" : what;
+            String name = what.isEmpty() ? Tr.t("已知路径") : what;
             if (how.contains("steps")) {
                 java.util.regex.Matcher m = java.util.regex.Pattern
                         .compile("\\(([0-9]+)/([0-9]+) steps\\)").matcher(how);
                 if (m.find()) {
-                    return "地图回放：进入「" + cleanLabel(name) + "」的 " + m.group(1) + " 个动作";
+                    return Tr.t("地图回放：进入「") + cleanLabel(name) + Tr.t("」的 ") + m.group(1) + Tr.t(" 个动作");
                 }
             }
-            return "地图回放：进入「" + cleanLabel(name) + "」" + (how.contains("ok") ? "（完成）" : "");
+            return Tr.t("地图回放：进入「") + cleanLabel(name) + "」" + (how.contains("ok") ? Tr.t("（完成）") : "");
         }
         if ("vlm".equals(kind) || "tap".equals(kind) || "act".equals(kind)) {
             if ("launch".equals(what)) {
-                return "打开 App";
+                return Tr.t("打开 App");
             }
             if ("macro".equals(what)) {
-                return "沿已知路径操作";
+                return Tr.t("沿已知路径操作");
             }
             if ("tap_index".equals(what)) {
-                return "点按截图上的编号";
+                return Tr.t("点按截图上的编号");
             }
             if ("tap".equals(what)) {
-                return "点按屏幕";
+                return Tr.t("点按屏幕");
             }
             if ("scroll".equals(what) || "swipe".equals(what)) {
-                return "滚动页面";
+                return Tr.t("滚动页面");
             }
             if ("wait".equals(what)) {
-                return "等待界面加载";
+                return Tr.t("等待界面加载");
             }
             if ("back".equals(what)) {
-                return "返回上一页";
+                return Tr.t("返回上一页");
             }
             if ("type".equals(what)) {
-                return "输入文字";
+                return Tr.t("输入文字");
             }
             if ("tap_text".equals(what)) {
                 return how.isEmpty() || "ok".equals(how)
-                        ? "点按文字" : "点按「" + how + "」";
+                        ? Tr.t("点按文字") : Tr.t("点按「") + how + "」";
             }
             if ("shell".equals(what)) {
                 // the detail is the command itself now, and a person reading
                 // the chat deserves to see what was run on their phone
-                return how.isEmpty() ? "执行命令" : "执行命令：" + how;
+                return how.isEmpty() ? Tr.t("执行命令") : Tr.t("执行命令：") + how;
             }
             if ("finish".equals(what)) {
                 return "";
@@ -3424,12 +3455,12 @@ public class MainActivity extends Activity {
         if (macro.find()) {
             String target = cleanLabel(macro.group(1));
             return looksLikeId(target)
-                    ? "· 按已知路径操作（" + macro.group(2) + " 步）"
-                    : "· 按已知路径进入「" + target + "」（" + macro.group(2) + " 步）";
+                    ? Tr.t("· 按已知路径操作（") + macro.group(2) + Tr.t(" 步）")
+                    : Tr.t("· 按已知路径进入「") + target + "」（" + macro.group(2) + Tr.t(" 步）");
         }
         if (line.endsWith("设置全量")) {
             String target = cleanLabel(line.replace("设置全量", ""));
-            return looksLikeId(target) ? "· 使用已知的地图" : "· 使用「" + target + "」的地图";
+            return looksLikeId(target) ? Tr.t("· 使用已知的地图") : Tr.t("· 使用「") + target + Tr.t("」的地图");
         }
         // A plan sentence is the model talking to itself in English; the visible
         // step is the one after it.
@@ -3445,14 +3476,14 @@ public class MainActivity extends Activity {
         if (!m.find()) {
             return "";
         }
-        return Math.round(Double.parseDouble(m.group(1))) + " 秒";
+        return Math.round(Double.parseDouble(m.group(1))) + Tr.t(" 秒");
     }
 
     /**
      * A crawl line without its tracer packaging.
      *
      * "[Verified] depth=1 tap '推荐' (from screen_0)" is the log format; what a
-     * person needs is "点开 推荐". Paths are dropped entirely -- where the map is
+     * person needs is Tr.t("点开 推荐"). Paths are dropped entirely -- where the map is
      * written is a detail for the 地图 page.
      */
     private static String friendlyCrawlLine(String line) {
@@ -3463,7 +3494,7 @@ public class MainActivity extends Activity {
         if (text.startsWith("depth=")) {
             java.util.regex.Matcher m = java.util.regex.Pattern
                     .compile("tap '([^']+)'").matcher(text);
-            return m.find() ? "点开 " + m.group(1) : "";
+            return m.find() ? Tr.t("点开 ") + m.group(1) : "";
         }
         // Everything that is not a tap is a tracer line: a package name, a
         // display id, a count of elements. The user is watching screens being
@@ -3532,7 +3563,7 @@ public class MainActivity extends Activity {
      * this, everything was one TextView with "PhoneAgent" printed above it.
      */
     private void append(String who, String message) {
-        boolean mine = "你".equals(who);
+        boolean mine = Tr.t("你").equals(who);
         if (!mine) {
             hideThinking();
         }
@@ -3654,7 +3685,7 @@ public class MainActivity extends Activity {
         try {
             org.json.JSONObject entry = new org.json.JSONObject();
             entry.put("id", id);
-            entry.put("title", "新会话");
+            entry.put("title", Tr.t("新会话"));
             entry.put("updated", System.currentTimeMillis());
             org.json.JSONArray next = new org.json.JSONArray();
             next.put(entry);
@@ -3682,7 +3713,7 @@ public class MainActivity extends Activity {
                 }
                 if (sessionId.equals(entry.optString("id"))) {
                     entry.put("updated", System.currentTimeMillis());
-                    if (!firstLine.isEmpty() && "新会话".equals(entry.optString("title"))) {
+                    if (!firstLine.isEmpty() && Tr.t("新会话").equals(entry.optString("title"))) {
                         entry.put("title", firstLine.length() > 18
                                 ? firstLine.substring(0, 18) + "…" : firstLine);
                     }
@@ -3695,7 +3726,7 @@ public class MainActivity extends Activity {
             if (!found) {
                 org.json.JSONObject entry = new org.json.JSONObject();
                 entry.put("id", sessionId);
-                entry.put("title", firstLine.isEmpty() ? "新会话" : firstLine);
+                entry.put("title", firstLine.isEmpty() ? Tr.t("新会话") : firstLine);
                 entry.put("updated", System.currentTimeMillis());
                 next.put(entry);
             }
@@ -3829,7 +3860,7 @@ public class MainActivity extends Activity {
                 }
                 conversation.add(item);
                 if ("you".equals(kind)) {
-                    append("你", text);
+                    append(Tr.t("你"), text);
                     any = true;
                 } else if ("note".equals(kind)) {
                     note(text);

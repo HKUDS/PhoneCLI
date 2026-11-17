@@ -91,12 +91,12 @@ class PairingService : Service() {
         // adb cannot start a background service; a foreground one is allowed
         val nm = getSystemService(NotificationManager::class.java)
         nm.createNotificationChannel(
-            NotificationChannel("pairing", "配对", NotificationManager.IMPORTANCE_LOW)
+            NotificationChannel("pairing", Tr.t("配对"), NotificationManager.IMPORTANCE_LOW)
         )
         startForeground(
             1,
             Notification.Builder(this, "pairing")
-                .setContentTitle("PhoneAgent 正在配对")
+                .setContentTitle(Tr.t("PhoneAgent 正在配对"))
                 .setSmallIcon(android.R.drawable.stat_sys_download)
                 .build()
         )
@@ -107,7 +107,7 @@ class PairingService : Service() {
         if (watch) {
             Thread {
                 val deadline = System.currentTimeMillis() + WATCH_MS
-                var detail = "没有检测到配对弹窗（请在无线调试里打开「使用配对码配对设备」）"
+                var detail = Tr.t("没有检测到配对弹窗（请在无线调试里打开「使用配对码配对设备」）")
                 try {
                     while (System.currentTimeMillis() < deadline) {
                         val found = PhoneAgentAccessibilityService.scanPairingDialog()
@@ -121,7 +121,7 @@ class PairingService : Service() {
                                 startForegroundService(
                                     Intent(this@PairingService, AgentService::class.java)
                                 )
-                                detail += "，正在启动 agent"
+                                detail += Tr.t("，正在启动 agent")
                             }
                             break
                         }
@@ -134,7 +134,7 @@ class PairingService : Service() {
                 nm.notify(
                     1,
                     Notification.Builder(this, "pairing")
-                        .setContentTitle("PhoneAgent 配对结果")
+                        .setContentTitle(Tr.t("PhoneAgent 配对结果"))
                         .setContentText(detail)
                         .setSmallIcon(android.R.drawable.stat_notify_sync)
                         .build()
