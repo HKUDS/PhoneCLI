@@ -48,7 +48,7 @@
 
 ## 🆕 Update — PhoneGo：把这套 harness 搬进手机
 
-<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.2.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="下载 PhoneGo 0.2.0（Android）"></a>
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="下载 PhoneGo 0.3.0（Android）"></a>
 
 <sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.zh.md">它是什么</a> &nbsp;·&nbsp; <a href="android-app/README.zh.md">构建与运行</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">并排演示</a></sub>
 

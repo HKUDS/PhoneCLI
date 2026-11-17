@@ -40,7 +40,7 @@
 
 ## 🆕 Update — PhoneGo: the harness, on the phone itself
 
-<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.2.0/PhoneGo-0.2.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.2.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="Download PhoneGo 0.2.0 for Android"></a>
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="Download PhoneGo 0.3.0 for Android"></a>
 
 <sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.md">What it is</a> &nbsp;·&nbsp; <a href="android-app/README.md">Build and run</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">Side-by-side demo</a></sub>
 
