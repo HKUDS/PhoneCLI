@@ -17,6 +17,9 @@
 | 文件 | 内容 |
 |---|---|
 | [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | 同一句话、同一台手机，两种模式并排 3×（时长 55 秒，带步数计数器） |
+| [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | 一句话跨两个 App：小红书的一篇笔记 → 笔记里的酒店 → 携程今晚的价格（3 分 40 秒，540p） |
+| [showcase/app-xhs-ctrip.gif](showcase/app-xhs-ctrip.gif) | 同一条任务的三联动图，README 里在用 |
+| [showcase/lightagent-demo.gif](showcase/lightagent-demo.gif) | harness 在 AndroidLab 基准上的演示，README 里在用 |
 
 左边是**自动**（地图 + 宏回放）：17 步 / 64 秒 / 92.3k token；右边是**纯看图**（每步都靠截图决策）：
 32 步 / 146 秒 / 207.1k token。两条都完成了任务。
