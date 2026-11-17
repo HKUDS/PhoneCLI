@@ -21,8 +21,8 @@ defaultConfig {
         applicationId = "com.phoneagent.app"
         minSdk = 34
         targetSdk = 34
-        versionCode = 3
-        versionName = "0.3.0"
+        versionCode = 4
+        versionName = "0.4.0"
 
         ndk {
             abiFilters += listOf("arm64-v8a")
