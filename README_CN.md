@@ -15,7 +15,7 @@
   <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
   <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
   <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
-  <a href=""><img src="https://img.shields.io/badge/Platform-Android-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
+  <img src="https://img.shields.io/badge/Platform-Android-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/>
   <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧English-1f6feb?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
   <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
   <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
@@ -39,11 +39,11 @@
 | | |
 |---|---|
 | 📵 **不占用你的屏幕** | 目标 App 在一块它自己的、你看不见的屏上运行。少数 App 只肯在主屏跑，遇到这种它会跟过去做完，再搬回来。 |
-| 🧭 **不是每一步都靠猜** | 导航来自离线编译好的地图：一次确定性重放，**0 次模型调用**，每步亚秒级。 |
+| 🧭 **不是每一步都靠猜** | 导航来自离线编译好的地图：一次确定性重放，**不调用视觉模型**，每一步点击都在亚秒级完成。 |
 | 👁 **需要看图时会看图** | 地图不适用时，退回视觉模型像人一样操作那一屏，最后给你一句人话，而不是一堆日志。 |
 | 🔗 **能跨 App 接着做** | 在一个 App 里读到的信息，直接用在下一个：*"小红书看看推荐哪家酒店，再去携程查今晚多少钱"*。 |
 | ↩️ **做完把屏幕还给你** | 任务结束时目标 App 回到它自己的屏，对话回到前台，并问你要不要把那个页面切过来继续操作。 |
-| 🔒 **数据留在手机上** | 配对密钥、地图、会话、设置都在 App 里；只有模型调用真正需要的那几张截图会发出去。 |
+| 🔒 **数据留在手机上** | 配对密钥、地图、会话、设置都在 App 里；只有模型调用真正需要看的那几个界面会发出去。 |
 
 ## 🎬 一条任务长什么样
 
@@ -65,18 +65,18 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 ```
 离线     爬虫走一遍 App，把它编译成一张地图          （每个 App 一次）
-在线     任务路由 → 重放地图里的宏                  （0 次模型调用）
+在线     任务路由 → 重放地图里的宏                  （一次很小的路由调用）
 兜底     地图没覆盖的界面 → 视觉模型只处理那一部分   （仅在那里）
 ```
 
 路由是一次很小的文本调用；重放是确定性的——同样的点击、同样的顺序，每次都一样。
-视觉模型是"异常处理"，不是引擎，所以一条任务能在一分钟内做完，而不是五分钟。
+视觉模型是"异常处理"，不是引擎，所以同一条任务一分钟左右就能做完，而不是两分半。
 
 ## 📊 真机实测
 
 | 任务 | 地图 + 重放 | 纯看图 |
 |---|---|---|
-| 查香港大学参观怎么预约（小红书） | **17 步 / 64 秒 / 92k tokens** | 32 步 / 146 秒 / 207k tokens |
+| 查香港大学参观怎么预约（小红书） | **17 步 / 64 秒 / 92.3k token** | 32 步 / 146 秒 / 207.1k token |
 
 同一台手机、同一句指令，两条都完成了。录像在 [docs/showcase/](docs/showcase/)。
 
@@ -84,8 +84,8 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 1. 下载 `PhoneGo-0.3.0-arm64.apk`（**Android 14 及以上、arm64**），在手机上打开安装。
    需要允许"安装未知来源应用"；MIUI 会弹一次确认（继续安装）。
-2. 打开**无线调试**，并在系统设置里启用 PhoneGo 的**无障碍服务**——App 会自己和手机上的
-   `adbd` 配对，不需要电脑。
+2. 打开**无线调试**，然后启用 PhoneGo 的**无障碍服务**：App 需要从系统弹窗里读出配对码，
+   才能和手机上的 `adbd` 自己配对，所以无障碍要**先**打开。不需要电脑。
 3. 打开「设置」，填入你自己的**模型 API Key**（DeepSeek，或任何 OpenAI / Anthropic
    兼容的接口）。App 不内置任何密钥。
 4. 输入一句指令。
@@ -95,13 +95,13 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 ## ❓ 常见问题
 
 **会把我的屏幕传上去吗？**
-只有模型调用真正需要的那几张截图，发到你配置的接口。地图、会话、配对密钥和设置不出 App。
+只有模型调用真正需要看的那几个界面会发到你配置的接口。地图、会话、配对密钥和设置不出 App。
 
 **需要电脑吗？**
 不需要。App 用的是手机自己的无线调试通道；同一套代码在开发时也能从电脑走 USB 跑。
 
 **哪些 App 能用？**
-能用手指点的都能用。有地图的 App 秒级完成；没有的走视觉兜底，会慢一些、也更费模型调用。
+能用手指点的都能用。有地图的 App 跑同一条任务会快好几倍；没有的走视觉兜底，会慢一些、也更费模型调用。
 地图是按 App 在你手机上建的，随时可以重建。
 
 **会替我买东西吗？**
