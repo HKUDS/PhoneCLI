@@ -59,7 +59,7 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 49 steps, 200 seconds, one instruction, two apps.
 
 <p align="center">
-  <img src="docs/showcase/app-xhs-ctrip.gif" width="360" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
+  <img src="docs/showcase/app-xhs-ctrip.gif" width="240" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
 </p>
 
 ## ⚙️ How it works

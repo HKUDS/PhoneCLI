@@ -56,7 +56,7 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 49 步、200 秒、一句话、两个 App。
 
 <p align="center">
-  <img src="docs/showcase/app-xhs-ctrip.gif" width="360" alt="PhoneGo 把小红书上读到的酒店名输入携程，并报出今晚价格">
+  <img src="docs/showcase/app-xhs-ctrip.gif" width="240" alt="PhoneGo 把小红书上读到的酒店名输入携程，并报出今晚价格">
 </p>
 
 ## ⚙️ 它是怎么跑的
