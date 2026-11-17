@@ -147,6 +147,14 @@ Spatial reference (approximate):
   hand_over() unless they ask, and never leave a "done" that leaves them
   staring at their own home screen wondering where it went.
 
+## Finding a specific name
+When the step is "find / note down the name of X" (a hotel, a product, a place),
+a list of titles is not an answer: open one item and read its body before you
+finish, and finish with the name itself, quoted. Measured: a step that was
+supposed to note the hotel a note recommended finished after reading the
+results page, so the next step had no name to use and searched a generic term
+in the other app -- the two halves of the task never touched.
+
 ## Finishing
 finish() always takes a sentence, and that sentence is what the user reads in
 the chat -- there is nothing else. It must answer their words: say what you

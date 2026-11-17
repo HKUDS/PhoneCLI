@@ -788,10 +788,20 @@ class PhoneAgent:
         """
         if not self.config.include_ui_text:
             return None
-        try:
-            xml = self.device.dump_ui()
-        except DeviceError as exc:
-            return self._result(False, "", f"device error: {exc}", 0)
+        # A subtask starts right after its app was launched, and a cold app
+        # draws for several seconds: the first dump comes back with an empty
+        # tree, and "nothing readable" then ended the subtask one second after
+        # it began (measured twice, on 小红书 and on 携程). Give it a moment.
+        xml = ""
+        for attempt in range(6):
+            try:
+                xml = self.device.dump_ui()
+            except DeviceError as exc:
+                return self._result(False, "", f"device error: {exc}", 0)
+            if self._ui_texts(xml):
+                return None
+            if attempt < 5:
+                self.sleep(1.0)
         # A challenge can render as a nearly empty tree (a webview, a canvas),
         # so it has to be recognised before "there is nothing here" is reported:
         # the two need opposite answers.
@@ -1117,7 +1127,13 @@ class PhoneAgent:
                 left = getattr(shared, "left", None)
                 if left is not None:
                     steps_left = len(steps) - index + 1
-                    share = max(4, left // max(1, steps_left))
+                    # Keep a floor for the steps still to come, and let this
+                    # one use the rest: reading a long note legitimately takes
+                    # a dozen rounds, and an even split (17 of 35 for a
+                    # two-step task) ended the first subtask with max_rounds
+                    # while the note it needed was already on screen.
+                    reserve = 10 * (steps_left - 1)
+                    share = max(10, left - reserve)
                     sub._budget = _Budget(share)
                 else:
                     sub._budget = shared
