@@ -30,6 +30,12 @@
 打开、点击、滑动、返回。PhoneGo 把这部分离线编译成一张地图，确定性地重放；
 只有地图覆盖不到的界面，才去问模型。
 
+<p align="center">
+  <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI 的 harness 在 AndroidLab 基准上驱动 Android 模拟器">
+  <br>
+  <sub>PhoneCLI 的 harness 在 AndroidLab 基准上驱动 Android 模拟器——这是 App 之前的 CLI 形态。</sub>
+</p>
+
 ## ✨ 它和别的不一样在哪
 
 | | |
