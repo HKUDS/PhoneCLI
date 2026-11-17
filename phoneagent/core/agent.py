@@ -335,7 +335,7 @@ class AgentConfig:
     #: that blocks inside a call cannot report anything by itself, and the app
     #: was left with a dead local API and no answer (measured: four runs in a
     #: row died this way, minutes in, with the process still alive).
-    stall_timeout: float = 90.0
+    stall_timeout: float = 180.0
     #: The agent may run shell commands on the phone. On by default: opening an
     #: app or reading a setting with one command beats tapping to the same place,
     #: and commands that change the phone ask first.
@@ -520,6 +520,9 @@ class PhoneAgent:
         self._routed_packages: set = set()
         #: The app currently being driven, and when a challenge parked it.
         self._driving_package = ""
+        #: True once this run launched or followed an app, i.e. once the phone's
+        #: screen may need to be handed back at the end.
+        self._drove_app = False
         self._challenge_until: dict = {}
         #: Where the "this app asked for a captcha" record lives.
         self._risk_path = getattr(self.config, "risk_path", "")
@@ -642,17 +645,41 @@ class PhoneAgent:
         if getattr(self.config, "stay_on_user_display", False):
             return
         package = getattr(self, "_driving_package", "")
-        if not package:
-            return
         back = getattr(self.device, "return_to_own_display", None)
         if back is not None:
             try:
                 back()
             except Exception:  # noqa: BLE001 - housekeeping
                 pass
+        if not getattr(self, "_drove_app", False):
+            return
+        if not package:
+            # A plan runs its subtasks, and the subtask is what launched the
+            # app: the parent's field is empty unless it is filled in. Falling
+            # back to whatever is in front covers that, so a finished task does
+            # not leave the target app sitting on the phone's screen.
+            try:
+                package = self.device.current_app()
+            except Exception:  # noqa: BLE001
+                package = ""
+        if package and package not in ("com.phoneagent.app", "com.miui.home",
+                                       "com.android.launcher3"):
+            try:
+                self._pull_back_if_escaped(package)
+            except Exception:  # noqa: BLE001 - never fail a finished task here
+                pass
+        # And the chat comes back to the front: the last thing the user should
+        # see is the answer, not the app the agent was driving.
         try:
-            self._pull_back_if_escaped(package)
-        except Exception:  # noqa: BLE001 - never fail a finished task here
+            # The app may be showing a full-screen viewer over the chat (tapping
+            # the mirror opens one). Back closes that; the start below is what
+            # guarantees the chat itself is on top afterwards.
+            if self.device.current_app() == AGENT_PACKAGE:
+                self.device.press_back()
+                self.sleep(0.3)
+            self.device.shell("am start -n com.phoneagent.app/.MainActivity")
+            self.sleep(0.6)
+        except Exception:  # noqa: BLE001 - the answer is already recorded
             pass
 
     def _names_an_unmapped_app(self, task: str) -> bool:
@@ -1061,8 +1088,39 @@ class PhoneAgent:
             )
             sub._depth = self._depth + 1
             sub._current_app_hint = app
-            # the subtask spends from the same allowance, not a fresh one
-            sub._budget = getattr(self, "_budget", None)
+            # A subtask about one app starts by putting that app in front.
+            # Without it, 携程's subtask answered from 小红书's page: the vision
+            # model read the note that was still on screen and replied with a
+            # hotel name, marking "search it in 携程" as done.
+            target = next((m for m in maps if m.app_name == app), None)
+            package = getattr(target, "package", "") if target else ""
+            if package:
+                try:
+                    front = self.device.current_app()
+                except Exception:  # noqa: BLE001 - a failed read is not a reason to skip
+                    front = ""
+                if front != package:
+                    try:
+                        self.device.launch(package)
+                        self.steps.append(Step(index, "launch", app, "subtask starts here"))
+                        self._driving_package = package
+                        self._drove_app = True
+                    except Exception as exc:  # noqa: BLE001 - the subtask can still try
+                        self.history.append(f"could not open {app} for this step: {exc}")
+            # Each subtask gets a share of what is left, not the whole pot and
+            # not a fresh one. Handing the same counter to every subtask let the
+            # first one spend it all -- measured on a two-step cross-app task:
+            # 33 rounds went to browsing 小红书 and 携程 got none, so the answer
+            # ended "这一步没做成" before that app was even opened.
+            shared = getattr(self, "_budget", None)
+            if shared is not None:
+                left = getattr(shared, "left", None)
+                if left is not None:
+                    steps_left = len(steps) - index + 1
+                    share = max(4, left // max(1, steps_left))
+                    sub._budget = _Budget(share)
+                else:
+                    sub._budget = shared
             # stream the subtask's steps into this task, so the app can show
             # what is happening instead of a single "plan" line
             sub.steps = _TeeSteps(self.steps)
@@ -1070,10 +1128,22 @@ class PhoneAgent:
             # of asking the user for something the planner already collected.
             carry = "；".join(a.strip() for a in answers if a.strip())[-600:]
             result = sub.run(subtask, context=carry)
-            self.steps.append(
-                Step(index, "subtask", app or subtask[:24],
-                     f"{'ok' if result.ok else 'failed'}: {subtask[:60]}")
-            )
+            detail = f"{'ok' if result.ok else 'failed'}: {subtask[:56]}"
+            if not result.ok and result.reason:
+                # Without this the chat said "failed" and nothing else: three
+                # runs died in three different ways and the log could not say
+                # which, because the subtask's own reason never left it.
+                detail += f" — {str(result.reason)[:90]}"
+            self.steps.append(Step(index, "subtask", app or subtask[:24], detail))
+            if not result.ok and result.reason:
+                self.history.append(
+                    f"subtask {index} ({app or subtask[:24]}) failed: {result.reason}")
+            # the subtask is what launched and drove the app; the parent needs
+            # to know for the end-of-task restore
+            if not self._driving_package and getattr(sub, "_driving_package", ""):
+                self._driving_package = sub._driving_package
+            if getattr(sub, "_drove_app", False):
+                self._drove_app = True
             # result.steps is the tee: already in self.steps
             if result.answer:
                 answers.append(result.answer)
@@ -1091,6 +1161,11 @@ class PhoneAgent:
                 f"「{name[:24]}」" for name in done_names) + "。"
             if failed_name:
                 answer += f"「{failed_name[:30]}」这一步没做成。"
+                # The page the agent stopped on is still on its own display;
+                # say so and offer it, instead of leaving the user guessing why
+                # the phone is back on this chat.
+                if getattr(self, "_drove_app", False):
+                    answer += "需要我把刚才那个页面切到你的屏幕上继续吗？"
         else:
             answer = "这条任务需要分几步做，第一步就没有走通。"
         return self._result(False, answer, "partial" if answers else "planner",
@@ -1467,7 +1542,9 @@ class PhoneAgent:
                     call = choice.call
                     reply = choice.text or ""
                 else:
+                    self._touch()
                     reply = self.llm.vision(COORDINATE_VLM_PROMPT, user, png)
+                    self._touch()
             except LLMError as exc:
                 llm_errors += 1
                 self.history.append(f"vlm error: {exc}")
@@ -2136,6 +2213,7 @@ class PhoneAgent:
                             f"{name_text} can only run on your screen; following it there."
                         )
                         self._driving_package = package
+                        self._drove_app = True
                         try:
                             return bool(device.launch(package))
                         except NeedsHandover as exc:
@@ -2187,6 +2265,7 @@ class PhoneAgent:
                         self.steps.append(Step(0, "follow", self._app_label(package),
                                                "runs on the user's display"))
                 self._driving_package = package
+                self._drove_app = True
                 if self._already_in_front(device, package):
                     self.history.append(
                         f"{self._app_label(package)} 已经开着，就在你眼前的屏幕上。"

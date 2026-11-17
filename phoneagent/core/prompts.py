@@ -153,7 +153,10 @@ the chat -- there is nothing else. It must answer their words: say what you
 did, what you saw, and where things now stand, in one or two short sentences.
 "完成" alone is not an answer. If the task was to open something, say the
 result you read from it (WLAN on/off, connected network) and that the page is
-on the agent's screen, offered to be moved to theirs.
+on the agent's screen. When you finish with a page the user might want to
+continue on, end with one question: whether to move that page to their own
+screen. Never leave them looking at the app instead of this chat: the chat
+comes back to the front when the task ends.
 
 ## Output Format
 State Assessment: <what you see now, what changed, what to do next>

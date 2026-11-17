@@ -571,6 +571,14 @@ def _run(task_id: str, text: str, config: ServerConfig,
                     back()
             except Exception:  # noqa: BLE001 - housekeeping
                 pass
+            # And the user gets their screen back with the chat on it. Without
+            # this a task that followed an app (携程's search page, a singleTask
+            # activity) ended with that app still in front, and the answer was
+            # sitting behind it.
+            try:
+                _hand_back_the_screen(device)
+            except Exception as exc:  # noqa: BLE001 - never fail a finished task
+                print(f"[server] could not hand the screen back: {exc}")
             usage_mod.clear_context()
             CANCEL.pop(task_id, None)
             PENDING.pop(task_id, None)
@@ -582,6 +590,40 @@ def _run(task_id: str, text: str, config: ServerConfig,
                     device.stop()
                 except Exception:
                     pass
+
+
+#: The app this server runs in; it must end up in front.
+AGENT_PACKAGE = "com.phoneagent.app"
+#: Foreground owners that are already "the user's own screen".
+_HOME_PACKAGES = ("com.miui.home", "com.android.launcher3", "com.android.systemui")
+
+
+def _hand_back_the_screen(device) -> None:
+    """Move the driven app off the phone's display and bring the chat forward.
+
+    Called when a task ends. Movies the app back rather than stopping it, so the
+    page the agent was reading is still there when the user asks for it.
+    """
+    package = ""
+    try:
+        package = device.current_app() or ""
+    except Exception:  # noqa: BLE001
+        package = ""
+    if package and package not in _HOME_PACKAGES + (AGENT_PACKAGE,):
+        pull = getattr(device, "pull_back", None)
+        if pull is not None:
+            try:
+                if pull(package):
+                    print(f"[server] moved {package} back to the agent's display")
+            except Exception:  # noqa: BLE001
+                pass
+    try:
+        if package == AGENT_PACKAGE:
+            # a full-screen viewer over the chat is closed with back
+            device.press_back()
+        device.shell(f"am start -n {AGENT_PACKAGE}/.MainActivity")
+    except Exception:  # noqa: BLE001
+        pass
 
 
 def _crawl_run(crawl_id: str, argv: list[str], device, crawl: dict, recover=None,

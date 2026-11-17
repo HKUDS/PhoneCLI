@@ -2375,11 +2375,15 @@ public class MainActivity extends Activity {
             return;
         }
         boolean ready = AgentService.isReady();
-        if (ready && System.currentTimeMillis() - lastWarmup > 10 * 60 * 1000L) {
-            // Starting an app and drawing it takes six to ten seconds, and on
-            // the first task of a session the model watches all of it: nine
-            // steps and 57k tokens instead of four and 13k. Warming up here
-            // costs nothing visible -- it happens on the agent's own display.
+        // Off unless asked for. The warm-up launches the first mapped apps
+        // (Settings, 大众点评, 小红书) on the agent's display, and to anyone
+        // watching the phone it looks exactly like the agent wandering into the
+        // wrong app in the middle of a task -- measured: a 小红书→携程 task that
+        // opened 大众点评 while it was being set up. The saving (nine steps
+        // instead of four on the first task) is not worth that.
+        boolean warmup = getSharedPreferences("agent", MODE_PRIVATE)
+                .getBoolean("warmup", false);
+        if (ready && warmup && System.currentTimeMillis() - lastWarmup > 10 * 60 * 1000L) {
             lastWarmup = System.currentTimeMillis();
             new Thread(() -> {
                 try {
@@ -2467,10 +2471,15 @@ public class MainActivity extends Activity {
 
     private void poll(String id, int attempt) {
         polling = true;
-        if (attempt > 500) {  // ~6 minutes
+        // ~20 minutes. The old cap was ~6, and a cross-app task that reads a
+        // note and then prices on another app legitimately runs that long: the
+        // app gave up while the agent was still working, told the user "超时未
+        // 返回", and the answer never appeared even though the run finished.
+        if (attempt > 1600) {
             polling = false;
             ui(() -> {
-                append("PhoneGo", "任务超时未返回，已停止等待。");
+                append("PhoneGo", "这条任务跑了 20 分钟以上，我先停止等待了。"
+                        + "它可能还在后台跑，可以稍后在「地图/用量」里看结果。");
                 setBusy(false);
             });
             return;
