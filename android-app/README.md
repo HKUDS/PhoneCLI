@@ -3,8 +3,9 @@ English · [中文](README.zh.md)
 # android-app
 
 The APK: a chat interface around the agent in
-[`../phoneagent`](../phoneagent). The target app runs on a virtual display that
-the phone does not show, so the user keeps the screen they were using.
+[`../phoneagent`](../phoneagent). The target app runs on a screen the phone does not
+show, so the user keeps the one they were using; an app that only runs on the main
+screen is followed there, and moved back when the step is done.
 
 | Piece | Where |
 |---|---|

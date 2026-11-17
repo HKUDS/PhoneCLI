@@ -47,12 +47,11 @@
 </div>
 
 **PhoneGo** is PhoneCLI's algorithm as an Android app: the agent runs *inside* the
-phone and drives the target app on a virtual display of its own, so the screen in your
-hand stays yours. Not every app can live there — a few activities are `singleTask`, and
-some launchers only start on the main screen: PhoneGo follows those onto your display
-for as long as the step needs, then moves them back and returns you to this chat. Same
-backbone (compile an app map offline, replay the macro, fall back to GUI only when the
-map does not apply); the transport is just the phone's own `adbd` instead of a cable.
+phone and works on a screen of its own, so the one in your hand stays yours. Some apps
+only run on the main screen — when that happens, PhoneGo follows them there, finishes
+the step, and puts them back. Same backbone (compile an app map offline, replay the
+macro, fall back to GUI only when the map does not apply); the transport is just the
+phone's own `adbd` instead of a cable.
 
 One instruction, one phone: **17 steps / 64 s** with the map versus **32 steps / 146 s**
 with pure vision, both successful.
