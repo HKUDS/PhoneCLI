@@ -26,6 +26,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Callable, Optional
@@ -330,6 +331,11 @@ def parse_route(text: str) -> Route:
 @dataclass
 class AgentConfig:
     max_rounds: int = 35
+    #: Seconds without progress after which the run is declared stuck. A task
+    #: that blocks inside a call cannot report anything by itself, and the app
+    #: was left with a dead local API and no answer (measured: four runs in a
+    #: row died this way, minutes in, with the process still alive).
+    stall_timeout: float = 90.0
     #: The agent may run shell commands on the phone. On by default: opening an
     #: app or reading a setting with one command beats tapping to the same place,
     #: and commands that change the phone ask first.
@@ -530,7 +536,62 @@ class PhoneAgent:
         """Has the caller asked this run to stop?"""
         return bool(self.cancel is not None and self.cancel())
 
-    def run(self, task: str) -> TaskResult:
+    def _touch(self) -> None:
+        """Mark progress, so the watchdog can tell work from a wedge."""
+        self._heartbeat = time.time()
+
+    def _start_watchdog(self) -> None:
+        """Abort the run if a step stops making progress.
+
+        The thread exists because the failure it watches for is one where the
+        normal loop cannot run: a call that never returns. Nothing here kills
+        the call; it only makes sure that when the call finally does return,
+        the task ends with a sentence instead of silence.
+        """
+        limit = float(getattr(self.config, "stall_timeout", 90.0) or 0)
+        if limit <= 0:
+            return
+        heartbeat = self._heartbeat
+        # Sample often enough that a short limit still fires, rarely enough to
+        # cost nothing on a long task.
+        interval = max(0.2, min(5.0, limit / 3.0))
+
+        def watch() -> None:
+            while not getattr(self, "_watchdog_stop", False):
+                time.sleep(interval)
+                idle = time.time() - getattr(self, "_heartbeat", heartbeat)
+                if idle >= limit and not self._stalled:
+                    self._stalled = True
+                    self._stall_seconds = int(idle)
+                    self.log(f"[agent] no progress for {int(idle)}s; aborting the task")
+
+        threading.Thread(target=watch, name="agent-watchdog", daemon=True).start()
+
+    def _stall_result(self, round_no: int = 0) -> TaskResult:
+        seconds = getattr(self, "_stall_seconds", 0) or int(
+            time.time() - getattr(self, "_heartbeat", time.time()))
+        return self._result(
+            False,
+            f"任务卡住了：{seconds} 秒没有进展，已经中止。可以重试一次，"
+            "如果还是停在同一处，那一步需要我人工看一下。",
+            "stalled",
+            round_no,
+        )
+
+    def run(self, task: str, context: str = "") -> TaskResult:
+        """Run one task. ``context`` is what earlier subtasks found.
+
+        A subtask used to receive only its own sentence ("use the hotel name
+        you found"), so the name itself never arrived and a cross-app task
+        stopped to ask the user for something the planner had already
+        collected.
+        """
+        self._carry = (context or "").strip()
+        self._heartbeat = time.time()
+        self._stalled = False
+        self._stall_seconds = 0
+        self._watchdog_stop = False
+        self._start_watchdog()
         self.history = []
         self.actions = []
         # a subtask is handed a list that forwards to its parent; resetting it
@@ -553,6 +614,7 @@ class PhoneAgent:
         try:
             result = self._run_layers(task)
             self._end_of_task_display()
+            self._watchdog_stop = True
             return result
         except _Stranded as exc:
             return self._result(False, exc.answer, "handover", 0)
@@ -725,9 +787,40 @@ class PhoneAgent:
     QUERY_RE = __import__("re").compile(r"[搜查找]\s*[一下下]?\s*[『「\"'“]?([^』」\"'”，,。？?\n]{2,20})[』」\"'”]?")
 
     @classmethod
-    def _explicit_query(cls, task: str) -> str:
-        """The search term the task names, if it names one plainly."""
+    def _carried_entity(cls, carry: str) -> str:
+        """The most recent 「…」 / 「…」 / "…" in what an earlier subtask said.
+
+        Our own answers quote the thing they found ("文中提到的第一家住宿是
+        「重庆大厦」"), which is exactly the value the next subtask needs.
+        """
+        found = ""
+        for opener, closer in (("「", "」"), ("『", "』"), ("“", "”")):
+            start = 0
+            while True:
+                left = carry.find(opener, start)
+                if left < 0:
+                    break
+                right = carry.find(closer, left + 1)
+                if right < 0:
+                    break
+                value = carry[left + 1:right].strip()
+                if 2 <= len(value) <= 30:
+                    found = value
+                start = right + 1
+        return found
+
+    @classmethod
+    def _explicit_query(cls, task: str, carry: str = "") -> str:
+        """The search term the task names, if it names one plainly.
+
+        With a carried value the task text usually says only "search for it";
+        the value itself is in what the previous subtask reported.
+        """
         text = task or ""
+        if carry:
+            entity = cls._carried_entity(carry)
+            if entity:
+                return entity
         for marker in ("搜索", "搜一下", "搜一搜", "查找", "查一下"):
             index = text.find(marker)
             if index < 0:
@@ -840,7 +933,8 @@ class PhoneAgent:
             # is kept for the landing check below -- asking twice made the
             # second call see "no escape" and replayed the macro anyway.
             escaped = self._pull_back_if_escaped(app_map.package)
-            query = self._explicit_query(task) if "搜索" in str(route.value) else ""
+            query = (self._explicit_query(task, getattr(self, "_carry", ""))
+                     if "搜索" in str(route.value) else "")
             if query:
                 try:
                     xml_now = self.device.dump_ui()
@@ -972,7 +1066,10 @@ class PhoneAgent:
             # stream the subtask's steps into this task, so the app can show
             # what is happening instead of a single "plan" line
             sub.steps = _TeeSteps(self.steps)
-            result = sub.run(subtask)
+            # What the earlier subtasks found, so this one can use it instead
+            # of asking the user for something the planner already collected.
+            carry = "；".join(a.strip() for a in answers if a.strip())[-600:]
+            result = sub.run(subtask, context=carry)
             self.steps.append(
                 Step(index, "subtask", app or subtask[:24],
                      f"{'ok' if result.ok else 'failed'}: {subtask[:60]}")
@@ -1222,6 +1319,9 @@ class PhoneAgent:
                 )
             if self.cancelled():
                 return self._result(False, "", "cancelled", round_no)
+            if getattr(self, "_stalled", False):
+                return self._stall_result(round_no)
+            self._touch()
             rerouted = self._reroute_for_foreground(task)
             if rerouted is not None and rerouted.ok:
                 return rerouted
@@ -1432,6 +1532,7 @@ class PhoneAgent:
                     pending_notice = PULL_NOTICE
                 continue
             ok = self._execute_action(name, args)
+            self._touch()
             if name in self.SCREEN_CHANGING:
                 self._settle()
             if name == "macro":
@@ -1821,7 +1922,7 @@ class PhoneAgent:
             base = base.replace(
                 "- Prefer macro() over tap() when the system offers a matching navigation target.\n", ""
             )
-            return base + "\n\n" + VISION_SECTION
+            return base + "\n\n" + self._carry_block() + VISION_SECTION
         lines = []
         for app_map in self.maps:
             try:
@@ -1832,7 +1933,17 @@ class PhoneAgent:
                 lines.append(f"- {app_map.app_name}: " + "、".join(names))
         if not lines:
             return base
-        return base + "\n\n" + MAPS_SECTION.format(catalog="\n".join(lines))
+        return (base + "\n\n" + self._carry_block() + "\n\n"
+                + MAPS_SECTION.format(catalog="\n".join(lines)))
+
+    def _carry_block(self) -> str:
+        """What the earlier subtasks of this task already found."""
+        carry = getattr(self, "_carry", "")
+        if not carry:
+            return ""
+        return ("## 前面几步已经查到的东西\n"
+                "直接用下面的结果，不要再去问用户已经能查到的信息：\n"
+                + carry)
 
     def _stay_hint(self) -> str:
         """Where this step belongs, when a plan said so.

@@ -1305,3 +1305,76 @@ def test_the_search_term_is_taken_from_the_task():
     }
     for task, expected in cases.items():
         assert PhoneAgent._explicit_query(task) == expected, task
+
+
+def test_a_carried_name_is_used_instead_of_a_generic_word():
+    """Cross-app hand-off: the next subtask must use what the last one found.
+
+    Measured on 小红书 → 携程: the second subtask read "用记下的酒店名称搜索酒店"
+    and typed 酒店 into Ctrip, because the value only existed in the previous
+    subtask's answer.
+    """
+    from phoneagent.core.agent import PhoneAgent
+
+    carry = ("已打开第一篇笔记《香港避雷攻略》。文中提到的第一家住宿是「重庆大厦」，"
+             "距离尖沙咀站步行 3 分钟。")
+    assert PhoneAgent._carried_entity(carry) == "重庆大厦"
+    assert PhoneAgent._explicit_query("用记下来的酒店名称搜索酒店", carry) == "重庆大厦"
+    # without a carried value nothing changes
+    assert PhoneAgent._explicit_query("在小红书里搜索「香港大学附近酒店推荐」") == "香港大学附近酒店推荐"
+
+
+def test_the_watchdog_flags_a_run_that_stops_making_progress():
+    """A call that never returns cannot report itself; the watchdog can."""
+    import time
+
+    from phoneagent.core.agent import AgentConfig, PhoneAgent
+
+    class Fake:
+        config = AgentConfig(stall_timeout=0.2)
+        _stalled = False
+        _stall_seconds = 0
+        _watchdog_stop = False
+
+        def __init__(self):
+            self.messages = []
+            self._heartbeat = time.time()
+
+        def log(self, message):
+            self.messages.append(message)
+
+    fake = Fake()
+    PhoneAgent._start_watchdog(fake)
+    time.sleep(0.6)
+    fake._watchdog_stop = True
+
+    assert fake._stalled is True
+    assert any("no progress" in m for m in fake.messages)
+
+
+def test_progress_keeps_the_watchdog_quiet():
+    import time
+
+    from phoneagent.core.agent import AgentConfig, PhoneAgent
+
+    class Fake:
+        config = AgentConfig(stall_timeout=0.4)
+        _stalled = False
+        _stall_seconds = 0
+        _watchdog_stop = False
+
+        def __init__(self):
+            self.messages = []
+            self._heartbeat = time.time()
+
+        def log(self, message):
+            self.messages.append(message)
+
+    fake = Fake()
+    PhoneAgent._start_watchdog(fake)
+    for _ in range(4):
+        time.sleep(0.15)
+        PhoneAgent._touch(fake)
+    fake._watchdog_stop = True
+
+    assert fake._stalled is False

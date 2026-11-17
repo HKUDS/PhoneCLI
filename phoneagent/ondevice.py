@@ -107,30 +107,33 @@ def start_display(
     if _device is not None and _device.is_ready():
         return f"already running display={_device.display_id}"
 
-    # Replacing a device means abandoning the display it owns: the helper keeps
-    # it alive, and nothing else ever releases it. Every rebuild after a failed
-    # connection therefore leaked one display -- measured on this phone, 300+
-    # of them (Display3, 5, 7 ... 727) were still listed by dumpsys, which is
-    # what made the system crawl and finally stop answering.
-    if _device is not None:
-        try:
-            _device.stop()
-        except Exception:  # noqa: BLE001 - a dead device cannot be stopped
-            pass
-        _device = None
-
     from .devices.transports import SelfAdbTransport
     from .devices.virtual import HELPER_JAR, VirtualDisplayDevice
 
-    client = _connect(directory, port, host)
-    transport = SelfAdbTransport(client)
-    with open(helper_jar, "rb") as fh:
-        transport.write_file(fh.read(), HELPER_JAR)
+    device = _device
+    if device is not None:
+        # Rebuild in place, on the same object. Two reasons:
+        #  - the display the helper owns must be released, or it stays in
+        #    dumpsys forever (300+ were, which is what made the phone crawl);
+        #  - a running task holds this object. Swapping it for a new one left
+        #    that task with a closed transport ("AdbError: connection closed")
+        #    the moment anything rebuilt the display under it.
+        try:
+            device.stop()
+            device.start()
+        except Exception:  # noqa: BLE001 - its transport is dead too
+            device = None
 
-    device = VirtualDisplayDevice(
-        transport=transport, width=width, height=height, dpi=dpi, name="phoneagent"
-    )
-    display_id = device.start()
+    if device is None:
+        client = _connect(directory, port, host)
+        transport = SelfAdbTransport(client)
+        with open(helper_jar, "rb") as fh:
+            transport.write_file(fh.read(), HELPER_JAR)
+        device = VirtualDisplayDevice(
+            transport=transport, width=width, height=height, dpi=dpi, name="phoneagent"
+        )
+        device.start()
+    display_id = int(device.display_id or 0)
     # A display with nothing on it is useless: the frame reader either stays
     # empty or hands back the mirrored phone screen, and current_app() is
     # unknown. Note the launcher is not an option -- MIUI's refuses to start on

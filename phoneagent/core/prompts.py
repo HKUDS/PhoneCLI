@@ -441,10 +441,15 @@ Output a JSON array where each step targets ONE app:
 ```
 
 ## Rules
-- Each subtask targets exactly ONE app
+- Each subtask targets exactly ONE app, and that app must be one the user named
 - Use the exact app names from the Available Apps list
 - Preserve the original task's order and intent
 - Keep subtasks concise, under 30 words each
+- "read / note / remember X" is done by looking at the screen and saying what
+  you found: never plan a step that opens a notes app or writes a file
+- When a later step needs a value that an earlier step found, say so in that
+  step's subtask and quote the value once it is known (e.g. "search
+  「重庆大厦」 in 携程"); never leave it as "the name you found"
 - Output ONLY the JSON array, no other text"""
 
 
