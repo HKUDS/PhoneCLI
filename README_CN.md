@@ -85,13 +85,14 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 ## 📲 安装
 
-1. 下载 `PhoneGo-0.3.0-arm64.apk`（**Android 14 及以上、arm64**），在手机上打开安装。
-   需要允许"安装未知来源应用"；MIUI 会弹一次确认（继续安装）。
+1. 下载 **[PhoneGo-0.3.0-arm64.apk](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk)**
+   （**Android 14 及以上、arm64**），在手机上打开安装。需要允许"安装未知来源应用"；
+   MIUI 会弹一次确认（继续安装）。
 2. 打开**无线调试**，然后启用 PhoneGo 的**无障碍服务**：App 需要从系统弹窗里读出配对码，
    才能和手机上的 `adbd` 自己配对，所以无障碍要**先**打开。不需要电脑。
-3. 打开「设置」，填入你自己的**模型 API Key**（DeepSeek，或任何 OpenAI / Anthropic
-   兼容的接口）。App 不内置任何密钥。
-4. 输入一句指令。
+3. 点「设置」→「模型设置」：选一个预置（OpenRouter / DeepSeek / 智谱 / 阿里百炼 /
+   硅基流动 / 本地），填入你自己的 **API Key**，点「测试连接」。App 不内置任何密钥。
+4. 输入一句指令。建议从不需要登录的开始，比如「打开设置，看看现在连的是哪个 Wi-Fi」。
 
 升级直接覆盖安装：每个版本都用同一把密钥签名。
 
@@ -114,6 +115,7 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 | | |
 |---|---|
+| [docs/getting-started.zh.md](docs/getting-started.zh.md) | 从装好 APK 到跑完第一条任务，含首次启动的几个检查 |
 | [docs/product-app.zh.md](docs/product-app.zh.md) | 这个 App 是什么，逐层拆开讲 |
 | [docs/map-building.zh.md](docs/map-building.zh.md) | 地图怎么编译，每处改动背后的实测 |
 | [android-app/README.zh.md](android-app/README.zh.md) | 怎么构建：Gradle、Chaquopy、虚拟屏 helper |
@@ -121,7 +123,7 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 ## 🌟 引用
 
-如果这个项目对你的研究有帮助，欢迎引用我们的论文。
+PhoneGo 是这两篇论文的 App 形态：地图 + 重放的 harness 来自 **PhoneCLI**，兜底路径背后的开源模型来自 **OpenPhone**。如果它们对你的研究有帮助，欢迎两篇一并引用。
 
 ```
 @article{jiang2026phonecli,

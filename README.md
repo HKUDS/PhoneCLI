@@ -90,16 +90,25 @@ Same phone, same instruction, both successful. The recordings live in
 
 ## 📲 Install
 
-1. Download `PhoneGo-0.3.0-arm64.apk` (**Android 14+, arm64**) and open it. Allow
-   installation from this source; MIUI asks once (tap "continue").
+1. Download **[PhoneGo-0.3.0-arm64.apk](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk)**
+   (**Android 14+, arm64**) and open it on the phone. Allow installation from this
+   source; MIUI asks once (tap "continue").
 2. Turn on **wireless debugging**, then enable PhoneGo's **accessibility service**:
    the app reads the pairing code off the system dialog and pairs itself with the
    phone's own `adbd`, so the service has to be on first. No computer needed.
-3. Open Settings and paste your own **model API key** (DeepSeek, or any OpenAI- or
-   Anthropic-compatible endpoint). Nothing is bundled.
-4. Type an instruction.
+3. Tap **Settings → Model settings**: pick a preset (OpenRouter, DeepSeek, Zhipu,
+   Alibaba Bailian, SiliconFlow, or an endpoint of your own), paste **your own API
+   key**, press **Test connection**. Nothing is bundled.
+4. Type an instruction. Start with something that needs no login —
+   *"open Settings and tell me which Wi-Fi is connected"*.
 
-Updates install in place: every release is signed with the same key.
+The app's interface is in Chinese for now; the labels above are its English
+translations, and the walkthrough in
+[docs/getting-started.md](docs/getting-started.md) names them both ways.
+
+Updates install in place: every release is signed with the same key. The full
+walkthrough, including what each screen should look like and the five things that
+usually go wrong, is in **[docs/getting-started.md](docs/getting-started.md)**.
 
 ## ❓ Questions people ask
 
@@ -124,6 +133,7 @@ password or verification-code screens are handed to you.
 
 | | |
 |---|---|
+| [docs/getting-started.md](docs/getting-started.md) | from the APK to a finished task, with the first-run checks |
 | [docs/product-app.md](docs/product-app.md) | what the app is, layer by layer |
 | [docs/map-building.md](docs/map-building.md) | how a map is compiled, with the measurement behind each decision |
 | [android-app/README.md](android-app/README.md) | build it: Gradle, Chaquopy, the virtual-display helper |
@@ -131,7 +141,7 @@ password or verification-code screens are handed to you.
 
 ## 🌟 Citation
 
-If you find this work helpful to your research, please kindly consider citing our paper.
+PhoneGo is those two papers in app form: the map-and-replay harness comes from **PhoneCLI**, and the open model behind the fallback path is **OpenPhone**. If either is useful to your research, please cite both.
 
 ```
 @article{jiang2026phonecli,
