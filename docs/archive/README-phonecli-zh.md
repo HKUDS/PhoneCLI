@@ -114,7 +114,7 @@ PhoneGo 会跟过去把这一步做完，再把它搬回去。骨架完全一样
 - [📜 许可证](#-许可证)
 
 <div align="center">
-  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="harness 在 AndroidLab 基准上驱动 Android 模拟器">
+  <img src="../showcase/lightagent-demo.gif" width="800" height="400" alt="harness 在 AndroidLab 基准上驱动 Android 模拟器">
 </div>
 
 ## 🎯 瓶颈从来不是模型不够大

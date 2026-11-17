@@ -111,7 +111,7 @@ So we did not build a bigger model. We built the **model and the harness togethe
 - [📜 License](#-license)
 
 <div align="center">
-  <img src="./demo/lightagent_demo.gif" width="800" height="400" alt="The harness driving an Android emulator on the AndroidLab benchmark">
+  <img src="../showcase/lightagent-demo.gif" width="800" height="400" alt="The harness driving an Android emulator on the AndroidLab benchmark">
 </div>
 
 ## 🎯 The Bottleneck Is Not Model Size
