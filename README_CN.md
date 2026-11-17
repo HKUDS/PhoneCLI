@@ -9,6 +9,22 @@
 [![下载](https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk)
 [![文档](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BA%A7%E5%93%81%20%7C%20%E6%9E%84%E5%BB%BA-4ecdc4?style=for-the-badge&labelColor=0b0f19)](docs/README.zh.md)
 
+<p>
+  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
+  <a href="https://huggingface.co/datasets/hkuds/OpenPhone_dataset"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href="https://huggingface.co/hkuds/OpenPhone_model"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href='https://github.com/THUDM/Android-Lab'><img src='https://img.shields.io/badge/⚡Based%20on-AndroidLab-4ecdc4?style=for-the-badge&logo=lightning&logoColor=white&labelColor=1a1a2e'></a>
+</p>
+<p>
+  <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+  <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧English-1f6feb?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+  <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+</p>
+
 </div>
 
 你说一句话，PhoneGo 打开 App、把事情做完、把结果告诉你——这期间你照常用手机。

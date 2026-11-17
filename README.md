@@ -1,4 +1,4 @@
-English · [中文](README_CN.md)
+English · [Chinese](README_CN.md)
 
 <div align="center">
 
@@ -6,15 +6,31 @@ English · [中文](README_CN.md)
 
 **A phone agent that works on a screen of its own — so the one in your hand stays yours.**
 
-[![Download](https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk)
-[![Docs](https://img.shields.io/badge/Docs-product%20%7C%20build-4ecdc4?style=for-the-badge&labelColor=0b0f19)](docs/README.md)
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.3.0 for Android"></a>
+<a href="docs/README.md"><img src="https://img.shields.io/badge/Docs-product%20%7C%20build-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
+
+<p>
+  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
+  <a href="https://huggingface.co/datasets/hkuds/OpenPhone_dataset"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href="https://huggingface.co/hkuds/OpenPhone_model"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href='https://github.com/THUDM/Android-Lab'><img src='https://img.shields.io/badge/⚡Based%20on-AndroidLab-4ecdc4?style=for-the-badge&logo=lightning&logoColor=white&labelColor=1a1a2e'></a>
+</p>
+<p>
+  <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+  <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href="./README_CN.md"><img src="https://img.shields.io/badge/Chinese-Docs-e74c3c?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
+  <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+  <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+</p>
 
 </div>
 
 You type a sentence. PhoneGo opens the app, does the work, and tells you what it
-found — while you keep using your phone. If it has to borrow your screen for an
-app that refuses to run anywhere else, it says so, and gives the screen back when
-the step is done.
+found — while you keep using your phone. If it has to borrow your screen for an app
+that refuses to run anywhere else, it says so, and gives the screen back when the
+step is done.
 
 It is not another chat window over a vision model. Most of what an agent does on a
 phone is **navigation**: opening, tapping, scrolling, going back. PhoneGo compiles
@@ -28,20 +44,20 @@ model about the parts a map cannot cover.
 | **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
 | **It doesn't guess every step** | Navigation comes from a map compiled offline: one deterministic replay, **zero model calls**, sub-second per step. |
 | **It knows when to look** | When a map does not apply, PhoneGo falls back to a vision model and works that screen like a person would — then hands you a plain answer, not a log. |
-| **It crosses apps** | What it reads in one app it uses in the next: *"see which hotel 小红书 recommends, then check tonight's price on 携程"*. |
+| **It crosses apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
 | **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
 | **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screenshots a model actually needs are sent. |
 
 ## What a task looks like
 
 ```
-you   小红书看看港大附近推荐哪家酒店，挑一家，再去携程查这家今晚多少钱
+you   find a hotel near HKU on Xiaohongshu, pick one, then check tonight's price on Ctrip
 
-app   · 小红书: search → open a note → 「合和酒店」
-      · 携程: search 合和酒店 → 11月17日–18日
-      · 今晚「您选的日期暂无可预订房型」，最近可订：
-        11/18–19 ¥3379 起 · 11/19–20 ¥3790 起 · 11/20 ¥2303 起
-      · 需要我把这个酒店页面转到你的手机上继续操作吗？
+app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
+      · Ctrip: search Hopewell Hotel → 17-18 Nov
+      · tonight: "no rooms for the dates you picked"; next available --
+        18-19 Nov from CNY 3379 · 19-20 Nov from CNY 3790 · 20 Nov from CNY 2303
+      · want me to move this hotel page to your phone to continue?
 ```
 
 49 steps, 200 seconds, one instruction, two apps.
@@ -50,8 +66,8 @@ app   · 小红书: search → open a note → 「合和酒店」
 
 ```
 offline    a crawler walks an app and compiles it into a map   (once per app)
-online     route the task → replay the map's macro            (0 model calls)
-fallback   unknown screen → vision model drives that part     (only there)
+online     route the task -> replay the map's macro            (0 model calls)
+fallback   unknown screen -> vision model drives that part     (only there)
 ```
 
 The routing step is one small text call. The replay is deterministic — the same
@@ -62,7 +78,7 @@ not the engine, which is why a task can finish in a minute instead of five.
 
 | Task | Map + replay | Vision only |
 |---|---|---|
-| Find how to book a HKU visit (小红书) | **17 steps / 64 s / 92k tokens** | 32 steps / 146 s / 207k tokens |
+| Find how to book a HKU visit (Xiaohongshu) | **17 steps / 64 s / 92k tokens** | 32 steps / 146 s / 207k tokens |
 
 Same phone, same instruction, both successful. The recordings live in
 [docs/showcase/](docs/showcase/).
@@ -70,10 +86,10 @@ Same phone, same instruction, both successful. The recordings live in
 ## Install
 
 1. Download `PhoneGo-0.3.0-arm64.apk` (**Android 14+, arm64**) and open it. Allow
-   installation from this source; MIUI asks once (「继续安装」).
+   installation from this source; MIUI asks once (tap "continue").
 2. Turn on **wireless debugging**, and enable PhoneGo's **accessibility service** —
    the app pairs itself with the phone's own `adbd`, no computer needed.
-3. Open 设置, paste your own **model API key** (DeepSeek, or any OpenAI- or
+3. Open Settings and paste your own **model API key** (DeepSeek, or any OpenAI- or
    Anthropic-compatible endpoint). Nothing is bundled.
 4. Type an instruction.
 
@@ -95,7 +111,7 @@ through the vision fallback, which is slower and costs model calls. Maps are bui
 per app, on your phone, and can be rebuilt any time.
 
 **Will it buy things for me?**
-No. Anything that spends money (支付 / 下单 / 提交订单) stops and asks first, and
+No. Anything that spends money (pay, order, submit) stops and asks first, and
 password or verification-code screens are handed to you.
 
 ## Documentation
@@ -115,7 +131,7 @@ commands, with an open 3B model as the fallback engine.
 - PhoneCLI — [arXiv:2609.35671](https://arxiv.org/abs/2609.35671)
 - OpenPhone model and dataset — [arXiv:2510.22009](https://arxiv.org/abs/2510.22009),
   [model](https://huggingface.co/hkuds/OpenPhone_model),
-  [dataset](https://huggingface.co/hkuds/OpenPhone_dataset)
+  [dataset](https://huggingface.co/datasets/hkuds/OpenPhone_dataset)
 - The CLI side of this repository (`phonecli/`, the evaluation suites, the training
   recipe) is unchanged; the original README is kept at
   [docs/archive/README-phonecli-en.md](docs/archive/README-phonecli-en.md).
