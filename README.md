@@ -36,18 +36,18 @@ phone is **navigation**: opening, tapping, scrolling, going back. PhoneGo compil
 that navigation offline into a map, replays it deterministically, and only asks a
 model about the parts a map cannot cover.
 
-## What makes it different
+## ✨ What makes it different
 
 | | |
 |---|---|
-| **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
-| **It doesn't guess every step** | Navigation comes from a map compiled offline: one deterministic replay, **zero model calls**, sub-second per step. |
-| **It knows when to look** | When a map does not apply, PhoneGo falls back to a vision model and works that screen like a person would — then hands you a plain answer, not a log. |
-| **It crosses apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
-| **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
-| **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screenshots a model actually needs are sent. |
+| 📵 **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
+| 🧭 **It doesn't guess every step** | Navigation comes from a map compiled offline: one deterministic replay, **zero model calls**, sub-second per step. |
+| 👁 **It knows when to look** | When a map does not apply, PhoneGo falls back to a vision model and works that screen like a person would — then hands you a plain answer, not a log. |
+| 🔗 **It crosses apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
+| ↩️ **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
+| 🔒 **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screenshots a model actually needs are sent. |
 
-## What a task looks like
+## 🎬 What a task looks like
 
 ```
 you   find a hotel near HKU on Xiaohongshu, pick one, then check tonight's price on Ctrip
@@ -61,7 +61,7 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 
 49 steps, 200 seconds, one instruction, two apps.
 
-## How it works
+## ⚙️ How it works
 
 ```
 offline    a crawler walks an app and compiles it into a map   (once per app)
@@ -73,7 +73,7 @@ The routing step is one small text call. The replay is deterministic — the sam
 taps, in the same order, every time. The vision model is the exception handler,
 not the engine, which is why a task can finish in a minute instead of five.
 
-## Measured on a real phone
+## 📊 Measured on a real phone
 
 | Task | Map + replay | Vision only |
 |---|---|---|
@@ -82,7 +82,7 @@ not the engine, which is why a task can finish in a minute instead of five.
 Same phone, same instruction, both successful. The recordings live in
 [docs/showcase/](docs/showcase/).
 
-## Install
+## 📲 Install
 
 1. Download `PhoneGo-0.3.0-arm64.apk` (**Android 14+, arm64**) and open it. Allow
    installation from this source; MIUI asks once (tap "continue").
@@ -94,7 +94,7 @@ Same phone, same instruction, both successful. The recordings live in
 
 Updates install in place: every release is signed with the same key.
 
-## Questions people ask
+## ❓ Questions people ask
 
 **Does it upload my screen?**
 Only the screenshots a model call needs, to the endpoint you configured. Maps,
@@ -113,7 +113,7 @@ per app, on your phone, and can be rebuilt any time.
 No. Anything that spends money (pay, order, submit) stops and asks first, and
 password or verification-code screens are handed to you.
 
-## Documentation
+## 📚 Documentation
 
 | | |
 |---|---|
