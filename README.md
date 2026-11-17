@@ -6,7 +6,7 @@
 
 <div align="center">
 
-# PhoneCLI: Making Mobile Apps Agent-Native
+# PhoneGo: Your AI Agent on Your Phone
 
 </div>
 
