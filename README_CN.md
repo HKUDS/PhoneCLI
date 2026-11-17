@@ -115,6 +115,7 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 
 | | |
 |---|---|
+| [docs/manual.zh.md](docs/manual.zh.md) | **使用手册**：每个界面、每个设置、每种故障 |
 | [docs/getting-started.zh.md](docs/getting-started.zh.md) | 从装好 APK 到跑完第一条任务，含首次启动的几个检查 |
 | [docs/product-app.zh.md](docs/product-app.zh.md) | 这个 App 是什么，逐层拆开讲 |
 | [docs/map-building.zh.md](docs/map-building.zh.md) | 地图怎么编译，每处改动背后的实测 |

@@ -133,6 +133,7 @@ password or verification-code screens are handed to you.
 
 | | |
 |---|---|
+| [docs/manual.md](docs/manual.md) | **the manual**: every screen, every setting, every failure |
 | [docs/getting-started.md](docs/getting-started.md) | from the APK to a finished task, with the first-run checks |
 | [docs/product-app.md](docs/product-app.md) | what the app is, layer by layer |
 | [docs/map-building.md](docs/map-building.md) | how a map is compiled, with the measurement behind each decision |
