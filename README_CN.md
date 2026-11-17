@@ -2,7 +2,7 @@
 
 <div align="center">
 
-# PhoneGo
+# PhoneGo：你手机上的 AI 智能体
 
 **一个在自己那块屏上干活的手机 agent —— 你手里的屏，还是你的。**
 

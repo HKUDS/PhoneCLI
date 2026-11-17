@@ -2,7 +2,7 @@ English · [中文](README_CN.md)
 
 <div align="center">
 
-# PhoneGo
+# PhoneGo: Your AI Agent on Your Phone
 
 **A phone agent that works on a screen of its own — so the one in your hand stays yours.**
 
