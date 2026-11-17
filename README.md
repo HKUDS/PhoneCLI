@@ -47,11 +47,15 @@
 </div>
 
 **PhoneGo** is PhoneCLI's algorithm as an Android app: the agent runs *inside* the
-phone, and the target app is driven on a virtual display the user never sees — your own
-screen stays yours. Same backbone (compile an app map offline, replay the macro, fall
-back to GUI only when the map does not apply); the transport is just the phone's own
-`adbd` instead of a cable. One instruction, one phone: **17 steps / 64 s** with the map
-versus **32 steps / 146 s** with pure vision, both successful.
+phone and drives the target app on a virtual display of its own, so the screen in your
+hand stays yours. Not every app can live there — a few activities are `singleTask`, and
+some launchers only start on the main screen: PhoneGo follows those onto your display
+for as long as the step needs, then moves them back and returns you to this chat. Same
+backbone (compile an app map offline, replay the macro, fall back to GUI only when the
+map does not apply); the transport is just the phone's own `adbd` instead of a cable.
+
+One instruction, one phone: **17 steps / 64 s** with the map versus **32 steps / 146 s**
+with pure vision, both successful.
 
 **The bottleneck of phone agents was never model size.** Nearly every GUI agent today runs the same loop — screenshot, call a vision-language model (VLM), emit an action. It is slow (2–5 s per step), expensive (every screenshot is an API call), brittle (VLMs hallucinate coordinates), and it has to be online: your screen leaves the device. That is at odds with what a phone is — on-device, real-time, private. And most of what that loop does is **navigation**, which is static, ordered, and repeated ten thousand times.
 
