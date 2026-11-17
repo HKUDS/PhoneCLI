@@ -6,13 +6,11 @@
 
 **一个在自己那块屏上干活的手机 agent —— 你手里的屏，还是你的。**
 
-[**下载 Android 版**](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk) · [文档](docs/README.zh.md)
+<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="下载 PhoneGo 0.3.0（Android）"></a>
+<a href="docs/README.zh.md"><img src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BA%A7%E5%93%81%20%7C%20%E6%9E%84%E5%BB%BA-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
 
 <p>
   <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
-  <a href="https://huggingface.co/datasets/hkuds/OpenPhone_dataset"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Dataset-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
-  <a href="https://huggingface.co/hkuds/OpenPhone_model"><img alt="Hugging Face" src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-ffc107?style=for-the-badge&color=ffc107&logoColor=white&labelColor=1a1a2e"/></a>
-  <a href='https://github.com/THUDM/Android-Lab'><img src='https://img.shields.io/badge/⚡Based%20on-AndroidLab-4ecdc4?style=for-the-badge&logo=lightning&logoColor=white&labelColor=1a1a2e'></a>
 </p>
 <p>
   <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
@@ -143,6 +141,9 @@ PhoneGo 建立在 PhoneCLI 与 OpenPhone 之上，二者又受益于这些优秀
 - [AndroidLab](https://github.com/THUDM/Android-Lab) —— 评测框架。
 - [R1-V](https://github.com/StarsfieldAI/R1-V) —— GRPO 训练方法的实现细节。
 - [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) —— 统一的训练框架，让微调更高效。
+
+兜底路径背后的开源引擎：[OpenPhone 模型](https://huggingface.co/hkuds/OpenPhone_model) ·
+[OpenPhone 数据集](https://huggingface.co/datasets/hkuds/OpenPhone_dataset)。
 
 仓库里的 CLI 部分（`phonecli/`、评测套件、训练配方）没有改动；原始 README 保留在 [docs/archive/README-phonecli-zh.md](docs/archive/README-phonecli-zh.md)。
 
