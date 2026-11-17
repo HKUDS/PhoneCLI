@@ -6,11 +6,10 @@ English · [Chinese](README_CN.md)
 
 **A phone agent that works on a screen of its own — so the one in your hand stays yours.**
 
-<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.3.0 for Android"></a>
-<a href="docs/README.md"><img src="https://img.shields.io/badge/Docs-product%20%7C%20build-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
-
 <p>
-  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
+  <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.3.0 for Android"></a>
+  <a href="docs/README.md"><img src="https://img.shields.io/badge/Docs-product%20%7C%20build-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
+  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e' height="34"></a>
 </p>
 <p>
   <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>

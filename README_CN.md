@@ -6,11 +6,10 @@
 
 **一个在自己那块屏上干活的手机 agent —— 你手里的屏，还是你的。**
 
-<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="下载 PhoneGo 0.3.0（Android）"></a>
-<a href="docs/README.zh.md"><img src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BA%A7%E5%93%81%20%7C%20%E6%9E%84%E5%BB%BA-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
-
 <p>
-  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
+  <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="下载 PhoneGo 0.3.0（Android）"></a>
+  <a href="docs/README.zh.md"><img src="https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BA%A7%E5%93%81%20%7C%20%E6%9E%84%E5%BB%BA-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
+  <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e' height="34"></a>
 </p>
 <p>
   <a href="https://github.com/HKUDS/PhoneCLI/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/PhoneCLI?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
