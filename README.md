@@ -6,8 +6,7 @@ English · [Chinese](README_CN.md)
 
 **A phone agent that works on a screen of its own — so the one in your hand stays yours.**
 
-<a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.3.0 for Android"></a>
-<a href="docs/README.md"><img src="https://img.shields.io/badge/Docs-product%20%7C%20build-4ecdc4?style=for-the-badge&labelColor=0b0f19" height="34"></a>
+[**Download for Android**](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk) · [Documentation](docs/README.md)
 
 <p>
   <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
@@ -123,17 +122,56 @@ password or verification-code screens are handed to you.
 | [android-app/README.md](android-app/README.md) | build it: Gradle, Chaquopy, the virtual-display helper |
 | [docs/showcase/](docs/showcase/) | recordings, including the side-by-side comparison |
 
-## The research behind it
+## 🌟 Citation
 
-PhoneGo is the app form of **PhoneCLI**: navigation compiled offline into callable
-commands, with an open 3B model as the fallback engine.
+If you find this work helpful to your research, please kindly consider citing our paper.
 
-- PhoneCLI — [arXiv:2609.35671](https://arxiv.org/abs/2609.35671)
-- OpenPhone model and dataset — [arXiv:2510.22009](https://arxiv.org/abs/2510.22009),
-  [model](https://huggingface.co/hkuds/OpenPhone_model),
-  [dataset](https://huggingface.co/datasets/hkuds/OpenPhone_dataset)
-- The CLI side of this repository (`phonecli/`, the evaluation suites, the training
-  recipe) is unchanged; the original README is kept at
-  [docs/archive/README-phonecli-en.md](docs/archive/README-phonecli-en.md).
+```
+@article{jiang2026phonecli,
+  title={PhoneCLI: From App Interfaces to Callable Commands for Mobile Agents},
+  author={Jiang, Yangqin and Xu, Lingrui and Huang, Chao},
+  journal={arXiv preprint arXiv:2609.35671},
+  year={2026}
+}
 
-MIT licensed.
+@inproceedings{jiang2026openphone,
+  title={OpenPhone: Mobile Agentic Foundation Models},
+  author={Jiang, Yangqin and Huang, Chao},
+  booktitle={Findings of the Association for Computational Linguistics: ACL 2026},
+  pages={30362--30380},
+  year={2026}
+}
+```
+
+---
+
+## 🔗 Related Projects
+
+PhoneGo builds on PhoneCLI and OpenPhone, which in turn build upon excellent open-source projects. We sincerely thank their authors and contributors:
+
+- [AndroidLab](https://github.com/THUDM/Android-Lab) - The benchmark framework.
+- [R1-V](https://github.com/StarsfieldAI/R1-V) - Implementation details for the GRPO training methodology.
+- [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) - The unified training framework enabling efficient model fine-tuning.
+
+The CLI side of this repository (`phonecli/`, the evaluation suites, the training recipe) is unchanged; its original README is kept at [docs/archive/README-phonecli-en.md](docs/archive/README-phonecli-en.md).
+
+---
+
+## 📜 License
+
+This project is released under the [MIT License](./LICENSE).
+
+<div align="center">
+
+**If this project helps you, please give us a Star🌟**
+
+**🤖 Empower AI Phone with Agents!**
+
+<br>
+
+<p align="center">
+  <em> ❤️ Thanks for visiting ✨ PhoneGo!</em><br><br>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.PhoneCLI&style=for-the-badge&color=00d4ff" alt="Views">
+</p>
+
+</div>

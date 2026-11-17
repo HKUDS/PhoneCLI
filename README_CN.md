@@ -6,8 +6,7 @@
 
 **一个在自己那块屏上干活的手机 agent —— 你手里的屏，还是你的。**
 
-[![下载](https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19)](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk)
-[![文档](https://img.shields.io/badge/%E6%96%87%E6%A1%A3-%E4%BA%A7%E5%93%81%20%7C%20%E6%9E%84%E5%BB%BA-4ecdc4?style=for-the-badge&labelColor=0b0f19)](docs/README.zh.md)
+[**下载 Android 版**](https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk) · [文档](docs/README.zh.md)
 
 <p>
   <a href='https://github.com/HKUDS/OpenPhone'><img src='https://img.shields.io/badge/🔥Project-Page-00d9ff?style=for-the-badge&logo=github&logoColor=white&labelColor=1a1a2e'></a>
@@ -114,15 +113,56 @@ App    · 小红书：搜索 → 打开一篇笔记 →「合和酒店」
 | [android-app/README.zh.md](android-app/README.zh.md) | 怎么构建：Gradle、Chaquopy、虚拟屏 helper |
 | [docs/showcase/](docs/showcase/) | 录像，包括两种模式的并排对比 |
 
-## 背后的研究
+## 🌟 引用
 
-PhoneGo 是 **PhoneCLI** 的 App 形态：把导航离线编译成可调用的命令，用开源的 3B 模型做兜底引擎。
+如果这个项目对你的研究有帮助，欢迎引用我们的论文。
 
-- PhoneCLI — [arXiv:2609.35671](https://arxiv.org/abs/2609.35671)
-- OpenPhone 模型与数据集 — [arXiv:2510.22009](https://arxiv.org/abs/2510.22009)、
-  [模型](https://huggingface.co/hkuds/OpenPhone_model)、
-  [数据集](https://huggingface.co/datasets/hkuds/OpenPhone_dataset)
-- 仓库里的 CLI 部分（`phonecli/`、评测套件、训练配方）没有改动；原始 README 保留在
-  [docs/archive/README-phonecli-zh.md](docs/archive/README-phonecli-zh.md)。
+```
+@article{jiang2026phonecli,
+  title={PhoneCLI: From App Interfaces to Callable Commands for Mobile Agents},
+  author={Jiang, Yangqin and Xu, Lingrui and Huang, Chao},
+  journal={arXiv preprint arXiv:2609.35671},
+  year={2026}
+}
 
-MIT 许可。
+@inproceedings{jiang2026openphone,
+  title={OpenPhone: Mobile Agentic Foundation Models},
+  author={Jiang, Yangqin and Huang, Chao},
+  booktitle={Findings of the Association for Computational Linguistics: ACL 2026},
+  pages={30362--30380},
+  year={2026}
+}
+```
+
+---
+
+## 🔗 相关项目
+
+PhoneGo 建立在 PhoneCLI 与 OpenPhone 之上，二者又受益于这些优秀的开源项目，在此感谢他们的作者与贡献者：
+
+- [AndroidLab](https://github.com/THUDM/Android-Lab) —— 评测框架。
+- [R1-V](https://github.com/StarsfieldAI/R1-V) —— GRPO 训练方法的实现细节。
+- [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) —— 统一的训练框架，让微调更高效。
+
+仓库里的 CLI 部分（`phonecli/`、评测套件、训练配方）没有改动；原始 README 保留在 [docs/archive/README-phonecli-zh.md](docs/archive/README-phonecli-zh.md)。
+
+---
+
+## 📜 许可
+
+本项目以 [MIT License](./LICENSE) 发布。
+
+<div align="center">
+
+**如果这个项目对你有帮助，欢迎给个 Star🌟**
+
+**🤖 Empower AI Phone with Agents!**
+
+<br>
+
+<p align="center">
+  <em> ❤️ 感谢访问 ✨ PhoneGo！</em><br><br>
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=HKUDS.PhoneCLI&style=for-the-badge&color=00d4ff" alt="Views">
+</p>
+
+</div>
