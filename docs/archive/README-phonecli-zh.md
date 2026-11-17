@@ -3,7 +3,7 @@
 
 <div align="center">
   <picture>
-      <img src="./figures/phonecli_log.png" width="18%" style="border: none; box-shadow: none;" alt="PhoneCLI">
+      <img src="../../figures/phonecli_log.png" width="18%" style="border: none; box-shadow: none;" alt="PhoneCLI">
   </picture>
 </div>
 
@@ -27,10 +27,10 @@
     </p>
     <p>
       <a href="https://github.com/HKUDS/OpenPhone/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/OpenPhone?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
-      <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
-      <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+      <a href="../../Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
+      <a href="../../Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
       <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
-      <a href="./README.md"><img src="https://img.shields.io/badge/🇬🇧English-1f6feb?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
+      <a href="README-phonecli-en.md"><img src="https://img.shields.io/badge/🇬🇧English-1f6feb?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
       <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='PhoneCLI 论文 —— arXiv:2609.35671'></a>
       <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='OpenPhone 论文 —— arXiv:2510.22009（ACL 2026 Findings）'></a>
     </p>
@@ -44,7 +44,7 @@
 </div>
 
 <div align="center">
-  <img src="./figures/phone_cli.png" width="78%" alt="PhoneCLI：离线构建阶段与在线运行阶段" />
+  <img src="../../figures/phone_cli.png" width="78%" alt="PhoneCLI：离线构建阶段与在线运行阶段" />
 </div>
 
 <div align="center">
@@ -53,7 +53,7 @@
 
 <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="下载 PhoneGo 0.3.0（Android）"></a>
 
-<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.zh.md">它是什么</a> &nbsp;·&nbsp; <a href="android-app/README.zh.md">构建与运行</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">并排演示</a></sub>
+<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="../product-app.zh.md">它是什么</a> &nbsp;·&nbsp; <a href="../../android-app/README.zh.md">构建与运行</a> &nbsp;·&nbsp; <a href="../showcase/app-xhs-hku-compare-3x.mp4">并排演示</a></sub>
 
 </div>
 
@@ -80,9 +80,9 @@ PhoneGo 会跟过去把这一步做完，再把它搬回去。骨架完全一样
 - **步数 7.52 → 6.72（−11%）**、**tokens 40.1k → 34.4k（−14%）** —— 同样的任务，更少的模型调用。
 - **执行一条已编译命令只需 0 次模型调用**：导航以确定性回放完成，亚秒级。
 
-➜ **[iOS 真机完整文档](./phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
+➜ **[iOS 真机完整文档](../../phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
 
-➜ **[AndroidLab 评测文档](./phonecli_android/README_CN.md)** —— 官方 AndroidLab 套件（9 个 app / 138 个任务）、每个 app 一张编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
+➜ **[AndroidLab 评测文档](../../phonecli_android/README_CN.md)** —— 官方 AndroidLab 套件（9 个 app / 138 个任务）、每个 app 一张编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
 
 ➜ **[PhoneCLI 论文](https://arxiv.org/abs/2609.35671)** — arXiv:2609.35671 &nbsp;·&nbsp; **[OpenPhone 论文](https://arxiv.org/abs/2510.22009)** — arXiv:2510.22009
 
@@ -131,7 +131,7 @@ PhoneGo 会跟过去把这一步做完，再把它搬回去。骨架完全一样
 **而这套循环里做的绝大部分事，其实是导航。** 打开 Wi-Fi、查看今天的日程、找一个联系人——这些是固定的动作序列，以同样的顺序执行成千上万次。每次都靠 VLM 重新发现一遍，既是最贵的部分，也恰恰是从不变的部分。既然存在确定性路径，VLM 循环就是用错了工具：
 
 <div align="center">
-  <img src="./figures/phonecli_case.png" width="92%" alt="PhoneCLI 用 12 步完成任务；纯 VLM 智能体则陷入错误循环" />
+  <img src="../../figures/phonecli_case.png" width="92%" alt="PhoneCLI 用 12 步完成任务；纯 VLM 智能体则陷入错误循环" />
 </div>
 
 所以结论不是"训练一个更大的模型"，而是：**把导航编译一次，然后确定性地回放；模型只留给真正新的东西。** 这正是 PhoneCLI 做的事——而这个仓库里其余的，就是围绕它搭起来的整套栈。
@@ -146,7 +146,7 @@ PhoneCLI 不把每个任务都当作一次全新的 GUI 探索，而是**把 app
 ### 工作原理
 
 <div align="center">
-  <img src="./figures/phonecli_framework.png" width="92%" alt="PhoneCLI 流程：阶段 1 离线编译、阶段 2 在线调用、阶段 3 运行时解释" />
+  <img src="../../figures/phonecli_framework.png" width="92%" alt="PhoneCLI 流程：阶段 1 离线编译、阶段 2 在线调用、阶段 3 运行时解释" />
 </div>
 
 **1. 构建 app map** —— BFS 爬虫通过 WebDriverAgent 系统性地探索 app 的每个屏幕，记录所有可点击元素、它们的坐标，以及屏幕之间的跳转路径。每个元素都会被分类（稳定 / 动态），并由 LLM 补充语义元数据。
@@ -191,9 +191,9 @@ python phonecli/run.py --interactive
 
 仓库自带 **8 个 app 的预构建 map**（微博、foodpanda、Calendar、京东、Dianping、小红书、Music、Settings）。每张覆盖至多 50 个屏幕——50 是爬虫的默认上限——单个 app 含 400–1,300 个元素：**合计 400 个屏幕、6,366 个元素**。
 
-➜ **[iOS 真机完整文档](./phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
+➜ **[iOS 真机完整文档](../../phonecli/README_CN.md)** —— 环境搭建、WebDriverAgent、app map 构建、CLI 参考与排错。
 
-➜ **[AndroidLab 评测文档](./phonecli_android/README_CN.md)** —— 官方 AndroidLab 基准（9 个 app / 138 个任务）、编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
+➜ **[AndroidLab 评测文档](../../phonecli_android/README_CN.md)** —— 官方 AndroidLab 基准（9 个 app / 138 个任务）、编译好的 app map、宏智能体及其纯 VLM 基线，以及判分方式。
 
 ---
 ## 📱 端侧优先：CLI → 端侧模型 → 云端
@@ -217,8 +217,8 @@ python phonecli/run.py --interactive
 ### 📈 实测效果
 
 <div align="center">
-  <img src="./figures/device_cloud_per.png" width="49%" alt="执行步数在云端与端侧模型之间的分布" />
-  <img src="./figures/device_cloud_reduce.png" width="47%" alt="加入端侧执行后云 API 调用的下降幅度" />
+  <img src="../../figures/device_cloud_per.png" width="49%" alt="执行步数在云端与端侧模型之间的分布" />
+  <img src="../../figures/device_cloud_reduce.png" width="47%" alt="加入端侧执行后云 API 调用的下降幅度" />
 </div>
 
 *左：执行步数在云端与端侧模型之间的分布。右：加入端侧执行后云 API 调用的下降幅度。*
@@ -240,9 +240,9 @@ CLI 路径**完全不需要模型**，回退路径**接受任意**模型——�
 |---|---|
 | **模型权重** | [OpenPhone-3B（Hugging Face）](https://huggingface.co/hkuds/OpenPhone_model) —— 开放用于研究与商业用途 |
 | **数据集** | [OpenPhone dataset](https://huggingface.co/datasets/hkuds/OpenPhone_dataset) |
-| **部署** | vLLM 推理脚本：[`vllm_script/`](./vllm_script/) |
-| **训练** | 完整配方：[`model_training/`](./model_training/README.md) |
-| **数据生成** | 流水线：[`prepare_data/`](./prepare_data/README.md) |
+| **部署** | vLLM 推理脚本：[`vllm_script/`](../../vllm_script/) |
+| **训练** | 完整配方：[`model_training/`](../../model_training/README.md) |
+| **数据生成** | 流水线：[`prepare_data/`](../../prepare_data/README.md) |
 
 ### 为什么是 3B
 
@@ -279,7 +279,7 @@ CLI 路径**完全不需要模型**，回退路径**接受任意**模型——�
 - 当 OpenPhone 跑在单张 3090、而 GLM 需要两张时，**快 3.5×**；两者都用两张时**快 4×**。
 - 9B 模型无法在单张 3090 上运行，恰恰是边缘部署最在意的那个约束。
 
-<img src="./figures/model_large.png" style="zoom:100%;" alt="OpenPhone 总览：高效推理 GUI 智能体、基于 GRPO 的端侧模型微调，以及端云协同智能体系统" />
+<img src="../../figures/model_large.png" style="zoom:100%;" alt="OpenPhone 总览：高效推理 GUI 智能体、基于 GRPO 的端侧模型微调，以及端云协同智能体系统" />
 
 ---
 ## 🚀 快速开始
@@ -288,10 +288,10 @@ CLI 路径**完全不需要模型**，回退路径**接受任意**模型——�
 
 | | |
 |---|---|
-| 🖥 **Harness（iOS）** | [`phonecli/`](./phonecli/README_CN.md) —— 构建 app map、运行任务、交互式 daemon |
-| 🧪 **Harness（Android）** | [`phonecli_android/`](./phonecli_android/README_CN.md) —— AndroidLab 基准，9 个 app / 138 个任务 |
-| 🤖 **模型** | [OpenPhone-3B](https://huggingface.co/hkuds/OpenPhone_model)，训练配方见 [`model_training/`](./model_training/README.md) |
-| 🔧 **数据** | 合成数据流水线：[`prepare_data/`](./prepare_data/README.md) |
+| 🖥 **Harness（iOS）** | [`phonecli/`](../../phonecli/README_CN.md) —— 构建 app map、运行任务、交互式 daemon |
+| 🧪 **Harness（Android）** | [`phonecli_android/`](../../phonecli_android/README_CN.md) —— AndroidLab 基准，9 个 app / 138 个任务 |
+| 🤖 **模型** | [OpenPhone-3B](https://huggingface.co/hkuds/OpenPhone_model)，训练配方见 [`model_training/`](../../model_training/README.md) |
+| 🔧 **数据** | 合成数据流水线：[`prepare_data/`](../../prepare_data/README.md) |
 
 **构建 map 并运行任务（iOS）** —— 完整流程见[快速开始](#快速开始)：
 
@@ -300,9 +300,9 @@ python phonecli/cli.py macro auto-build -b com.apple.Preferences -a Settings   #
 python phonecli/run.py --task "Turn on airplane mode"
 ```
 
-**部署模型（可选）** —— CLI 路径完全不需要模型。推理脚本在 [`vllm_script/`](./vllm_script/)：下载权重、用 vLLM 起服务，然后把 agent 配置指向该端点。
+**部署模型（可选）** —— CLI 路径完全不需要模型。推理脚本在 [`vllm_script/`](../../vllm_script/)：下载权重、用 vLLM 起服务，然后把 agent 配置指向该端点。
 
-**凭据** —— 示例配置跑的是本地 vLLM 服务（[`configs/example_xml_cloud_hyper.yaml`](./configs/example_xml_cloud_hyper.yaml)，`api_base: http://localhost:8002/v1`），因此不需要 key。云端配置则从环境变量读取 `${OPENROUTER_API_KEY}`（`export OPENROUTER_API_KEY=...`，由 [`config_env.py`](./config_env.py) 解析）。旧版 `ScreenshotTask` 路径在 [`evaluation/evaluation.py`](./evaluation/evaluation.py) 中仍保留三处占位符（第 63、75、81 行），LLM 判分器的 key 来自 [`evaluation/tasks/llm_evaluator.py`](./evaluation/tasks/llm_evaluator.py)（第 10、12 行）或 `generate_result.py --api_key`。
+**凭据** —— 示例配置跑的是本地 vLLM 服务（[`configs/example_xml_cloud_hyper.yaml`](../../configs/example_xml_cloud_hyper.yaml)，`api_base: http://localhost:8002/v1`），因此不需要 key。云端配置则从环境变量读取 `${OPENROUTER_API_KEY}`（`export OPENROUTER_API_KEY=...`，由 [`config_env.py`](../../config_env.py) 解析）。旧版 `ScreenshotTask` 路径在 [`evaluation/evaluation.py`](../../evaluation/evaluation.py) 中仍保留三处占位符（第 63、75、81 行），LLM 判分器的 key 来自 [`evaluation/tasks/llm_evaluator.py`](../../evaluation/tasks/llm_evaluator.py)（第 10、12 行）或 `generate_result.py --api_key`。
 
 在找基准测试？环境配置、批量脚本、判分与结果都在[评测](#-评测)一节。
 
@@ -330,20 +330,20 @@ python eval.py -n all_cloud_v1_hyper -c ./configs/example_xml_cloud_hyper.yaml -
 python eval.py -n all_cloud_v1_hyper -c ./configs/example_xml_cloud_hyper.yaml
 ```
 
-批量脚本位于 [`test_script/`](./test_script)：
+批量脚本位于 [`test_script/`](../../test_script)：
 
 - `all_test_cloud_v1_hyper.sh` —— 全部 138 个 AndroidLab 基准任务。
 - `all_test_cloud_v1_hyper_add.sh` —— 另外四个 app 的任务。
 
-在 138 个 AndroidLab 任务之外，仓库还提供**额外 25 个任务**，覆盖另外四个移动 app（Chrome、Gmail、TikTok、Reddit）——见[更多 App 文档](./docs/new_apps.md)。
+在 138 个 AndroidLab 任务之外，仓库还提供**额外 25 个任务**，覆盖另外四个移动 app（Chrome、Gmail、TikTok、Reddit）——见[更多 App 文档](../new_apps.md)。
 
-Android 侧的 harness 在 [`phonecli_android/`](./phonecli_android/README_CN.md) 中自带编译好的 app map 与运行器：9 个 app / 138 个任务，每个 app 一张 map（其中八张覆盖 9–50 个屏幕；Maps.me 只有单屏，因此更依赖 VLM 回退），并包含下文对比所用的纯 VLM 基线。
+Android 侧的 harness 在 [`phonecli_android/`](../../phonecli_android/README_CN.md) 中自带编译好的 app map 与运行器：9 个 app / 138 个任务，每个 app 一张 map（其中八张覆盖 9–50 个屏幕；Maps.me 只有单屏，因此更依赖 VLM 回退），并包含下文对比所用的纯 VLM 基线。
 
 ### 判分
 
 我们的实现用 **LLM 评估**取代了 AndroidLab 的规则式评估，对部分成功的判定更细致。
 
-在 [`evaluation/tasks/llm_evaluator.py`](./evaluation/tasks/llm_evaluator.py) 中配置凭据（第 10 行：API 配置；第 12 行：服务地址），然后生成结果：
+在 [`evaluation/tasks/llm_evaluator.py`](../../evaluation/tasks/llm_evaluator.py) 中配置凭据（第 10 行：API 配置；第 12 行：服务地址），然后生成结果：
 
 ```bash
 python generate_result.py --input_folder ./logs/evaluation/ --output_folder ./logs/evaluation/ --output_excel ./logs/evaluation/test_name.xlsx
@@ -354,7 +354,7 @@ python generate_result.py --input_folder ./logs/evaluation/ --output_folder ./lo
 ### 📊 结果
 
 <div align="center">
-  <img src="./figures/phonecli_attribution.png" width="78%" alt="各 AndroidLab app 的成功率：PhoneCLI、去掉回放的 PhoneCLI、去掉 app map 的 PhoneCLI，以及每个成功任务的步数与 token" />
+  <img src="../../figures/phonecli_attribution.png" width="78%" alt="各 AndroidLab app 的成功率：PhoneCLI、去掉回放的 PhoneCLI、去掉 app map 的 PhoneCLI，以及每个成功任务的步数与 token" />
 </div>
 
 在九个 AndroidLab app 上的消融：完整 harness、**去掉回放**的 harness（有 app map 但没有确定性执行）、以及**去掉 app map**（纯 VLM）。真正起作用的是编译——同时具备 map 与回放时，智能体解出更多任务，同时每个成功任务消耗的步数与 token 都更少（**6.72 vs 7.52 步**，**34.4k vs 40.1k tokens**）。
@@ -376,7 +376,7 @@ python generate_result.py --input_folder ./logs/evaluation/ --output_folder ./lo
 - **匹配复杂度**：让推理复杂度与模型能力相匹配，而不是假定 prompt 越长越好。
 
 <p align="center">
-  <img src="./figures/three_subplots_corrected.png" width="90%"/>
+  <img src="../../figures/three_subplots_corrected.png" width="90%"/>
 </p>
 
 ---
@@ -413,7 +413,7 @@ OpenPhone 建立在优秀的开源项目之上。我们衷心感谢它们的作�
 ---
 ## 📜 许可证
 
-本项目基于 [MIT License](./LICENSE) 发布。
+本项目基于 [MIT License](../../LICENSE) 发布。
 
 <div align="center">
 

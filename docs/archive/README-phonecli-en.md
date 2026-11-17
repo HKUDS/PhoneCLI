@@ -5,7 +5,7 @@
 
 <div align="center">
   <picture>
-      <img src="./figures/phonecli_log.png" width="18%" style="border: none; box-shadow: none;" alt="PhoneCLI">
+      <img src="../../figures/phonecli_log.png" width="18%" style="border: none; box-shadow: none;" alt="PhoneCLI">
   </picture>
 </div>
 
@@ -25,10 +25,10 @@
     </p>
     <p>
       <a href="https://github.com/HKUDS/OpenPhone/stargazers"><img src='https://img.shields.io/github/stars/HKUDS/OpenPhone?color=00d9ff&style=for-the-badge&logo=star&logoColor=white&labelColor=1a1a2e' /></a>
-      <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
-      <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+      <a href="../../Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
+      <a href="../../Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
       <a href=""><img src="https://img.shields.io/badge/Platform-Android%20%7C%20iOS-d3d3d3?style=for-the-badge&logo=android&logoColor=white&labelColor=1a1a2e"/></a>
-      <a href="./README_CN.md"><img src="https://img.shields.io/badge/📖中文文档-e74c3c?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
+      <a href="README-phonecli-zh.md"><img src="https://img.shields.io/badge/📖中文文档-e74c3c?style=for-the-badge&logo=readthedocs&logoColor=white&labelColor=1a1a2e"/></a>
       <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='PhoneCLI paper - arXiv:2609.35671'></a>
       <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' alt='OpenPhone paper - arXiv:2510.22009 (ACL 2026 Findings)'></a>
     </p>
@@ -47,7 +47,7 @@
 
 <a href="https://github.com/HKUDS/PhoneCLI/releases/download/phonego-v0.3.0/PhoneGo-0.3.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.3.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="40" alt="Download PhoneGo 0.3.0 for Android"></a>
 
-<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="docs/product-app.md">What it is</a> &nbsp;·&nbsp; <a href="android-app/README.md">Build and run</a> &nbsp;·&nbsp; <a href="docs/showcase/app-xhs-hku-compare-3x.mp4">Side-by-side demo</a></sub>
+<sub>Android 14+ · arm64 · 18 MB &nbsp;·&nbsp; <a href="../product-app.md">What it is</a> &nbsp;·&nbsp; <a href="../../android-app/README.md">Build and run</a> &nbsp;·&nbsp; <a href="../showcase/app-xhs-hku-compare-3x.mp4">Side-by-side demo</a></sub>
 
 </div>
 
@@ -77,9 +77,9 @@ So we did not build a bigger model. We built the **model and the harness togethe
 - **7.52 → 6.72 steps (−11%)** and **40.1k → 34.4k tokens (−14%)** — same tasks, fewer model calls.
 - **0 model calls** to execute a compiled command: navigation replays deterministically, in sub-second time.
 
-➜ **[Full iOS real-device documentation](./phonecli/README.md)** — setup, WebDriverAgent, app map building, CLI reference, troubleshooting.
+➜ **[Full iOS real-device documentation](../../phonecli/README.md)** — setup, WebDriverAgent, app map building, CLI reference, troubleshooting.
 
-➜ **[AndroidLab evaluation documentation](./phonecli_android/README.md)** — the official AndroidLab suite (9 apps / 138 tasks), one compiled app map per app, the macro agent and its pure-VLM baseline, and judging.
+➜ **[AndroidLab evaluation documentation](../../phonecli_android/README.md)** — the official AndroidLab suite (9 apps / 138 tasks), one compiled app map per app, the macro agent and its pure-VLM baseline, and judging.
 
 ➜ **[PhoneCLI paper](https://arxiv.org/abs/2609.35671)** — arXiv:2609.35671 &nbsp;·&nbsp; **[OpenPhone paper](https://arxiv.org/abs/2510.22009)** — arXiv:2510.22009
 
@@ -128,7 +128,7 @@ Almost every GUI agent today runs the same loop: **screenshot → call a vision-
 **And most of what that loop does is navigation.** Turning on Wi-Fi, opening today's calendar, finding a contact — these are fixed sequences, executed in the same order, thousands of times. Re-discovering them through a VLM on every run is the expensive part, and it is also the part that never changes. Where a deterministic path exists, the VLM loop is simply the wrong tool:
 
 <div align="center">
-  <img src="./figures/phonecli_case.png" width="92%" alt="PhoneCLI finishes the task in 12 steps; the VLM-only agent gets stuck in an error loop" />
+  <img src="../../figures/phonecli_case.png" width="92%" alt="PhoneCLI finishes the task in 12 steps; the VLM-only agent gets stuck in an error loop" />
 </div>
 
 So the conclusion was not "train a bigger model". It was: **compile navigation once, replay it deterministically, and keep the model for what is genuinely new.** That is what PhoneCLI does — and the rest of this repository is the stack built around it.
@@ -144,7 +144,7 @@ Instead of treating every task as a novel GUI exploration, **PhoneCLI compiles a
 ### How It Works
 
 <div align="center">
-  <img src="./figures/phonecli_framework.png" width="92%" alt="PhoneCLI pipeline: Stage 1 offline compilation, Stage 2 online invocation, Stage 3 runtime interpretation" />
+  <img src="../../figures/phonecli_framework.png" width="92%" alt="PhoneCLI pipeline: Stage 1 offline compilation, Stage 2 online invocation, Stage 3 runtime interpretation" />
 </div>
 
 **1. Build an app map** — A BFS crawler systematically explores every screen of
@@ -206,10 +206,10 @@ Calendar, 京东, Dianping, 小红书, Music, Settings). Each covers up to 50 sc
 — 50 is the crawler's default cap — with 400–1,300 elements per app:
 **400 screens and 6,366 elements** in total.
 
-➜ **[Full iOS real-device documentation](./phonecli/README.md)** — setup, WebDriverAgent,
+➜ **[Full iOS real-device documentation](../../phonecli/README.md)** — setup, WebDriverAgent,
 app map building, CLI reference, troubleshooting.
 
-➜ **[AndroidLab evaluation documentation](./phonecli_android/README.md)** — the official
+➜ **[AndroidLab evaluation documentation](../../phonecli_android/README.md)** — the official
 AndroidLab benchmark (9 apps / 138 tasks), compiled app maps, the macro agent and its
 pure-VLM baseline, and judging.
 
@@ -236,8 +236,8 @@ Running long tasks on a phone is a memory problem before it is a model problem:
 ### 📈 Measured effect
 
 <div align="center">
-  <img src="./figures/device_cloud_per.png" width="49%" alt="Share of execution steps handled by the cloud versus the on-device model" />
-  <img src="./figures/device_cloud_reduce.png" width="47%" alt="Reduction in cloud API calls once on-device execution is added" />
+  <img src="../../figures/device_cloud_per.png" width="49%" alt="Share of execution steps handled by the cloud versus the on-device model" />
+  <img src="../../figures/device_cloud_reduce.png" width="47%" alt="Reduction in cloud API calls once on-device execution is added" />
 </div>
 
 *Left: how execution steps split between cloud and on-device models. Right: the resulting reduction in cloud API calls.*
@@ -260,9 +260,9 @@ The CLI path needs **no model at all**, and the fallback path accepts **any** mo
 |---|---|
 | **Model weights** | [OpenPhone-3B on Hugging Face](https://huggingface.co/hkuds/OpenPhone_model) — open for research and commercial use |
 | **Dataset** | [OpenPhone dataset](https://huggingface.co/datasets/hkuds/OpenPhone_dataset) |
-| **Serving** | vLLM inference scripts in [`vllm_script/`](./vllm_script/) |
-| **Training** | full recipe in [`model_training/`](./model_training/README.md) |
-| **Data generation** | pipeline in [`prepare_data/`](./prepare_data/README.md) |
+| **Serving** | vLLM inference scripts in [`vllm_script/`](../../vllm_script/) |
+| **Training** | full recipe in [`model_training/`](../../model_training/README.md) |
+| **Data generation** | pipeline in [`prepare_data/`](../../prepare_data/README.md) |
 
 ### Why 3B
 
@@ -299,7 +299,7 @@ Average inference time per step with vLLM. Note that GLM-4.1V-9B-Thinking could 
 - **3.5× faster** than GLM-4.1V-9B-Thinking when OpenPhone runs on one 3090 while GLM needs two; **4× faster** when both use two.
 - The 9B model's inability to run on a single 3090 is precisely the deployment constraint that matters at the edge.
 
-<img src="./figures/model_large.png" style="zoom:100%;" alt="OpenPhone overview: an efficient reasoning GUI agent, on-device tuning with group relative policy optimization, and the device-cloud collaborative agent system" />
+<img src="../../figures/model_large.png" style="zoom:100%;" alt="OpenPhone overview: an efficient reasoning GUI agent, on-device tuning with group relative policy optimization, and the device-cloud collaborative agent system" />
 
 ---
 
@@ -309,10 +309,10 @@ The repository is the stack described above:
 
 | | |
 |---|---|
-| 🖥 **Harness (iOS)** | [`phonecli/`](./phonecli/README.md) — build app maps, run tasks, interactive daemon |
-| 🧪 **Harness (Android)** | [`phonecli_android/`](./phonecli_android/README.md) — the AndroidLab benchmark, 9 apps / 138 tasks |
-| 🤖 **Model** | [OpenPhone-3B](https://huggingface.co/hkuds/OpenPhone_model) plus the training recipe in [`model_training/`](./model_training/README.md) |
-| 🔧 **Data** | the synthetic data pipeline in [`prepare_data/`](./prepare_data/README.md) |
+| 🖥 **Harness (iOS)** | [`phonecli/`](../../phonecli/README.md) — build app maps, run tasks, interactive daemon |
+| 🧪 **Harness (Android)** | [`phonecli_android/`](../../phonecli_android/README.md) — the AndroidLab benchmark, 9 apps / 138 tasks |
+| 🤖 **Model** | [OpenPhone-3B](https://huggingface.co/hkuds/OpenPhone_model) plus the training recipe in [`model_training/`](../../model_training/README.md) |
+| 🔧 **Data** | the synthetic data pipeline in [`prepare_data/`](../../prepare_data/README.md) |
 
 **Build a map and run a task (iOS)** — the full walkthrough is in [Get Started](#get-started):
 
@@ -321,9 +321,9 @@ python phonecli/cli.py macro auto-build -b com.apple.Preferences -a Settings   #
 python phonecli/run.py --task "Turn on airplane mode"
 ```
 
-**Deploy the model (optional)** — the CLI path does not need a model at all. Inference scripts live in [`vllm_script/`](./vllm_script/): download the weights, serve them with vLLM, and point the agent config at the endpoint.
+**Deploy the model (optional)** — the CLI path does not need a model at all. Inference scripts live in [`vllm_script/`](../../vllm_script/): download the weights, serve them with vLLM, and point the agent config at the endpoint.
 
-**Credentials** — the shipped example config runs against a local vLLM server ([`configs/example_xml_cloud_hyper.yaml`](./configs/example_xml_cloud_hyper.yaml), `api_base: http://localhost:8002/v1`), so it needs no key. Cloud configs read `${OPENROUTER_API_KEY}` from the environment instead (`export OPENROUTER_API_KEY=...`, resolved by [`config_env.py`](./config_env.py)). The legacy `ScreenshotTask` path still has three hardcoded placeholders in [`evaluation/evaluation.py`](./evaluation/evaluation.py) (lines 63, 75, 81), and the LLM judge takes its key from [`evaluation/tasks/llm_evaluator.py`](./evaluation/tasks/llm_evaluator.py) (lines 10 and 12) or from `generate_result.py --api_key`.
+**Credentials** — the shipped example config runs against a local vLLM server ([`configs/example_xml_cloud_hyper.yaml`](../../configs/example_xml_cloud_hyper.yaml), `api_base: http://localhost:8002/v1`), so it needs no key. Cloud configs read `${OPENROUTER_API_KEY}` from the environment instead (`export OPENROUTER_API_KEY=...`, resolved by [`config_env.py`](../../config_env.py)). The legacy `ScreenshotTask` path still has three hardcoded placeholders in [`evaluation/evaluation.py`](../../evaluation/evaluation.py) (lines 63, 75, 81), and the LLM judge takes its key from [`evaluation/tasks/llm_evaluator.py`](../../evaluation/tasks/llm_evaluator.py) (lines 10 and 12) or from `generate_result.py --api_key`.
 
 Looking for the benchmark? Environment setup, batch scripts, judging and results all live in [Evaluation](#-evaluation).
 
@@ -352,20 +352,20 @@ python eval.py -n all_cloud_v1_hyper -c ./configs/example_xml_cloud_hyper.yaml -
 python eval.py -n all_cloud_v1_hyper -c ./configs/example_xml_cloud_hyper.yaml
 ```
 
-Batch scripts live in [`test_script/`](./test_script):
+Batch scripts live in [`test_script/`](../../test_script):
 
 - `all_test_cloud_v1_hyper.sh` — all 138 AndroidLab benchmark tasks.
 - `all_test_cloud_v1_hyper_add.sh` — tasks for four additional mobile apps.
 
-Beyond the 138 AndroidLab tasks, the repository ships **25 additional tasks** across four more mobile apps (Chrome, Gmail, TikTok, Reddit) — see [Additional Apps Documentation](./docs/new_apps.md).
+Beyond the 138 AndroidLab tasks, the repository ships **25 additional tasks** across four more mobile apps (Chrome, Gmail, TikTok, Reddit) — see [Additional Apps Documentation](../new_apps.md).
 
-The Android side of the harness ships compiled app maps and its own runner in [`phonecli_android/`](./phonecli_android/README.md): 9 apps / 138 tasks, one map per app, plus the pure-VLM baseline used for the comparison below.
+The Android side of the harness ships compiled app maps and its own runner in [`phonecli_android/`](../../phonecli_android/README.md): 9 apps / 138 tasks, one map per app, plus the pure-VLM baseline used for the comparison below.
 
 ### Judging
 
 Our implementation replaces AndroidLab's rule-based evaluation with **LLM-powered assessment**, which is more nuanced about partial success.
 
-Configure credentials in [`evaluation/tasks/llm_evaluator.py`](./evaluation/tasks/llm_evaluator.py) (line 10: API configuration; line 12: service URL), then generate results:
+Configure credentials in [`evaluation/tasks/llm_evaluator.py`](../../evaluation/tasks/llm_evaluator.py) (line 10: API configuration; line 12: service URL), then generate results:
 
 ```bash
 python generate_result.py --input_folder ./logs/evaluation/ --output_folder ./logs/evaluation/ --output_excel ./logs/evaluation/test_name.xlsx
@@ -376,7 +376,7 @@ python generate_result.py --input_folder ./logs/evaluation/ --output_folder ./lo
 ### 📊 Results
 
 <div align="center">
-  <img src="./figures/phonecli_attribution.png" width="78%" alt="Success rate per AndroidLab app for PhoneCLI, PhoneCLI without replay, and PhoneCLI without app maps, plus steps and tokens per successful task" />
+  <img src="../../figures/phonecli_attribution.png" width="78%" alt="Success rate per AndroidLab app for PhoneCLI, PhoneCLI without replay, and PhoneCLI without app maps, plus steps and tokens per successful task" />
 </div>
 
 Ablation over the nine AndroidLab apps: the full harness, the harness **without replay** (app maps but no deterministic execution), and **without app maps** (pure VLM). Compilation is what moves the needle — with both the map and replay the agent solves more tasks while spending fewer steps and fewer tokens per success (**6.72 vs 7.52 steps**, **34.4k vs 40.1k tokens**).
@@ -398,7 +398,7 @@ Ablation over the nine AndroidLab apps: the full harness, the harness **without 
 - **Smart matching**: match reasoning complexity to model capability rather than assuming longer prompts always help.
 
 <p align="center">
-  <img src="./figures/three_subplots_corrected.png" width="90%"/>
+  <img src="../../figures/three_subplots_corrected.png" width="90%"/>
 </p>
 
 ---
@@ -438,7 +438,7 @@ OpenPhone builds upon excellent open-source projects. We sincerely thank their a
 
 ## 📜 License
 
-This project is released under the [MIT License](./LICENSE).
+This project is released under the [MIT License](../../LICENSE).
 
 <div align="center">
 
