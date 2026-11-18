@@ -4,7 +4,7 @@ English · [Chinese](README_CN.md)
 
 # PhoneGo: Personal AI Agent on Your Phone
 
-**An AI agent that lives on your phone — and treats apps as callable commands.**
+**CLI-Driven · Fast · Powerful · Reliable · Cost-Effective Phone-Use Agent**
 
 <p>
   <a href="https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.4.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.4.0 for Android"></a>
