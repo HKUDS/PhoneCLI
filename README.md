@@ -30,7 +30,7 @@ Tell PhoneGo what you want. It opens and operates the right apps, gets the task 
 - **Download and run** directly on your phone.
 - **Describe the task** in natural language.
 - **Let PhoneGo operate** the relevant apps.
-- **Continue using your phone** whenever foreground access is not required.
+- **PhoneGo works in the background**, so your phone remains yours to use.
 - **Get the result** when the task is complete.
 
 ---
