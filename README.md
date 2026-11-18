@@ -79,22 +79,19 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
   <img src="docs/showcase/app-xhs-ctrip.gif" width="720" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
 </p>
 
----
-
-## ✨ Key Features of PhoneGo
 
 ## ✨ Key Features of PhoneGo
 
 | | |
 |---|---|
-| 🗺️ **It builds an executable map of each app** | Screens and navigation paths become reusable commands. |
-| 🧭 **It calls commands instead of guessing every tap** | Known paths run quickly and deterministically without vision calls. |
-| 👁️ **It looks only when the map runs out** | Vision handles unfamiliar screens and dynamic content. |
-| 🔀 **It combines commands with visual interaction** | Commands bring speed; visual interaction handles change. |
-| 🔗 **It carries context across apps** | Information found in one app flows directly into the next. |
-| 📵 **It works without taking over your phone** | PhoneGo runs in the background whenever possible. |
-| ↩️ **It returns control when finished** | It uses the main screen only when required, then gives it back. |
-| 🔒 **It keeps sensitive state on your device** | Maps, keys, sessions, and settings remain local. |
+| 🗺️ **Builds an executable map of each app** | Screens and navigation paths become reusable commands. |
+| 🧭 **Calls commands instead of guessing every tap** | Known paths run quickly and deterministically without vision calls. |
+| 👁️ **Looks only when the map runs out** | Vision handles unfamiliar screens and dynamic content. |
+| 🔀 **Combines commands with visual interaction** | Commands bring speed; visual interaction handles change. |
+| 🔗 **Carries context across apps** | Information found in one app flows directly into the next. |
+| 📵 **Works without taking over your phone** | PhoneGo runs in the background whenever possible. |
+| ↩️ **Returns control when finished** | It uses the main screen only when required, then gives it back. |
+| 🔒 **Keeps sensitive state on your device** | Maps, keys, sessions, and settings remain local. |
 
 > **Commands handle what is known. Vision handles what is new.**
 
@@ -102,100 +99,171 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
 </p>
 
----
+## ⚙️ From App Screens to Callable Commands
 
-## ⚙️ From app screens to commands
+PhoneGo separates what can be prepared in advance from what must be understood at runtime:
 
-```
-offline    a crawler walks an app and compiles it into a map   (once per app)
-online     route the task -> replay the map's macro            (one small routing call)
-fallback   unknown screen -> vision model drives that part     (only there)
-```
+``text
+OFFLINE    Explore the app → Build its navigation map        (once per app)
+ONLINE     Understand the task → Select and replay a command  (fast path)
+FALLBACK   Encounter something new → Use visual interaction   (only when needed)
+``text
 
-A map is compiled once per app: every screen becomes a node, every element that
-leads somewhere an edge, and a task turns into an ordered list of steps. Running
-that list is the fast path — 64 s instead of 146 s on the same instruction — and
-the vision model stays the exception handler, not the engine.
+## 📊 Tested on a Real Phone
 
-## 📊 Measured on a real phone
+We ran the same instruction on the same phone and compared PhoneGo's map-and-replay approach with a vision-only agent.
 
-| Task | Map + replay | Vision only |
-|---|---|---|
-| Find how to book a HKU visit (Xiaohongshu) | **17 steps / 64 s / 92.3k tokens** | 32 steps / 146 s / 207.1k tokens |
+| Task | PhoneGo: Map + Replay | Vision Only |
+|---|---:|---:|
+| Find how to book an HKU visit on Xiaohongshu | **17 steps · 64 s · 92.3k tokens** | 32 steps · 146 s · 207.1k tokens |
 
-Same phone, same instruction, both successful. The recordings live in
-[docs/showcase/](docs/showcase/).
+Both approaches completed the task successfully—but PhoneGo used:
 
-## 📲 Install
+- **47% fewer steps**
+- **56% less time**
+- **55% fewer tokens**
 
-1. Download **[PhoneGo-0.4.0-arm64.apk](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk)**
-   (**Android 14+, arm64**) and open it on the phone. Allow installation from this
-   source; MIUI asks once (tap "continue").
-2. Turn on **wireless debugging**, then enable PhoneGo's **accessibility service**:
-   the app reads the pairing code off the system dialog and pairs itself with the
-   phone's own `adbd`, so the service has to be on first. No computer needed.
-3. Tap **Settings → Model settings**: pick a preset (OpenRouter, DeepSeek, Zhipu,
-   Alibaba Bailian, SiliconFlow, or an endpoint of your own), paste **your own API
-   key**, press **Test connection**. Nothing is bundled.
-4. Type an instruction. Start with something that needs no login —
-   *"open Settings and tell me which Wi-Fi is connected"*.
+The difference comes from a simple idea: familiar navigation is replayed as a tested command instead of being visually rediscovered step by step.
 
-The interface is English or Chinese — it follows the phone's language, and
-Settings → Language overrides it. The walkthrough in
-[docs/getting-started.md](docs/getting-started.md) names every label both ways.
+See the side-by-side recordings in [docs/showcase/](docs/showcase/).
 
-Updates install in place: every release is signed with the same key. The full
-walkthrough, including what each screen should look like and the five things that
-usually go wrong, is in **[docs/getting-started.md](docs/getting-started.md)**.
+## 📲 How to Use PhoneGo
 
-## ❓ Questions people ask
+PhoneGo runs directly on your Android phone—no computer required.
 
-**Does it upload my screen?**
-Only the screens a model call has to look at, to the endpoint you configured. Maps,
-sessions, pairing keys and settings never leave the app.
+### 1. Download and Install
 
-**Do I need a computer?**
-No. The app uses the phone's own wireless-debugging connection; the same code
-also runs from a laptop over USB for development.
+Download **[PhoneGo-0.4.0-arm64.apk](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk)**.
 
-**Which apps work?**
-Any app you can drive by tapping. An app with a map is several times faster on the
-same task; the rest go through the vision fallback, which is slower and costs model
-calls. Maps are built per app, on your phone, and can be rebuilt any time.
+**Requirements:** Android 14+ · ARM64
 
-**Will it buy things for me?**
-No. Anything that spends money (pay, order, submit) stops and asks first, and
-password or verification-code screens are handed to you.
+Open the APK and allow installation from this source. On MIUI devices, tap **Continue** when prompted.
+
+### 2. Connect PhoneGo to Your Phone
+
+PhoneGo uses Android’s built-in wireless debugging to operate apps locally.
+
+1. Turn on **Wireless debugging** in Developer options.
+2. Enable the **PhoneGo Accessibility Service**.
+3. Follow the in-app pairing instructions.
+
+PhoneGo reads the pairing code from the system dialog and connects to the phone’s local `adbd` service automatically.
+
+> **No USB cable or separate computer is needed.**
+
+### 3. Connect a Model
+
+Go to **Settings → Model Settings**.
+
+1. Choose a provider:
+   - OpenRouter
+   - DeepSeek
+   - Zhipu
+   - Alibaba Bailian
+   - SiliconFlow
+   - Your own compatible endpoint
+2. Enter your API key.
+3. Tap **Test Connection**.
+
+PhoneGo does not bundle a model or API key, so you remain in control of the model endpoint it uses.
+
+### 4. Give PhoneGo a Task
+
+Type your request in natural language.
+
+For your first run, try a task that does not require login:
+
+> *Open Settings and tell me which Wi-Fi network is connected.*
+
+PhoneGo will open the app, perform the necessary steps, and report the result.
+
+## 🌐 Language and Updates
+
+- PhoneGo supports **English and Chinese**.
+- The interface follows your phone’s system language by default.
+- You can change it manually under **Settings → Language**.
+- New releases can be installed over the existing version without removing your current setup.
+
+For a complete visual walkthrough and troubleshooting guide, see **[Getting Started](docs/getting-started.md)**.
+
+## ❓ Frequently Asked Questions
+
+### Does PhoneGo upload my screen?
+
+Only when visual understanding is required.
+
+In that case, the relevant screen is sent to the model endpoint you configured. The following remain on your device:
+
+- App Navigation Maps
+- Pairing keys
+- Sessions
+- Settings
+- Reusable commands
+
+Known workflows can run from the local map without sending every screen to a vision model.
+
+### Do I need a computer?
+
+No.
+
+PhoneGo runs directly on your phone and connects through Android’s built-in wireless debugging.
+
+A USB connection to a computer is supported for development, but it is not required for normal use.
+
+### Which apps can PhoneGo operate?
+
+PhoneGo can work with apps that can be operated through tapping, scrolling, and text input.
+
+- **Mapped apps** use fast, reusable commands for familiar navigation.
+- **Unmapped screens** fall back to visual interaction.
+- **Changed interfaces** can be explored again and their maps rebuilt.
+
+Apps with an existing map are typically faster and require fewer model calls.
+
+### Can PhoneGo make purchases for me?
+
+PhoneGo does not complete sensitive actions without your confirmation.
+
+Before actions such as paying, placing an order, or submitting a transaction, it pauses and asks you to approve.
+
+Passwords, verification codes, and other sensitive authentication steps are handed back to you.
 
 ## 📚 Documentation
 
-| | |
+Not sure where to begin? Start with **[Getting Started](docs/getting-started.md)** to install PhoneGo and complete your first task.
+
+| Guide | What You’ll Find |
 |---|---|
-| [docs/manual.md](docs/manual.md) | **the manual**: every screen, every setting, every failure |
-| [docs/getting-started.md](docs/getting-started.md) | from the APK to a finished task, with the first-run checks |
-| [docs/product-app.md](docs/product-app.md) | what the app is, layer by layer |
-| [docs/map-building.md](docs/map-building.md) | how a map is compiled, with the measurement behind each decision |
-| [android-app/README.md](android-app/README.md) | build it: Gradle, Chaquopy, the virtual-display helper |
-| [docs/showcase/](docs/showcase/) | recordings, including the side-by-side comparison |
+| 📘 **[User Manual](docs/manual.md)** | A complete guide to every screen, setting, feature, and common issue. |
+| 🚀 **[Getting Started](docs/getting-started.md)** | Step-by-step instructions from installing the APK to completing your first task. |
+| 🧩 **[How PhoneGo Works](docs/product-app.md)** | A clear introduction to PhoneGo’s product design and system architecture. |
+| 🗺️ **[Building App Navigation Maps](docs/map-building.md)** | How PhoneGo explores an app and compiles its screens and navigation paths into reusable commands. |
+| 🛠️ **[Android Development Guide](android-app/README.md)** | How to build the Android app with Gradle, Chaquopy, and the virtual-display helper. |
+| 🎬 **[Examples and Recordings](docs/showcase/)** | Real-phone demos and side-by-side comparisons with vision-only agents. |
 
 ## 🌟 Citation
 
-PhoneGo is those two papers in app form: the map-and-replay harness comes from **PhoneCLI**, and the open model behind the fallback path is **OpenPhone**. If either is useful to your research, please cite both.
+PhoneGo brings two research projects together in a practical mobile application:
 
-```
+- **PhoneCLI** provides the App Navigation Map, command compilation, and deterministic replay.
+- **OpenPhone** provides the open mobile-agent model used for visual understanding and fallback interaction.
+
+If PhoneGo, PhoneCLI, or OpenPhone supports your research, please consider citing the corresponding papers:
+
+```bibtex
 @article{jiang2026phonecli,
-  title={PhoneCLI: From App Interfaces to Callable Commands for Mobile Agents},
-  author={Jiang, Yangqin and Xu, Lingrui and Huang, Chao},
-  journal={arXiv preprint arXiv:2609.35671},
-  year={2026}
+  title   = {PhoneCLI: From App Interfaces to Callable Commands for Mobile Agents},
+  author  = {Jiang, Yangqin and Xu, Lingrui and Huang, Chao},
+  journal = {arXiv preprint arXiv:2609.35671},
+  year    = {2026}
 }
 
 @inproceedings{jiang2026openphone,
-  title={OpenPhone: Mobile Agentic Foundation Models},
-  author={Jiang, Yangqin and Huang, Chao},
-  booktitle={Findings of the Association for Computational Linguistics: ACL 2026},
-  pages={30362--30380},
-  year={2026}
+  title     = {OpenPhone: Mobile Agentic Foundation Models},
+  author    = {Jiang, Yangqin and Huang, Chao},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2026},
+  pages     = {30362--30380},
+  year      = {2026}
 }
 ```
 
@@ -203,13 +271,14 @@ PhoneGo is those two papers in app form: the map-and-replay harness comes from *
 
 ## 🔗 Related Projects
 
-PhoneGo builds on PhoneCLI and OpenPhone, which in turn build upon excellent open-source projects. We sincerely thank their authors and contributors:
+- [AndroidLab](https://github.com/THUDM/Android-Lab)
+- [R1-V](https://github.com/StarsfieldAI/R1-V)
+- [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory)
+- [Mika](https://github.com/wangzan101/Mika)
 
-- [AndroidLab](https://github.com/THUDM/Android-Lab) - The benchmark framework.
-- [R1-V](https://github.com/StarsfieldAI/R1-V) - Implementation details for the GRPO training methodology.
-- [LLaMA Factory](https://github.com/hiyouga/LLaMA-Factory) - The unified training framework enabling efficient model fine-tuning.
+The original PhoneCLI research components—including `phonecli/`, the evaluation suites, and the training recipe—remain available in this repository.
 
-The CLI side of this repository (`phonecli/`, the evaluation suites, the training recipe) is unchanged; its original README is kept at [docs/archive/README-phonecli-en.md](docs/archive/README-phonecli-en.md).
+For the original PhoneCLI documentation, see **[Archived PhoneCLI README](docs/archive/README-phonecli-en.md)**.
 
 ---
 
@@ -221,7 +290,7 @@ This project is released under the [MIT License](./LICENSE).
 
 **If this project helps you, please give us a Star🌟**
 
-**🤖 Empower AI Phone with Agents!**
+**🤖 Exploring AI Phone with Agents!**
 
 <br>
 
