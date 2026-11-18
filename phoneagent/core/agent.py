@@ -47,6 +47,7 @@ from .prompts import (
     PULL_NOTICE,
     STALE_SCREEN_NOTICE,
     FINAL_TURN_NOTICE,
+    LANGUAGE_FIX_PROMPT,
     PROGRESS_NOTICE,
     COORDINATE_VLM_PROMPT,
     MACRO_PLAN_PROMPT,
@@ -618,6 +619,7 @@ class PhoneAgent:
             result = self._run_layers(task)
             self._end_of_task_display()
             self._watchdog_stop = True
+            result.answer = self._matches_task_language(task, result.answer)
             return result
         except _Stranded as exc:
             return self._result(False, exc.answer, "handover", 0)
@@ -633,6 +635,33 @@ class PhoneAgent:
                 f"换一个 App，或在手机上手动操作。"
             )
             return self._result(False, answer, "unlaunchable", 0)
+
+    #: A task typed in English must not come back in Chinese just because the
+    #: app on screen is Chinese. The prompt says so, and the model ignored it in
+    #: three takes out of three (the screen and the history are all Chinese), so
+    #: the answer is checked here and translated when it does not match.
+    CJK = "\u4e00-\u9fff"
+
+    def _matches_task_language(self, task: str, answer: str) -> str:
+        if not (task or "").strip() or not (answer or "").strip():
+            return answer
+        import re
+
+        task_letters = re.findall(r"[A-Za-z]", task)
+        task_cjk = re.findall(f"[{self.CJK}]", task)
+        if not task_letters or len(task_cjk) > len(task_letters) // 2:
+            return answer          # the task itself is Chinese: leave it alone
+        answer_cjk = re.findall(f"[{self.CJK}]", answer)
+        answer_letters = re.findall(r"[A-Za-z]", answer)
+        if len(answer_cjk) < 20 or len(answer_cjk) <= len(answer_letters):
+            return answer
+        try:
+            translated = self.llm.text(LANGUAGE_FIX_PROMPT, answer).strip()
+        except Exception as exc:  # noqa: BLE001 - never fail a finished task
+            if self.log:
+                self.log(f"could not translate the answer: {exc}")
+            return answer
+        return translated or answer
 
     def _end_of_task_display(self) -> None:
         """Give the phone its screen back once the task is over.

@@ -561,6 +561,12 @@ def _run(task_id: str, text: str, config: ServerConfig,
                 steps=[_step_dict(step) for step in result.steps],
             )
         except Exception as exc:  # noqa: BLE001 - surfaced to the app
+            # The answer only carries the message; without the stack a failure
+            # like "UnicodeDecodeError: ... utf-16-le ..." is untraceable from
+            # the phone.
+            import traceback
+
+            traceback.print_exc()
             _update(task_id, state="failed", answer=f"{type(exc).__name__}: {exc}")
         finally:
             # A task may have followed its app onto the user's display; the next

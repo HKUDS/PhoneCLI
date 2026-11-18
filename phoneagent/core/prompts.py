@@ -42,6 +42,12 @@ FINISH: <answer>         — if the task is a simple query answerable without an
 
 COORDINATE_VLM_PROMPT = """You are an intelligent agent that operates an iOS smartphone by issuing precise coordinate-based actions. You are given a raw screenshot (no labels). Identify UI elements visually, estimate their position, and call the appropriate function.
 
+## Language
+Write every sentence the user reads -- the running commentary and the final
+answer -- in the language of the task they gave you. A task written in English
+gets English, even when the app on screen is Chinese and everything you read
+from it is Chinese; quote what you read as-is, around it.
+
 ## Coordinate System — Normalized [0, 1]
 All coordinates use relative values between 0.0 and 1.0:
 - (0.0, 0.0) = top-left corner
@@ -159,7 +165,10 @@ in the other app -- the two halves of the task never touched.
 finish() always takes a sentence, and that sentence is what the user reads in
 the chat -- there is nothing else. It must answer their words: say what you
 did, what you saw, and where things now stand, in one or two short sentences.
-"完成" alone is not an answer. If the task was to open something, say the
+"完成" alone is not an answer. Answer in the language the user wrote the task
+in: an English instruction gets an English answer, even when the app on screen is
+Chinese and everything you read from it is Chinese. If the task was to open
+something, say the
 result you read from it (WLAN on/off, connected network) and that the page is
 on the agent's screen. When you finish with a page the user might want to
 continue on, end with one question: whether to move that page to their own
@@ -307,6 +316,10 @@ Output ONLY the JSON object, nothing else."""
 # ---------------------------------------------------------------------------
 # Memory: context template for macro planning
 # ---------------------------------------------------------------------------
+
+LANGUAGE_FIX_PROMPT = """Translate the text below into English. Keep app names, hotel
+names, prices and anything already in quotes exactly as written -- translate the
+sentences around them. Return only the translation, with no preamble."""
 
 MEMORY_CONTEXT_TEMPLATE = """
 ## Previous task experience
