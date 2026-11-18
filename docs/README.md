@@ -21,8 +21,8 @@ no longer resolve.
 | File | Contents |
 |---|---|
 | [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | One instruction, one phone, both modes side by side at 3× (55 s, with a live step counter) |
-| [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | One instruction across two apps: a note in 小红书, the hotel it names, tonight's price in 携程 (3:40, 540p) |
-| [showcase/app-xhs-ctrip-4x.mp4](showcase/app-xhs-ctrip-4x.mp4) | The same run at 4× with music, tightened: the 10 s wait and two full-screen image viewers are cut (0:43, 1080×2340, full resolution) |
+| [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | One instruction across two apps: a note in 小红书, the hotel it names, tonight's price in 携程 (3:40) |
+| [showcase/app-xhs-ctrip-4x.mp4](showcase/app-xhs-ctrip-4x.mp4) | The same task at 4× with music (0:43) |
 | [showcase/app-xhs-ctrip.gif](showcase/app-xhs-ctrip.gif) | Three panels of the same run, embedded in the README |
 | [showcase/lightagent-demo.gif](showcase/lightagent-demo.gif) | The harness on the AndroidLab benchmark, embedded in the README |
 

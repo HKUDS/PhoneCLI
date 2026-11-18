@@ -19,8 +19,8 @@
 | 文件 | 内容 |
 |---|---|
 | [showcase/app-xhs-hku-compare-3x.mp4](showcase/app-xhs-hku-compare-3x.mp4) | 同一句话、同一台手机，两种模式并排 3×（时长 55 秒，带步数计数器） |
-| [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | 一句话跨两个 App：小红书的一篇笔记 → 笔记里的酒店 → 携程今晚的价格（3 分 40 秒，540p） |
-| [showcase/app-xhs-ctrip-4x.mp4](showcase/app-xhs-ctrip-4x.mp4) | 同一条任务的 4× 配乐剪辑版：剪掉 10 秒等待和两次全屏看图（43 秒，1080×2340 全分辨率） |
+| [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | 一句话跨两个 App：小红书的一篇笔记 → 笔记里的酒店 → 携程今晚的价格（3 分 40 秒） |
+| [showcase/app-xhs-ctrip-4x.mp4](showcase/app-xhs-ctrip-4x.mp4) | 同一条任务的 4× 配乐版（43 秒） |
 | [showcase/app-xhs-ctrip.gif](showcase/app-xhs-ctrip.gif) | 同一条任务的三联动图，README 里在用 |
 | [showcase/lightagent-demo.gif](showcase/lightagent-demo.gif) | harness 在 AndroidLab 基准上的演示，README 里在用 |
 
