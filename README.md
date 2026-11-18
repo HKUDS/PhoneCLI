@@ -4,7 +4,7 @@ English · [Chinese](README_CN.md)
 
 # PhoneGo: Personal AI Agent on Your Phone
 
-**CLI-Driven · Fast · Powerful · Reliable · Cost-Effective Phone-Use Agent**
+**CLI+GUI · Fast · Powerful · Reliable · Cost-Effective Phone-Use Agent**
 
 <p>
   <a href="https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20Download-PhoneGo%200.4.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="Download PhoneGo 0.4.0 for Android"></a>
@@ -22,6 +22,22 @@ English · [Chinese](README_CN.md)
 </p>
 
 </div>
+
+Download PhoneGo and run it directly on your Android Phone.
+
+Tell PhoneGo what you want. It opens and operates the right apps, gets the task done, and reports back.
+
+- **Download and run** directly on your phone.
+- **Describe the task** in natural language.
+- **Let PhoneGo operate** the relevant apps.
+- **Continue using your phone** whenever foreground access is not required.
+- **Get the result** when the task is complete.
+
+---
+
+PhoneGo combines **CLI efficiency with GUI flexibility**:
+
+> **Use CLI when the path is known. Use GUI when the screen demands it.**
 
 PhoneGo runs inside your phone. You type a sentence, it opens the app, does the
 work, and tells you what it found — while you keep using the phone. If it has to
