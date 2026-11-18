@@ -33,21 +33,29 @@ Tell PhoneGo what you want. It opens and operates the right apps, gets the task 
 
 ---
 
-PhoneGo combines **CLI efficiency with GUI flexibility**:
+## What Makes PhoneGo Different?
 
-> **Use CLI when the path is known. Use GUI when the screen demands it.**
+### ⚡ Reusable App Commands
 
-PhoneGo runs inside your phone. You type a sentence, it opens the app, does the
-work, and tells you what it found — while you keep using the phone. If it has to
-borrow your screen for an app that refuses to run anywhere else, it says so, and
-gives the screen back when the step is done.
+PhoneGo turns familiar app workflows into reusable commands—such as opening a page, searching for information, or completing a booking.
 
-Underneath is PhoneCLI's idea. Most of what an agent does on a phone is
-**navigation** — opening, tapping, scrolling, going back — and that part is not a
-model's job. The screens a task touches are compiled offline into a map, so at run
-time the agent **calls a command** instead of asking a model what to do next: a
-replayed step costs milliseconds and gives the same result every time. The vision
-model is only asked about screens the map has never seen.
+Instead of asking an AI model to rediscover every tap and swipe, PhoneGo can directly run a tested workflow. This makes routine tasks faster, more reliable, and less expensive.
+
+### 📱 Visual App Interaction
+
+Some apps can only be operated through their visual interface.
+
+When needed, PhoneGo can understand the screen and interact with buttons, menus, and unfamiliar app states—just as a person would.
+
+### 🔀 The Best of Commands and Visual Interaction
+
+PhoneGo automatically chooses the right way to operate each app:
+
+- **Reusable commands (CLI)** for familiar and repeatable workflows.
+- **Visual interaction (GUI)** for screens that require tapping, scrolling, or visual understanding.
+- **Vision models** only when PhoneGo encounters something new.
+
+> **Commands provide speed and reliability. Visual interaction provides flexibility and coverage.**
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
