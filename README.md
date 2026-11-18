@@ -83,14 +83,20 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 
 ## ✨ Key Features of PhoneGo
 
+## ✨ Key Features of PhoneGo
+
 | | |
 |---|---|
-| 🧭 **It calls commands, it doesn't guess** | Navigation is compiled offline into a map: one deterministic replay, **no vision calls**, a replayed tap in well under a second. |
-| 👁 **It looks only when the map runs out** | An unfamiliar screen goes to the vision model for that part alone — then you get a plain answer, not a log. |
-| 🔗 **It carries what it read across apps** | What it reads in one app it uses in the next: *"see which hotel Xiaohongshu recommends, then check tonight's price on Ctrip"*. |
-| 📵 **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
-| ↩️ **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
-| 🔒 **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screens it actually has to look at are sent. |
+| 🗺️ **It builds an executable map of each app** | Screens and navigation paths become reusable commands. |
+| 🧭 **It calls commands instead of guessing every tap** | Known paths run quickly and deterministically without vision calls. |
+| 👁️ **It looks only when the map runs out** | Vision handles unfamiliar screens and dynamic content. |
+| 🔀 **It combines commands with visual interaction** | Commands bring speed; visual interaction handles change. |
+| 🔗 **It carries context across apps** | Information found in one app flows directly into the next. |
+| 📵 **It works without taking over your phone** | PhoneGo runs in the background whenever possible. |
+| ↩️ **It returns control when finished** | It uses the main screen only when required, then gives it back. |
+| 🔒 **It keeps sensitive state on your device** | Maps, keys, sessions, and settings remain local. |
+
+> **Commands handle what is known. Vision handles what is new.**
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
