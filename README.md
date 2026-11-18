@@ -12,6 +12,8 @@ English · [Chinese](README_CN.md)
 <p>
   <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
   <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
+</p>
+<p>
   <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
   <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
 </p>
@@ -103,11 +105,11 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 
 PhoneGo separates what can be prepared in advance from what must be understood at runtime:
 
-``text
+```text
 OFFLINE    Explore the app → Build its navigation map        (once per app)
 ONLINE     Understand the task → Select and replay a command  (fast path)
 FALLBACK   Encounter something new → Use visual interaction   (only when needed)
-``text
+```
 
 ## 📊 Tested on a Real Phone
 
