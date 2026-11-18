@@ -34,25 +34,56 @@ Tell PhoneGo what you want. It opens and operates the right apps, gets the task 
 
 ### ⚡ Reusable App Commands
 
-PhoneGo turns familiar app workflows into reusable commands—such as opening a page, searching for information, or completing a booking.
+PhoneGo turns familiar app workflows into reusable commands:
 
-Instead of asking an AI model to rediscover every tap and swipe, PhoneGo can directly run a tested workflow. This makes routine tasks faster, more reliable, and less expensive.
+- Open a specific page.
+- Search for information.
+- Complete a booking or other multi-step task.
+- Replay tested workflows without rediscovering every tap.
+
+**Result:** faster execution, more consistent outcomes, and fewer model calls.
 
 ### 📱 Visual App Interaction
 
-Some apps can only be operated through their visual interface.
+For apps that require direct screen interaction, PhoneGo can:
 
-When needed, PhoneGo can understand the screen and interact with buttons, menus, and unfamiliar app states—just as a person would.
+- Understand what is displayed on the screen.
+- Tap buttons and navigate menus.
+- Scroll through pages and return to previous screens.
+- Handle unfamiliar interfaces and unexpected app states.
 
-### 🔀 The Best of Commands and Visual Interaction
+**Result:** PhoneGo can work with apps even when no API or reusable command is available.
 
-PhoneGo automatically chooses the right way to operate each app:
+### 🔀 CLI (Command) + GUI (Visual) Execution
 
-- **Reusable commands (CLI)** for familiar and repeatable workflows.
-- **Visual interaction (GUI)** for screens that require tapping, scrolling, or visual understanding.
-- **Vision models** only when PhoneGo encounters something new.
+PhoneGo automatically chooses the most suitable approach:
 
-> **Commands provide speed and reliability. Visual interaction provides flexibility and coverage.**
+- **Reusable commands** for familiar, repeatable workflows.
+- **Visual interaction** when tapping or scrolling is required.
+- **Vision models** only for unfamiliar screens or new situations.
+- **Seamless switching** between commands and visual operations within the same task.
+
+**Result:** command-level speed and reliability, with the flexibility of human-like app interaction.
+
+---
+
+## 🎬 Use Case
+
+```
+you   find a hotel near HKU on Xiaohongshu, pick one, then check tonight's price on Ctrip
+
+app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
+      · Ctrip: search Hopewell Hotel → 17–18 Nov
+      · tonight: "no rooms for the dates you picked". Next available —
+        18–19 Nov from CNY 3379 · 19–20 Nov from CNY 3790 · 20 Nov from CNY 2303
+      · want me to move this hotel page to your phone to continue?
+```
+
+<p align="center">
+  <img src="docs/showcase/app-xhs-ctrip.gif" width="720" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
+</p>
+
+---
 
 <p align="center">
   <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
@@ -68,22 +99,6 @@ PhoneGo automatically chooses the right way to operate each app:
 | 📵 **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
 | ↩️ **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
 | 🔒 **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screens it actually has to look at are sent. |
-
-## 🎬 What a task looks like
-
-```
-you   find a hotel near HKU on Xiaohongshu, pick one, then check tonight's price on Ctrip
-
-app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
-      · Ctrip: search Hopewell Hotel → 17–18 Nov
-      · tonight: "no rooms for the dates you picked". Next available —
-        18–19 Nov from CNY 3379 · 19–20 Nov from CNY 3790 · 20 Nov from CNY 2303
-      · want me to move this hotel page to your phone to continue?
-```
-
-<p align="center">
-  <img src="docs/showcase/app-xhs-ctrip.gif" width="720" alt="PhoneGo typing a hotel name it read on Xiaohongshu into Ctrip, then reporting tonight's prices">
-</p>
 
 ## ⚙️ From app screens to commands
 
