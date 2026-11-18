@@ -653,7 +653,11 @@ class PhoneAgent:
             return answer          # the task itself is Chinese: leave it alone
         answer_cjk = re.findall(f"[{self.CJK}]", answer)
         answer_letters = re.findall(r"[A-Za-z]", answer)
-        if len(answer_cjk) < 20 or len(answer_cjk) <= len(answer_letters):
+        # A composed answer mixes the plan's English subtask names with Chinese
+        # prose, so the count of Latin letters is a poor test on its own: a plan
+        # answer with three English fragments and forty Chinese characters is
+        # still a Chinese answer.
+        if len(answer_cjk) < 10 or len(answer_cjk) * 4 < len(answer_letters):
             return answer
         try:
             translated = self.llm.text(LANGUAGE_FIX_PROMPT, answer).strip()
@@ -1202,10 +1206,13 @@ class PhoneAgent:
         if all_ok:
             return self._result(True, " | ".join(answers), "planner", rounds=len(steps))
         if done_names:
+            # The full subtask sentence, not a 24-character prefix: the
+            # prefix cut words in half ("search for hotels near H") and the
+            # answer is the one thing the user reads.
             answer = "做完了 " + "、".join(
-                f"「{name[:24]}」" for name in done_names) + "。"
+                f"「{name}」" for name in done_names) + "。"
             if failed_name:
-                answer += f"「{failed_name[:30]}」这一步没做成。"
+                answer += f"「{failed_name}」这一步没做成。"
                 # The page the agent stopped on is still on its own display;
                 # say so and offer it, instead of leaving the user guessing why
                 # the phone is back on this chat.
