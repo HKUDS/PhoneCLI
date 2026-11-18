@@ -28,8 +28,6 @@ Tell PhoneGo what you want. It opens and operates the right apps, gets the task 
 - **PhoneGo works in the background**, so your phone remains yours to use.
 - **Get the result** when the task is complete.
 
----
-
 ## What Makes PhoneGo Different?
 
 ### ⚡ Reusable App Commands
@@ -64,8 +62,6 @@ PhoneGo automatically chooses the most suitable approach:
 - **Seamless switching** between commands and visual operations within the same task.
 
 **Result:** command-level speed and reliability, with the flexibility of human-like app interaction.
-
----
 
 ## 🎬 Use Case
 
