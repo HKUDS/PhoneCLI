@@ -2,7 +2,7 @@ English · [Chinese](README_CN.md)
 
 <div align="center">
 
-# PhoneGo: Personal AI Agent on Your Phone
+# PhoneGo: Your Personal AI Agent on Your Phone
 
 **An AI agent that lives on your phone — and treats apps as callable commands.**
 
