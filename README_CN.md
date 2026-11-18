@@ -9,8 +9,7 @@
 <p>
   <a href="https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.4.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="下载 PhoneGo 0.4.0（Android）"></a>
   <br>
-  <sub>Android 14+ · arm64 · 需要无线调试与无障碍服务 · 需自备模型 API Key ——
-  <a href="#-怎么用"><b>装之前先看这里</b></a></sub>
+  <a href="#-怎么用"><b>装之前先看这里</b></a>
 </p>
 <p>
   <a href="./Communication.md"><img src="https://img.shields.io/badge/💬飞书-群-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e" height="22"></a>
