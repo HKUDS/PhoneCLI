@@ -10,12 +10,10 @@
   <a href="https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk"><img src="https://img.shields.io/badge/%E2%AC%87%20%E4%B8%8B%E8%BD%BD-PhoneGo%200.4.0%20%C2%B7%20Android-00d9ff?style=for-the-badge&logo=android&logoColor=white&labelColor=0b0f19" height="34" alt="下载 PhoneGo 0.4.0（Android）"></a>
 </p>
 <p>
-  <a href="./Communication.md"><img src="https://img.shields.io/badge/💬飞书-群-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
-  <a href="./Communication.md"><img src="https://img.shields.io/badge/微信-群-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
-</p>
-<p>
-  <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
-  <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e'></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/💬飞书-群-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e" height="22"></a>
+  <a href="./Communication.md"><img src="https://img.shields.io/badge/微信-群-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e" height="22"></a>
+  <a href='https://arxiv.org/abs/2609.35671'><img src='https://img.shields.io/badge/📄arXiv-PhoneCLI_2609.35671-ff6b6b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' height="22"></a>
+  <a href='https://arxiv.org/abs/2510.22009'><img src='https://img.shields.io/badge/📄arXiv-OpenPhone_2510.22009-8b5cf6?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' height="22"></a>
 </p>
 
 </div>
