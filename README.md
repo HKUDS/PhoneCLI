@@ -81,7 +81,7 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 
 ---
 
-## ✨ What makes it different
+## ✨ Key Features of PhoneGo
 
 | | |
 |---|---|
