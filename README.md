@@ -85,10 +85,6 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 
 ---
 
-<p align="center">
-  <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
-</p>
-
 ## ✨ What makes it different
 
 | | |
@@ -99,6 +95,12 @@ app   · Xiaohongshu: search → open a note → "Hopewell Hotel"
 | 📵 **It doesn't take the phone** | The app is driven on a screen of its own, invisible to you. Some apps only run on the main screen; PhoneGo follows them there, finishes, and puts them back. |
 | ↩️ **It gives the phone back** | When the task ends the app returns to its own screen, the chat comes forward, and it asks whether you want that page moved over to continue. |
 | 🔒 **It stays on your device** | Pairing keys, maps, sessions and settings live in the app. Only the screens it actually has to look at are sent. |
+
+<p align="center">
+  <img src="docs/showcase/lightagent-demo.gif" width="640" alt="PhoneCLI's harness driving an Android emulator through the AndroidLab benchmark">
+</p>
+
+---
 
 ## ⚙️ From app screens to commands
 
