@@ -627,7 +627,11 @@ def _hand_back_the_screen(device) -> None:
         if package == AGENT_PACKAGE:
             # a full-screen viewer over the chat is closed with back
             device.press_back()
-        device.shell(f"am start -n {AGENT_PACKAGE}/.MainActivity")
+        # --activity-single-top: the manifest says singleTop, and without this
+        # flag every finished task still opened a second copy of the chat
+        # screen -- measured 15 live instances -- and the copy that came up
+        # before the transcript was flushed rendered an empty conversation.
+        device.shell(f"am start --activity-single-top -n {AGENT_PACKAGE}/.MainActivity")
     except Exception:  # noqa: BLE001
         pass
 
