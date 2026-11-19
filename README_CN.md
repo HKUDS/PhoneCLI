@@ -155,15 +155,11 @@ PhoneGo 会从系统弹窗里读出配对码，自动连上手机本地的 `adbd
 
 进入 **设置 → 模型设置**。
 
-1. 选一个提供商：
-   - OpenRouter
-   - DeepSeek
-   - 智谱
-   - 阿里百炼
-   - 硅基流动
-   - 你自己的兼容接口
-2. 填入 API Key。
-3. 点**测试连接**。
+1. 点**提供商**选一个：DeepSeek 官方、DeepSeek、OpenRouter、智谱、阿里百炼、硅基流动、
+   月之暗面 Kimi、OpenAI、Gemini、Anthropic、本地，或**自定义**（任何兼容接口）。
+   选完会自动填好 base URL 和模型名。
+2. 填入 API Key——以 `sk-or-v1-…` 开头的会自动选中 OpenRouter。
+3. 其余（模型 id、base URL、视觉模型、步数上限）都在**高级设置**里。**保存时会自动测一次连接**并给出结果。
 
 PhoneGo 不内置模型，也不内置密钥——用哪个模型端点，由你决定。
 

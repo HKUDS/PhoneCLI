@@ -156,15 +156,13 @@ PhoneGo reads the pairing code from the system dialog and connects to the phone�
 
 Go to **Settings → Model Settings**.
 
-1. Choose a provider:
-   - OpenRouter
-   - DeepSeek
-   - Zhipu
-   - Alibaba Bailian
-   - SiliconFlow
-   - Your own compatible endpoint
-2. Enter your API key.
-3. Tap **Test Connection**.
+1. Tap **Provider** and pick one: DeepSeek (official), DeepSeek, OpenRouter,
+   Zhipu, Alibaba Bailian, SiliconFlow, Moonshot Kimi, OpenAI, Gemini, Anthropic,
+   a local endpoint, or **Custom** for any other compatible endpoint. Picking one
+   fills the base URL and the model for you.
+2. Enter your API key — a `sk-or-v1-…` key selects OpenRouter by itself.
+3. Everything else (model id, base URL, vision model, step budget) is under
+   **Advanced**. Saving runs the connection test and tells you the result.
 
 PhoneGo does not bundle a model or API key, so you remain in control of the model endpoint it uses.
 

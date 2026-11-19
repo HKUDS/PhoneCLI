@@ -42,13 +42,13 @@ Tap 「设置」 → 模型设置:
 
 | Field | What to put |
 |---|---|
-| **preset chips** | OpenRouter · DeepSeek 官方 · DeepSeek · 智谱 · 阿里百炼 · 硅基流动 · 本地 — tapping one fills the base URL and model id |
+| **Provider** | twelve to choose from — DeepSeek official, DeepSeek, OpenRouter, Zhipu, Alibaba Bailian, SiliconFlow, Moonshot Kimi, OpenAI, Gemini, Anthropic, local, custom. Picking one fills the base URL and model id |
 | **API Key** | your own key. It is encrypted with a key in the Android Keystore and stays on the phone |
 | **model / api base** | editable; any OpenAI- or Anthropic-compatible endpoint works. The base URL decides which protocol is spoken |
 | **视觉模型** | optional; leave empty to use the same model for screenshots |
 | **每条任务最多走几步** | default 35 — the budget for one task |
 
-Press 「测试连接」 before you close the sheet. Nothing is bundled: without a key
+Saving runs the connection test for you; 「测试连接」 re-runs it. Nothing is bundled: without a key
 the agent refuses to run, and the chat says so.
 
 ## 4. First task

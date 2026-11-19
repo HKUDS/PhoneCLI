@@ -161,16 +161,16 @@ mapped task looks cheap next to a vision one.
 
 Tap **Settings**. The sheet is the model configuration.
 
-| Field | Notes |
+The sheet is short on purpose: two things to fill in, one link to test them, and
+the rest folded away.
+
+| Element | Notes |
 |---|---|
-| preset chips | OpenRouter · DeepSeek (official) · DeepSeek · Zhipu · Alibaba Bailian · SiliconFlow · Local — one tap fills the base URL and model id |
-| **API Key** | yours; encrypted with a key in the Android Keystore, never leaves the phone |
-| **model** | the model id, editable |
-| **api base** | which protocol is spoken — `…/v1` is OpenAI-style, `…/anthropic` is Anthropic-style |
-| **vision model** | optional; empty means the same model looks at screenshots |
-| **max steps per task** | budget per task, default 35 |
-| **Test connection** | one cheap call; reports `✅ Works:` or the error |
-| **Autonomous** | when on, money steps are **not** asked about — leave it off unless you mean it |
+| **API Key** | yours; encrypted with a key in the Android Keystore, never leaves the phone. A key that starts with `sk-or-v1-` selects OpenRouter, `sk-ant-` selects Anthropic |
+| **Provider** | opens a list of twelve: DeepSeek (official), DeepSeek, OpenRouter, Zhipu, Alibaba Bailian, SiliconFlow, Moonshot Kimi, OpenAI, Gemini, Anthropic, local, custom. Picking one fills the base URL and the model id |
+| **Test connection** | one cheap call; reports `✅ Works:` or the error. Saving runs it for you |
+| **Advanced** (closed) | **model**, **api base** (which protocol is spoken: `…/v1` is OpenAI-style, `…/anthropic` is Anthropic-style), **vision model** (empty = the same model looks at screenshots), **max steps per task** (default 35) |
+| **Never ask me about money** | off by default. When on, steps that pay or order run without asking; it also skips the confirmation on shell commands that change the phone. Turning it on asks once |
 | **Diagnostics** | the runtime: Python version, display id, heartbeat age, and a reconnect button |
 | **Pair wireless debugging** | run the pairing flow again |
 | **Save / Cancel** | saving restarts the local agent; a running task is unaffected |
@@ -200,7 +200,7 @@ found.
 **It will not:**
 
 - **spend money without asking** — payment, ordering and submitting stop and ask
-  first (unless Autonomous is on);
+  first (unless "never ask me about money" is on);
 - **type your passwords or one-time codes** — those screens are handed to you;
 - **work on every app out of the box** — an app with no map is slower and costs
   model calls;
@@ -217,7 +217,8 @@ found.
 | *No pairing identity yet* | the app has never paired | turn on wireless debugging, reopen the app, or press **Pair wireless debugging** |
 | worked, then stopped after a reboot | Android turns wireless debugging off at boot | turn it back on; the app reconnects by itself |
 | tasks die in the background | the system cleaner reclaimed the app | set battery saving to unrestricted (long-press Settings) |
-| *PhoneGo's background process is stuck (N s without a heartbeat)* | the agent process died or froze | swipe the app away from Recents and open it again |
+| *PhoneGo's background process is stuck (N s without a heartbeat)* | the agent process died or froze | the app restarts it once by itself; if the message comes back, swipe it away from Recents and open it again |
+| the chat looks empty after a task finishes | a second chat window used to open before the transcript was saved | fixed in 0.4.2; on older versions, reopen the app and the conversation is still under Chats |
 | no pairing dialog seen | “Pair device with pairing code” is not open in Wireless debugging | open it, then press Pair again within two minutes |
 | steps read `👁` / no replay | this app has no map on this phone yet | expected; build one under Maps |
 | a map crawl starts with ⛔ | that app cannot start on the virtual display | use hands-off, or pick another app |
@@ -236,7 +237,7 @@ found.
 | **landing** | the map's self-test result: how many sampled paths ended where recorded |
 | **virtual display** | a screen the system creates for the agent, which the phone does not show |
 | **hands-off** | running on your own screen instead, so you watch every step |
-| **autonomous** | money steps are not asked about |
+| **never ask me about money** | money steps are not asked about |
 | **capsule** | the floating window that mirrors the agent's screen |
 
 ---

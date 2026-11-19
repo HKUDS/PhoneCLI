@@ -34,13 +34,13 @@ PhoneGo 通过回环地址和手机自己的 `adbd` 通信，而它得先从系�
 
 | 字段 | 填什么 |
 |---|---|
-| **预置 chips** | OpenRouter · DeepSeek 官方 · DeepSeek · 智谱 · 阿里百炼 · 硅基流动 · 本地——点一下自动填好 base URL 和模型名 |
+| **提供商** | 12 项可选——DeepSeek 官方、DeepSeek、OpenRouter、智谱、阿里百炼、硅基流动、月之暗面 Kimi、OpenAI、Gemini、Anthropic、本地、自定义。选完自动填好 base URL 和模型名 |
 | **API Key** | 你自己的密钥。用 Android Keystore 加密，只留在手机上 |
 | **model / api base** | 可改；任何 OpenAI 或 Anthropic 兼容接口都能用，base URL 决定走哪种协议 |
 | **视觉模型** | 可选；留空表示和上面用同一个模型 |
 | **每条任务最多走几步** | 默认 35，即一条任务的预算 |
 
-关掉面板前先点「测试连接」。App 不内置任何密钥：没填 Key 时 agent 会拒绝执行，并在
+**保存时会自动测一次连接**，「测试连接」可以再测。App 不内置任何密钥：没填 Key 时 agent 会拒绝执行，并在
 对话里说明。
 
 ## 4. 第一条任务
