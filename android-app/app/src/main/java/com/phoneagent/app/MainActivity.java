@@ -344,9 +344,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        // re-opening the app should retry a start that failed (or was killed),
-        // not silently keep a dead agent
-        startAgentService();
+        // Re-opening the app should retry a start that failed (or was killed),
+        // not silently keep a dead agent -- but the agent itself brings this
+        // window forward when a task ends, and restarting there printed
+        // "正在启动本地 agent…" underneath the answer it had just written.
+        if (!AgentService.isReady()) {
+            startAgentService();
+        }
     }
 
     private String lastPairHost = "127.0.0.1";
@@ -1663,6 +1667,7 @@ public class MainActivity extends Activity {
         key.setHint("API Key（sk-or-v1-…）");
         key.setText(cfg.getApiKey());
         key.setSingleLine(true);
+        key.setHint("API Key（sk-or-v1-… / sk-…）");
 
         EditText model = new EditText(this);
         model.setHint("model");
@@ -1685,45 +1690,108 @@ public class MainActivity extends Activity {
         rounds.setText(cfg.getMaxRounds() > 0 ? String.valueOf(cfg.getMaxRounds()) : "35");
         rounds.setSingleLine(true);
 
-        // Switching provider used to mean knowing the base URL and a model id
-        // by heart. These fill both in; the fields stay editable.
-        LinearLayout presetRow = new LinearLayout(this);
-        presetRow.setOrientation(LinearLayout.HORIZONTAL);
-        // A plain horizontal LinearLayout squeezes the last chip into a
-        // one-character-wide column; scrolling keeps every label readable.
-        android.widget.HorizontalScrollView presetScroll =
-                new android.widget.HorizontalScrollView(this);
-        presetScroll.setHorizontalScrollBarEnabled(false);
-        presetScroll.addView(presetRow);
-        presetScroll.setPadding(0, dp(6), 0, dp(2));
-        String[][] choices = {
-                {"OpenRouter", "https://openrouter.ai/api/v1", "qwen/qwen3.8-flash"},
-                // DeepSeek's own Anthropic-protocol endpoint: the base URL is
-                // what tells the agent which protocol to speak.
+        // One row instead of a wall of fields: the provider decides the base
+        // URL and the model id, and everything else hides under 高级设置. The
+        // chip row this replaces only offered seven providers and still asked
+        // the reader to understand what a base URL was.
+        final String[][] PROVIDERS = {
                 {Tr.t("DeepSeek 官方"), "https://api.deepseek.com/anthropic", "deepseek-flash"},
                 {"DeepSeek", "https://api.deepseek.com/v1", "deepseek-chat"},
+                {"OpenRouter", "https://openrouter.ai/api/v1", "qwen/qwen3.8-flash"},
                 {Tr.t("智谱"), "https://open.bigmodel.cn/api/paas/v4", "glm-4v-flash"},
                 {Tr.t("阿里百炼"), "https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-vl-plus"},
                 {Tr.t("硅基流动"), "https://api.siliconflow.cn/v1", "Qwen/Qwen2.5-VL-72B-Instruct"},
+                {Tr.t("月之暗面 Kimi"), "https://api.moonshot.cn/v1", "moonshot-v1-8k-vision-preview"},
+                {"OpenAI", "https://api.openai.com/v1", "gpt-4o-mini"},
+                {"Gemini", "https://generativelanguage.googleapis.com/v1beta/openai/", "gemini-2.0-flash"},
+                {"Anthropic", "https://api.anthropic.com/v1", "claude-sonnet-4-5"},
                 {Tr.t("本地"), "http://localhost:8000/v1", "Qwen/Qwen2.5-VL-7B-Instruct"},
+                {Tr.t("自定义"), "", ""},
         };
-        for (String[] choice : choices) {
-            TextView chip = new TextView(this);
-            chip.setText(choice[0]);
-            chip.setTextSize(12f);
-            chip.setPadding(dp(8), dp(6), dp(8), dp(6));
-            android.widget.LinearLayout.LayoutParams lp =
-                    new android.widget.LinearLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT);
-            lp.rightMargin = dp(6);
-            chip.setLayoutParams(lp);
-            chip.setOnClickListener(v -> {
-                base.setText(choice[1]);
-                model.setText(choice[2]);
-            });
-            presetRow.addView(chip);
+
+        TextView provider = new TextView(this);
+        provider.setTextSize(15f);
+        provider.setPadding(0, dp(6), 0, dp(6));
+        String currentBase = cfg.getApiBase();
+        String providerName = Tr.t("自定义");
+        for (String[] row : PROVIDERS) {
+            if (!row[1].isEmpty() && row[1].equals(currentBase)) {
+                providerName = row[0];
+                break;
+            }
         }
+        provider.setText(Tr.t("提供商") + ":  " + providerName + "  \u203a");
+        provider.setOnClickListener(v -> {
+            String[] labels = new String[PROVIDERS.length];
+            for (int i = 0; i < PROVIDERS.length; i++) {
+                labels[i] = PROVIDERS[i][0];
+            }
+            new AlertDialog.Builder(this)
+                    .setTitle(Tr.t("选择提供商"))
+                    .setItems(labels, (d, which) -> {
+                        provider.setText(Tr.t("提供商") + ":  " + PROVIDERS[which][0] + "  \u203a");
+                        if (!PROVIDERS[which][1].isEmpty()) {
+                            base.setText(PROVIDERS[which][1]);
+                            model.setText(PROVIDERS[which][2]);
+                        }
+                    })
+                    .show();
+        });
+
+        // A pasted key often names its provider already. Recognising the two
+        // prefixes we are sure about saves a trip to the provider list without
+        // guessing at the rest.
+        key.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence text, int start, int before, int count) {
+                String value = text.toString().trim();
+                String picked = "";
+                if (value.startsWith("sk-or-v1")) {
+                    picked = "OpenRouter";
+                } else if (value.startsWith("sk-ant-")) {
+                    picked = "Anthropic";
+                }
+                if (picked.isEmpty()) {
+                    return;
+                }
+                for (String[] row : PROVIDERS) {
+                    if (row[0].equals(picked)) {
+                        provider.setText(Tr.t("提供商") + ":  " + row[0] + "  \u203a");
+                        base.setText(row[1]);
+                        model.setText(row[2]);
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int a, int b, int c) {
+            }
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+            }
+        });
+
+        // 高级设置: the four fields a user should rarely touch.
+        LinearLayout advanced = new LinearLayout(this);
+        advanced.setOrientation(LinearLayout.VERTICAL);
+        advanced.setVisibility(View.GONE);
+        advanced.addView(model);
+        advanced.addView(base);
+        advanced.addView(vision);
+        advanced.addView(rounds);
+
+        TextView advancedToggle = new TextView(this);
+        advancedToggle.setText(Tr.t("高级设置") + "  \u25b8");
+        advancedToggle.setTextSize(13f);
+        advancedToggle.setTextColor(getColor(R.color.ink_soft));
+        advancedToggle.setPadding(0, dp(10), 0, dp(2));
+        advancedToggle.setOnClickListener(v -> {
+            boolean show = advanced.getVisibility() != View.VISIBLE;
+            advanced.setVisibility(show ? View.VISIBLE : View.GONE);
+            advancedToggle.setText(Tr.t("高级设置") + (show ? "  \u25be" : "  \u25b8"));
+        });
 
         TextView test = new TextView(this);
         test.setText(Tr.t("测试连接"));
@@ -1769,9 +1837,24 @@ public class MainActivity extends Activity {
         // window now (see the layout), so nothing needs a permission and nothing
         // floats over other apps. The old service only drew that overlay.
 
+        // The old label said 自主模式：花钱前也不问, which reads as "and it stops
+        // asking about other things too". It does not: this switch covers money
+        // and destructive shell commands, nothing else. Name what it does, and
+        // ask once before switching it on -- paying is not undoable.
         CheckBox autonomous = new CheckBox(this);
-        autonomous.setText(Tr.t("自主模式：花钱前也不问"));
+        autonomous.setText(Tr.t("花钱时不再问我（自动下单/支付）"));
         autonomous.setChecked(autonomousMode());
+        autonomous.setOnClickListener(v -> {
+            if (!autonomous.isChecked()) {
+                return;
+            }
+            new AlertDialog.Builder(this)
+                    .setTitle(Tr.t("花钱时不再问我（自动下单/支付）"))
+                    .setMessage(Tr.t("打开后，涉及支付、下单、提交订单的步骤会直接执行，不再询问。"))
+                    .setPositiveButton(Tr.t("确定"), null)
+                    .setNegativeButton(Tr.t("取消"), (d, w) -> autonomous.setChecked(false))
+                    .show();
+        });
 
         TextView diag = new TextView(this);
         diag.setText(Tr.t("诊断：查看运行环境"));
@@ -1789,13 +1872,17 @@ public class MainActivity extends Activity {
                 })
                 .show());
 
+        TextView keyLabel = new TextView(this);
+        keyLabel.setText("API Key");
+        keyLabel.setTextSize(13f);
+        keyLabel.setTextColor(getColor(R.color.ink_soft));
+        keyLabel.setPadding(0, dp(4), 0, 0);
+        box.addView(keyLabel);
         box.addView(key);
-        box.addView(model);
-        box.addView(base);
-        box.addView(presetScroll);
-        box.addView(vision);
-        box.addView(rounds);
+        box.addView(provider);
         box.addView(test);
+        box.addView(advancedToggle);
+        box.addView(advanced);
         box.addView(autonomous);
         box.addView(diag);
 
@@ -1820,6 +1907,13 @@ public class MainActivity extends Activity {
                             model.getText().toString().trim(),
                             vision.getText().toString().trim(),
                             steps);
+                    // Save should tell you whether the key works; asking the
+                    // user to press 测试连接 straight after is a second thought.
+                    if (key.getText().toString().trim().isEmpty()) {
+                        alert(Tr.t("已清空密钥，agent 只能截图模式运行。"));
+                    } else {
+                        test.performClick();
+                    }
                 })
                 .setNeutralButton(Tr.t("配对无线调试"), (d, w) -> startPairingWatch())
                 .setNegativeButton(Tr.t("取消"), null)
@@ -1967,7 +2061,14 @@ public class MainActivity extends Activity {
     }
 
     private boolean autonomousMode() {
-        return getSharedPreferences("agent", MODE_PRIVATE).getBoolean("autonomous", false);
+        // Opt-in, and only through the switch: a build that stored the old
+        // 自主模式 flag is reset once, because the label made it sound harmless.
+        android.content.SharedPreferences prefs = getSharedPreferences("agent", MODE_PRIVATE);
+        if (!prefs.getBoolean("autonomous_default_migrated", false)) {
+            prefs.edit().putBoolean("autonomous", false)
+                    .putBoolean("autonomous_default_migrated", true).apply();
+        }
+        return prefs.getBoolean("autonomous", false);
     }
 
     private void saveAgentConfig(String apiKey, String apiBase, String model,
@@ -2711,6 +2812,11 @@ public class MainActivity extends Activity {
                             note(spend);
                         }
                         setBusy(false);
+                        // Flush the transcript now: the agent's hand-back can
+                        // bring the window forward at this moment, and a copy
+                        // that reads the file before this save shows an empty
+                        // conversation.
+                        saveNow();
                     });
                     return;
                 }
@@ -3769,9 +3875,11 @@ public class MainActivity extends Activity {
                     }
                     found = true;
                 }
-                if (!found) {
-                    next.put(entry);          // keep it at the top
-                }
+                // Every entry is kept: the old "if (!found)" guard dropped the
+                // sessions listed after the current one, so talking in an older
+                // conversation made the newer ones vanish from the list (their
+                // files stayed on disk, unreachable).
+                next.put(entry);
             }
             if (!found) {
                 org.json.JSONObject entry = new org.json.JSONObject();
