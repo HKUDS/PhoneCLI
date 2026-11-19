@@ -10,7 +10,7 @@ and a model API key — no computer, no cable.
 
 ## 1. Install
 
-Download [`PhoneGo-0.4.1-arm64.apk`](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.1/PhoneGo-0.4.1-arm64.apk)
+Download [`PhoneGo-0.4.2-arm64.apk`](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.2/PhoneGo-0.4.2-arm64.apk)
 and open it on the phone.
 
 - **Android 14 or newer, arm64.** The Python runtime and the display helper are
