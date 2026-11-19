@@ -22,6 +22,7 @@
 | [showcase/app-xhs-ctrip.mp4](showcase/app-xhs-ctrip.mp4) | 一句话跨两个 App：小红书的一篇笔记 → 笔记里的酒店 → 携程今晚的价格（3 分 40 秒） |
 | [showcase/app-xhs-ctrip-4x.mp4](showcase/app-xhs-ctrip-4x.mp4) | 同一条任务的 4× 配乐版（43 秒） |
 | [showcase/app-xhs-ctrip-en.mp4](showcase/app-xhs-ctrip-en.mp4) | 同类任务在英文界面下的完整流程（2 分 54 秒） |
+| [showcase/app-xhs-ctrip-en-4x.mp4](showcase/app-xhs-ctrip-en-4x.mp4) | 英文版 4× 配乐版（43 秒） |
 | [showcase/app-xhs-ctrip.gif](showcase/app-xhs-ctrip.gif) | 同一条任务的三联动图，README 里在用 |
 | [showcase/lightagent-demo.gif](showcase/lightagent-demo.gif) | harness 在 AndroidLab 基准上的演示，README 里在用 |
 
