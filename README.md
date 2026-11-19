@@ -227,6 +227,10 @@ Before actions such as paying, placing an order, or submitting a transaction, it
 
 Passwords, verification codes, and other sensitive authentication steps are handed back to you.
 
+This is the default. Settings has a switch, **Never ask me about money**, which
+turns the question off (it asks once before you enable it, and it also applies to
+shell commands that change the phone).
+
 ## 📚 Documentation
 
 Not sure where to begin? Start with **[Getting Started](docs/getting-started.md)** to install PhoneGo and complete your first task.
