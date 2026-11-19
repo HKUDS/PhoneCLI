@@ -167,3 +167,87 @@ def test_requests_without_the_token_are_rejected():
     query = Probe({}, path="/tasks?token=secret")
     query._guarded(query._get)
     assert query.sent[0][0] == 200
+
+
+def test_partial_tasks_also_clear_frames_and_prune():
+    """Partial is a terminal state and must drop its frame and prune TASKS."""
+    from phoneagent import server
+
+    server.TASKS.clear()
+    for index in range(server.KEEP_TASKS + 3):
+        task_id = f"p{index}"
+        server.TASKS[task_id] = {"frame": "x" * 100}
+        server._update(task_id, state="partial", answer="half done")
+
+    assert len(server.TASKS) == server.KEEP_TASKS
+    assert all(task.get("frame") == "" for task in server.TASKS.values())
+    assert "p0" not in server.TASKS
+
+
+def test_reused_device_restores_screenshot_and_does_not_resurrect_tasks():
+    """keep_device=True reuses one device; _run must unwrap device.screenshot."""
+    import threading
+    from phoneagent import server
+    from phoneagent.core.llm import MockLLM
+
+    class SharedDevice:
+        display_id = 3
+
+        def __init__(self):
+            self.captures = 0
+
+        def current_app(self):
+            return "com.android.settings"
+
+        def screenshot(self, path=None):
+            self.captures += 1
+            return b"\x89PNG\r\n\x1a\nfakedata"
+
+        def dump_ui(self):
+            return '<hierarchy><node text="Settings"/></hierarchy>'
+
+        def shell(self, command):
+            return "ok"
+
+        def press_back(self):
+            return True
+
+    device = SharedDevice()
+    config = server.ServerConfig(
+        device_factory=lambda: device,
+        llm_factory=lambda: MockLLM(
+            text_responses=["keep going"],
+            vision_responses=["Action: finish(\"done\")"],
+        ),
+        keep_device=True,
+        map_paths=[],
+        memory_path="",
+    )
+
+    server.TASKS.clear()
+
+    def run_task(tid: str) -> None:
+        server.CANCEL[tid] = threading.Event()
+        server.PENDING[tid] = {"question": "", "answer": None, "event": threading.Event()}
+        server.AUTONOMOUS[tid] = False
+        server.TASKS[tid] = {"state": "queued", "steps": [], "answer": "", "frame": ""}
+        server._run(tid, "打开设置", config)
+
+    run_task("task1")
+    assert "screenshot" not in device.__dict__
+    assert server.TASKS["task1"]["frame"] == ""
+
+    # Simulate task1 having been pruned out of TASKS before task2 runs.
+    server.TASKS.pop("task1", None)
+
+    run_task("task2")
+    assert "screenshot" not in device.__dict__
+    assert "task1" not in server.TASKS  # old wrapper must not resurrect pruned tasks
+    assert server.TASKS["task2"]["frame"] == ""
+
+    # Also verify an instance-level screenshot callable is restored intact.
+    custom = lambda path=None: b"\x89PNG\r\n\x1a\ncustom"
+    device.screenshot = custom
+    run_task("task3")
+    assert device.screenshot is custom
+    assert server.TASKS["task3"]["frame"] == ""
