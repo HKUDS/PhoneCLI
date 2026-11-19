@@ -239,6 +239,7 @@ PhoneGo 直接跑在手机上，通过安卓自带的无线调试连接。
 | 🗺️ **[建立 App 导航地图](docs/map-building.zh.md)** | PhoneGo 如何探索一个 App，把界面与导航路径编译成可复用命令。 |
 | 🛠️ **[安卓开发指南](android-app/README.zh.md)** | 用 Gradle、Chaquopy 和虚拟屏 helper 构建这个 App。 |
 | 🎬 **[示例与录像](docs/showcase/)** | 真机演示，以及与纯看图 agent 的并排对比。 |
+| 📦 **[版本变更](CHANGELOG.md)** | 每个版本改了什么，附 APK 名称与校验值（中英双语）。 |
 
 ## 🌟 引用
 

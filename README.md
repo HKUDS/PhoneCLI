@@ -243,6 +243,7 @@ Not sure where to begin? Start with **[Getting Started](docs/getting-started.md)
 | 🗺️ **[Building App Navigation Maps](docs/map-building.md)** | How PhoneGo explores an app and compiles its screens and navigation paths into reusable commands. |
 | 🛠️ **[Android Development Guide](android-app/README.md)** | How to build the Android app with Gradle, Chaquopy, and the virtual-display helper. |
 | 🎬 **[Examples and Recordings](docs/showcase/)** | Real-phone demos and side-by-side comparisons with vision-only agents. |
+| 📦 **[Changelog](CHANGELOG.md)** | What changed in each release, with the APK name and checksum. |
 
 ## 🌟 Citation
 
