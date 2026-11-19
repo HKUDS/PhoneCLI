@@ -341,6 +341,8 @@ final class Tr {
         put("展开全部（共 %1$d 项）", "Show all (%1$d)");
         put("%1$d 次调用", "%1$d calls");
         put("虚拟屏 · 第 %1$d 步", "Agent's screen · step %1$d");
+        put("花钱时不再问我（自动下单/支付）", "Never ask me about money (auto-pay / auto-order)");
+        put("打开后，涉及支付、下单、提交订单的步骤会直接执行，不再询问。", "With this on, paying, ordering and submitting run without asking again.");
     }
 
     /** Translate every TextView under {@code root} that has a mapping. */
