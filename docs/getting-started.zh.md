@@ -7,7 +7,7 @@
 
 ## 1. 安装
 
-在手机上下载并打开 [`PhoneGo-0.4.0-arm64.apk`](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.0/PhoneGo-0.4.0-arm64.apk)。
+在手机上下载并打开 [`PhoneGo-0.4.1-arm64.apk`](https://github.com/HKUDS/PhoneGo/releases/download/phonego-v0.4.1/PhoneGo-0.4.1-arm64.apk)。
 
 - **Android 14 及以上、arm64**。Python 运行时和虚拟屏 helper 只为 `arm64-v8a` 构建。
 - 需要允许"安装未知来源应用"。MIUI 会弹一次确认，点「继续安装」。

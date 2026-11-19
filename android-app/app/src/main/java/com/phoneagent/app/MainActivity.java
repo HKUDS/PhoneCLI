@@ -1752,7 +1752,13 @@ public class MainActivity extends Activity {
                             ? Tr.t("✅ 可用：") + out.optString("detail")
                             : "❌ " + out.optString("detail");
                 } catch (Throwable t) {
-                    result = "❌ " + t;
+                    if (t instanceof java.net.ConnectException) {
+                        restartAgentService("test connection: " + t);
+                        result = "❌ " + Tr.t("本地 agent 没有响应，已触发重启；"
+                                + "十几秒后再点一次「测试连接」。");
+                    } else {
+                        result = "❌ " + t;
+                    }
                 }
                 final String text = result;
                 ui(() -> test.setText(text));
@@ -2047,6 +2053,38 @@ public class MainActivity extends Activity {
      * chat below talks to. Everything happens on this phone -- the server is
      * in this process, not on a host reached through `adb reverse`.
      */
+    /** When the agent last restarted itself, so a broken state cannot loop. */
+    private long lastAgentRestart = 0;
+
+    /**
+     * Bring the local agent back without asking the user to swipe the app away.
+     *
+     * The failure this answers: the Python server stops answering (heartbeat
+     * older than two minutes, or "Failed to connect to /127.0.0.1:8765" on the
+     * first task) while the process is still alive. Telling the user to kill it
+     * from Recents works, but it is the app's job first.
+     */
+    private void restartAgentService(String why) {
+        long now = System.currentTimeMillis();
+        if (now - lastAgentRestart < 120000) {
+            return;      // tried a moment ago; do not loop
+        }
+        lastAgentRestart = now;
+        android.util.Log.i("Pairing", "restarting the agent: " + why);
+        try {
+            stopService(new Intent(this, AgentService.class));
+        } catch (Throwable ignored) {
+            // not running, or already gone
+        }
+        // The beat file is the stall detector's input: left behind, it makes a
+        // freshly started service look stalled for the first half minute.
+        java.io.File beat = new java.io.File(getCacheDir(), "chaquopy/tmp/phoneagent-beat.txt");
+        //noinspection ResultOfMethodCallIgnored
+        beat.delete();
+        append("PhoneGo", Tr.t("本地 agent 没有响应，正在自动重启…"));
+        startAgentService();
+    }
+
     private void startAgentService() {
         if (!hasIdentity()) {
             note(Tr.t("还没有可用的配对身份，请先配对无线调试。"));
@@ -2284,7 +2322,13 @@ public class MainActivity extends Activity {
             Exception last = null;
             // the display takes a few seconds to come up; retry rather than
             // failing the user's first message
-            for (int attempt = 0; attempt < 60; attempt++) {
+            for (int attempt = 0; attempt < 100; attempt++) {
+                // The display takes twenty seconds and the Python side another
+                // ten; past that, waiting quietly is not going to help. Restart
+                // once and keep trying -- the user pressed send, not cancel.
+                if (attempt == 25 && last != null && !AgentService.isReady()) {
+                    restartAgentService("no server for 25 s: " + last);
+                }
                 try {
                     HttpURLConnection conn = connect("/task");
                     conn.setRequestMethod("POST");
@@ -2455,8 +2499,14 @@ public class MainActivity extends Activity {
         // A frozen interpreter cannot answer healthy(); asking it would hang this
         // check forever. The heartbeat file is the one signal that survives.
         if (beat > 120) {
+            if (System.currentTimeMillis() - lastAgentRestart > 120000) {
+                restartAgentService("heartbeat " + beat + "s old");
+                healAttempts = 0;
+                handler.postDelayed(this::healAgent, 8000);
+                return;
+            }
             alert(Tr.t("PhoneGo 的后台进程卡住了（") + beat + Tr.t(" 秒没有心跳）。")
-                    + Tr.t("\n请从最近任务里划掉它，再重新打开一次。"));
+                    + Tr.t("\n我已经尝试重启过一次；还没恢复，请从最近任务里划掉它再打开。"));
             return;
         }
         new Thread(() -> {
