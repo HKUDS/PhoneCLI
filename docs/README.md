@@ -12,6 +12,7 @@ no longer resolve.
 | File | Contents |
 |---|---|
 | [manual.md](manual.md) | The manual: every screen, every setting, what it will not do, and the troubleshooting table |
+| [../CHANGELOG.md](../CHANGELOG.md) | Version history: what changed in each release, and which APK carries it |
 | [getting-started.md](getting-started.md) | From the APK to a finished task: the first-run checks, the model settings, and the five things that usually go wrong |
 | [product-app.md](product-app.md) | What PhoneGo is: one APK, a chat interface, execution on a virtual display; how the package name, the project name and the three code trees relate |
 | [map-building.md](map-building.md) | The crawl pipeline: the real failure behind every change, the measured numbers, and the negative results |

@@ -10,6 +10,7 @@
 | 文件 | 内容 |
 |---|---|
 | [manual.zh.md](manual.zh.md) | 使用手册：每个界面、每个设置、不会做什么，以及故障排查表 |
+| [../CHANGELOG.md](../CHANGELOG.md) | 版本历史：每个版本改了什么、对应哪个 APK（中英双语） |
 | [getting-started.zh.md](getting-started.zh.md) | 从装好 APK 到跑完第一条任务：首次启动的检查、模型设置、以及最常遇到的五个问题 |
 | [product-app.zh.md](product-app.zh.md) | PhoneGo 是什么：一个 APK，对话式界面 + 虚拟屏执行；包名、工程名和三块代码的关系 |
 | [map-building.zh.md](map-building.zh.md) | 爬虫流水线：每一处改动对应的真实故障、实测数字、负面结果 |
