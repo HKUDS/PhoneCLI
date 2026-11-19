@@ -45,7 +45,7 @@ def save(path: str, data: dict) -> None:
     if not _path(path):
         return
     try:
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
         from .atomic import write_json
 
         write_json(path, data)
