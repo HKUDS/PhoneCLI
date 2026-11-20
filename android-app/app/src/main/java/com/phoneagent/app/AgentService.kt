@@ -30,7 +30,7 @@ import java.io.File
 class AgentService : Service() {
 
     private var wakeLock: PowerManager.WakeLock? = null
-    private val WAKE_LOCK_MS = 30 * 60 * 1000L
+    private val WAKE_LOCK_MS = WATCH_LOCK_MS
 
     /**
      * Keep the process out of HyperOS's freezer.
@@ -372,6 +372,9 @@ class AgentService : Service() {
     }
 
     companion object {
+        /** How long one acquisition lasts; a live task renews it. */
+        private const val WATCH_LOCK_MS = 30 * 60 * 1000L
+
         private const val SERVER_PORT = 8765
         @Volatile
         private var started = false
@@ -392,6 +395,37 @@ class AgentService : Service() {
          */
         @JvmStatic
         fun isReady(): Boolean = ready
+
+        /** One lock for the whole process; renewing it must not stack copies. */
+        private var watchLock: android.os.PowerManager.WakeLock? = null
+
+        /**
+         * Keep the CPU awake while a task is being watched.
+         *
+         * The lock used to be taken once for thirty minutes when the agent
+         * started. A cross-app task can run longer than that, and the device
+         * then slept in the middle of it. The activity renews it on every poll
+         * that comes back, so it lasts exactly as long as someone is watching.
+         */
+        @JvmStatic
+        fun renewWakeLock(context: android.content.Context) {
+            try {
+                if (watchLock == null) {
+                    val power = context.getSystemService(android.content.Context.POWER_SERVICE)
+                            as? android.os.PowerManager ?: return
+                    watchLock = power.newWakeLock(
+                        android.os.PowerManager.PARTIAL_WAKE_LOCK, "PhoneGo::watch"
+                    ).also { it.setReferenceCounted(false) }
+                }
+                val lock = watchLock ?: return
+                if (lock.isHeld) {
+                    lock.release()
+                }
+                lock.acquire(WATCH_LOCK_MS)
+            } catch (t: Throwable) {
+                android.util.Log.i("Pairing", "wake lock renew failed: ${t.message}")
+            }
+        }
 
         /**
          * Reload the agent after the configuration changed.

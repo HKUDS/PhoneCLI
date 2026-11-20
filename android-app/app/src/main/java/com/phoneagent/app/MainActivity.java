@@ -138,9 +138,8 @@ public class MainActivity extends Activity {
     private final Runnable pollWatchdog = new Runnable() {
         @Override
         public void run() {
-            if (!currentTaskId.isEmpty()
+            if (!currentTaskId.isEmpty() && !polling
                     && System.currentTimeMillis() - lastPollAt > 5000) {
-                polling = false;
                 poll(currentTaskId, 0);
             }
             handler.postDelayed(this, 3000);
@@ -1648,8 +1647,12 @@ public class MainActivity extends Activity {
     private void returnToChat() {
         try {
             android.content.Intent back = new android.content.Intent(this, MainActivity.class);
-            back.addFlags(android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                    | android.content.Intent.FLAG_ACTIVITY_NEW_TASK);
+            // REORDER_TO_FRONT moves the existing task to the front; NEW_TASK
+            // was also there, and together they produced a *second* instance of
+            // this activity whenever the task was not already in front --
+            // measured: two live MainActivity tasks, the visible one watching a
+            // finished task forever while the other one held the answer.
+            back.addFlags(android.content.Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(back);
         } catch (Throwable ignored) {
             // if it does not come forward the answer is still in the chat
@@ -2518,7 +2521,7 @@ public class MainActivity extends Activity {
         // about the task again instead of showing a stale Tr.t("执行中…"). The age of
         // the last answer is the only trustworthy signal -- `polling` stays
         // true when the chain died silently.
-        if (!currentTaskId.isEmpty()
+        if (!currentTaskId.isEmpty() && !polling
                 && System.currentTimeMillis() - lastPollAt > 15000) {
             poll(currentTaskId, 0);
         }
@@ -2659,6 +2662,9 @@ public class MainActivity extends Activity {
         }).start();
     }
 
+    /** Consecutive poll requests that did not come back; reset by a good one. */
+    private int pollFailures = 0;
+
     private void poll(String id, int attempt) {
         polling = true;
         // ~20 minutes. The old cap was ~6, and a cross-app task that reads a
@@ -2682,6 +2688,8 @@ public class MainActivity extends Activity {
                 conn.setReadTimeout(15000);
                 JSONObject state = new JSONObject(read(conn));
                 lastPollAt = System.currentTimeMillis();
+                pollFailures = 0;
+                AgentService.renewWakeLock(this);
                 String status = state.optString("state", "?");
                 String answer = state.optString("answer", "");
                 String question = state.optString("question", "");
@@ -2753,18 +2761,24 @@ public class MainActivity extends Activity {
                                     .append(line).append("\n");
                         }
                     }
-                    if (sb.length() == 0) {
-                        shownSteps = total;
-                        return;
-                    }
                     final boolean firstBatch = shownSteps == 0;
                     shownSteps = total;
                     final String chunk = sb.toString().trim();
-                    // one header per task, not one per batch: the steps read as
-                    // a single block while they arrive
-                    ui(() -> {
-                        appendLines(chunk);
-                    });
+                    // What arrives can be finish-only: the answer is its own
+                    // bubble, so those steps are skipped above and nothing is
+                    // left to print. That case used to `return` from this task,
+                    // which skipped the terminal-state handling below -- no
+                    // answer, no setBusy(false) -- and the watchdog restarted
+                    // the poll, which returned again. Measured: the row stayed
+                    // on "执行中… 已完成 2 步" with the answer already on the
+                    // server, forever.
+                    if (!chunk.isEmpty()) {
+                        // one header per task, not one per batch: the steps read
+                        // as a single block while they arrive
+                        ui(() -> {
+                            appendLines(chunk);
+                        });
+                    }
                 }
 
                 if (!question.isEmpty() && !id.equals(awaitingTaskId)) {
@@ -2803,7 +2817,14 @@ public class MainActivity extends Activity {
                     answeredTaskId = id;
                     currentTaskId = "";
                     if (alreadyShown) {
-                        return;          // the answer is on screen; do not repeat it
+                        // The answer is on screen; do not repeat it -- but this
+                        // chain still owns the busy state. Measured: two chains
+                        // (a resume plus the one already running) both reached
+                        // the terminal state, both took this branch, and the row
+                        // stayed on "执行中… 已完成 N 步" with a Cancel button
+                        // after the task had finished.
+                        ui(() -> setBusy(false));
+                        return;
                     }
                     // A task that ran on the user's own screen leaves its app
                     // in front there -- they asked a question and got 小红书
@@ -2844,9 +2865,28 @@ public class MainActivity extends Activity {
                 // Throwable, not Exception: an OutOfMemoryError used to kill
                 // this thread silently, leaving the task "running" on screen
                 // long after it had finished.
+                //
+                // A read timeout is not a finished task: the server can take
+                // longer than 15 s to answer while a model call holds the
+                // interpreter, and giving up there told the user the task had
+                // failed while it was still running. Retry a few times first.
+                boolean transientFailure = e instanceof java.net.SocketTimeoutException
+                        || e instanceof java.net.ConnectException
+                        || e instanceof java.io.EOFException;
+                pollFailures++;
+                if (transientFailure && pollFailures <= 5) {
+                    android.util.Log.i("Pairing", "poll " + id + " hiccup "
+                            + pollFailures + ": " + e);
+                    ui(() -> poll(id, attempt + 1));
+                    return;
+                }
                 polling = false;
+                final int failures = pollFailures;
+                pollFailures = 0;
                 ui(() -> {
-                    append("PhoneGo", Tr.t("轮询失败：") + e);
+                    append("PhoneGo", Tr.t("轮询失败：") + e
+                            + (failures > 1 ? Tr.t("\n（连续 ") + failures
+                            + Tr.t(" 次没拿到状态，可以先从最近任务里划掉 App 再打开）") : ""));
                     setBusy(false);
                 });
             }
@@ -3802,6 +3842,46 @@ public class MainActivity extends Activity {
     /** The conversation being shown. Empty until the store is read. */
     private String sessionId = "";
 
+    /**
+     * Write a file so a kill cannot leave half of it behind.
+     *
+     * The transcript and the session index are the only copies of what the user
+     * said; a truncating FileWriter loses all of it when the process dies
+     * between the truncate and the write (installs, OEM battery managers, OOM).
+     * The Python side already does this (phoneagent/atomic.py) -- this is the
+     * same rule on the Java side: write a sibling temp file, fsync, then replace,
+     * keeping the previous copy as .bak for readers to fall back on.
+     */
+    private static void writeAtomically(java.io.File target, String text) throws java.io.IOException {
+        java.io.File tmp = new java.io.File(target.getParentFile(), target.getName() + ".tmp");
+        try (java.io.FileOutputStream out = new java.io.FileOutputStream(tmp)) {
+            out.write(text.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            out.flush();
+            out.getFD().sync();
+        }
+        java.io.File bak = new java.io.File(target.getParentFile(), target.getName() + ".bak");
+        if (target.exists()) {
+            //noinspection ResultOfMethodCallIgnored
+            bak.delete();
+            //noinspection ResultOfMethodCallIgnored
+            target.renameTo(bak);
+        }
+        if (!tmp.renameTo(target)) {
+            //noinspection ResultOfMethodCallIgnored
+            tmp.delete();
+            throw new java.io.IOException("could not replace " + target);
+        }
+    }
+
+    /** The freshest readable copy of a state file, or null. */
+    private static java.io.File readable(java.io.File file) {
+        if (file.exists() && file.length() > 0) {
+            return file;
+        }
+        java.io.File bak = new java.io.File(file.getParentFile(), file.getName() + ".bak");
+        return bak.exists() && bak.length() > 0 ? bak : null;
+    }
+
     private java.io.File sessionFile() {
         return new java.io.File(getFilesDir(), "session-" + sessionId + ".json");
     }
@@ -3812,19 +3892,21 @@ public class MainActivity extends Activity {
 
     /** [{id, title, updated}] newest first. */
     private org.json.JSONArray readSessions() {
+        java.io.File file = readable(sessionIndex());
+        if (file == null) {
+            return new org.json.JSONArray();
+        }
         try {
-            if (!sessionIndex().exists()) {
-                return new org.json.JSONArray();
-            }
-            return new org.json.JSONArray(readText(sessionIndex()));
+            return new org.json.JSONArray(readText(file));
         } catch (Throwable t) {
+            android.util.Log.w("Pairing", "could not read the session list: " + t);
             return new org.json.JSONArray();
         }
     }
 
     private void writeSessions(org.json.JSONArray sessions) {
-        try (java.io.FileWriter writer = new java.io.FileWriter(sessionIndex())) {
-            writer.write(sessions.toString());
+        try {
+            writeAtomically(sessionIndex(), sessions.toString());
         } catch (Throwable t) {
             android.util.Log.w("Pairing", "could not save the session list: " + t);
         }
@@ -3977,10 +4059,7 @@ public class MainActivity extends Activity {
             for (org.json.JSONObject item : conversation) {
                 array.put(item);
             }
-            java.io.File file = sessionFile();
-            try (java.io.FileWriter writer = new java.io.FileWriter(file)) {
-                writer.write(array.toString());
-            }
+            writeAtomically(sessionFile(), array.toString());
         } catch (Throwable t) {
             android.util.Log.w("Pairing", "could not save the chat: " + t);
         }
@@ -3993,8 +4072,8 @@ public class MainActivity extends Activity {
      * system reclaiming it -- threw away everything that had been said.
      */
     private void restoreChat() {
-        java.io.File file = sessionFile();
-        if (!file.exists()) {
+        java.io.File file = readable(sessionFile());
+        if (file == null) {
             return;
         }
         restoring = true;
