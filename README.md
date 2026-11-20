@@ -140,6 +140,9 @@ Download **[PhoneGo-0.4.2-arm64.apk](https://github.com/HKUDS/PhoneGo/releases/d
 
 Open the APK and allow installation from this source. On MIUI devices, tap **Continue** when prompted.
 
+If the APK will not install, or the app will not pair once it is open, the exact
+sentence on screen is listed in **[Errors and fixes](docs/errors.md)**.
+
 ### 2. Connect PhoneGo to Your Phone
 
 PhoneGo uses Android’s built-in wireless debugging to operate apps locally.
