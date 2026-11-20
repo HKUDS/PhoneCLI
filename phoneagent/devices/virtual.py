@@ -813,49 +813,85 @@ class VirtualDisplayDevice(BaseDevice):
         self._shell(f"am start -S --display 0 -n {activity}")
         return True
 
-    def has_task_on(self, display_id: int, package: str) -> bool:
-        """True when ``display_id`` holds a task belonging to ``package``."""
+    def _roots_by_display(self) -> dict:
+        """display id -> [(task id, package, visible)], from ``am stack list``.
+
+        ``dumpsys activity activities`` was the old source and it lies about
+        this: a task that was moved between displays keeps appearing in the
+        block of the display it left (measured: task 9349 listed under
+        ``Display #0`` and ``Display #182`` at the same time). Everything built
+        on "is this app on the phone's screen" then answers yes for an app that
+        never went there -- which triggers a pointless follow, and the follow is
+        exactly the screen flip the user notices.
+
+        ``am stack list`` prints one RootTask per real display with an explicit
+        ``displayId=``, and the tasks under it. Falls back to dumpsys when the
+        command is unavailable, so older devices keep working.
+        """
+        try:
+            out = self._shell("am stack list")
+        except DeviceError:
+            out = ""
+        roots: dict = {}
+        display = None
+        for line in out.splitlines():
+            match = re.match(r"\s*RootTask id=\d+ .*displayId=(\d+)", line)
+            if match:
+                display = int(match.group(1))
+                roots.setdefault(display, [])
+                continue
+            task = re.match(r"\s*taskId=(\d+): (\S+)/", line)
+            if task and display is not None:
+                roots[display].append(
+                    (int(task.group(1)), task.group(2), "visible=true" in line))
+        if roots:
+            return roots
+        return self._roots_from_dumpsys()
+
+    def _roots_from_dumpsys(self) -> dict:
+        """The old parse, kept only as a fallback for platforms without am stack."""
         try:
             out = self._shell("dumpsys activity activities")
         except DeviceError:
-            return False
-        in_display = False
+            return {}
+        roots: dict = {}
+        display = None
         for line in out.splitlines():
             stripped = line.strip()
             if stripped.startswith("Display #"):
-                in_display = stripped.startswith(f"Display #{display_id} ")
+                match = re.match(r"Display #(\d+)", stripped)
+                if match:
+                    display = int(match.group(1))
+                    roots.setdefault(display, [])
                 continue
-            if in_display and f"{package}/" in stripped:
-                return True
-        return False
+            if display is None or "/" not in stripped:
+                continue
+            task = re.search(r"\bt(\d+)\b", stripped)
+            package = re.search(r"([a-zA-Z0-9_.]+)/[a-zA-Z0-9_.$]+", stripped)
+            if task and package:
+                roots[display].append((int(task.group(1)), package.group(1), False))
+        return roots
+
+    def has_task_on(self, display_id: int, package: str) -> bool:
+        """True when ``display_id`` really holds a task of ``package``."""
+        return bool(self.task_on(display_id, package))
 
     def task_on(self, display_id: int, package: str) -> int:
         """The task id of ``package`` on ``display_id``, or 0.
 
-        ``dumpsys activity activities`` prints one block per display and every
-        ActivityRecord in it ends with ``t<taskId>``. The resumed one is what
-        a move should carry, so it wins over an older entry.
+        A visible task wins over a hidden one: an app can have a background
+        task here and the same app in front on another display, and the one the
+        user is looking at is the one a move should carry.
         """
-        try:
-            out = self._shell("dumpsys activity activities")
-        except DeviceError:
-            return 0
-        in_display = False
-        found = 0
-        for line in out.splitlines():
-            stripped = line.strip()
-            if stripped.startswith("Display #"):
-                in_display = stripped.startswith(f"Display #{display_id} ")
+        roots = self._roots_by_display()
+        best = 0
+        for task, name, visible in roots.get(display_id, []):
+            if name != package:
                 continue
-            if not in_display or f"{package}/" not in stripped:
-                continue
-            match = re.search(r"\bt(\d+)\b", stripped)
-            if not match:
-                continue
-            found = int(match.group(1))
-            if stripped.startswith("topResumedActivity"):
-                return found
-        return found
+            if visible:
+                return task
+            best = best or task
+        return best
 
     def pull_back(self, package: str) -> bool:
         """Bring a task that jumped to the phone's screen back onto ours.
@@ -888,23 +924,12 @@ class VirtualDisplayDevice(BaseDevice):
 
         Used to tell "the app came up behind a permission prompt" from "the
         app never came up at all, and something else is showing a prompt".
+        Shares task_on's source so both answer from the same reading.
         """
         if self.display_id is None and not self._is_hands_off():
             return False
-        try:
-            out = self._shell("dumpsys activity activities")
-        except DeviceError:
-            return False
         wanted = 0 if self.display_id is None else self.display_id
-        in_display = False
-        for line in out.splitlines():
-            stripped = line.strip()
-            if stripped.startswith("Display #"):
-                in_display = stripped.startswith(f"Display #{wanted} ")
-                continue
-            if in_display and f"{package}/" in stripped:
-                return True
-        return False
+        return bool(self.task_on(wanted, package))
 
     def current_app(self) -> str:
         """Package on top of *this* display.

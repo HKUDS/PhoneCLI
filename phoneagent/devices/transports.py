@@ -13,6 +13,8 @@ attached.
 
 from __future__ import annotations
 
+import socket
+
 import select
 import subprocess
 from typing import Optional, Protocol
@@ -156,12 +158,52 @@ class SelfAdbTransport:
         self.client = client
         self.timeout = timeout
 
+    @staticmethod
+    def _is_dead_connection(exc: Exception) -> bool:
+        """True when the socket to adbd is gone and a fresh one is the fix.
+
+        ``ssl.SSLEOFError`` and friends are ``OSError`` subclasses; so are
+        ``BrokenPipeError`` and ``ConnectionResetError``. A timeout is a
+        different problem (the command is slow) and must not trigger a
+        reconnect, because that would drop a command that was still running.
+        """
+        if isinstance(exc, (socket.timeout,)) or type(exc).__name__ in ("timeout", "TimeoutError"):
+            return False
+        if isinstance(exc, OSError):
+            return True
+        # A desynchronised stream is as dead as a closed one: after "frame magic
+        # mismatch" every following frame is garbage, so retrying without a
+        # fresh connection loops forever (measured: two spills in a row failed
+        # with 0x00000103 and 0x005f0000).
+        text = str(exc).lower()
+        return (
+            "not connected" in text
+            or "frame magic mismatch" in text
+            or "connection reset" in text
+            or "broken pipe" in text
+        )
+
+    def _with_reconnect(self, run):
+        """Run one command; if the connection died, rebuild it and run again."""
+        try:
+            return run()
+        except Exception as exc:  # noqa: BLE001 - classified below
+            if not self._is_dead_connection(exc):
+                raise
+            print(f"[adb] connection lost ({type(exc).__name__}); reconnecting")
+            try:
+                self.client.reconnect()
+            except Exception as again:  # noqa: BLE001
+                raise DeviceError(f"reconnect failed: {again}") from exc
+            return run()
+
     def shell(self, command: str) -> str:
         # The timeout is the difference between "this screen would not dump" and
         # "the agent stopped answering": without it a stuck command holds the
         # thread that also serves the app's API.
         try:
-            return str(self.client.run(command, timeout=self.timeout))
+            return str(self._with_reconnect(
+                lambda: self.client.run(command, timeout=self.timeout)))
         except Exception as exc:  # noqa: BLE001 - re-raised as a device error
             name = type(exc).__name__
             if "timeout" in str(exc).lower() or name in ("timeout", "TimeoutError"):
@@ -175,13 +217,16 @@ class SelfAdbTransport:
         return OnDeviceProcess(stream)
 
     def read_file(self, path: str) -> bytes:
-        return self.client.exec_bytes(f"cat {path}", self.timeout)
+        return self._with_reconnect(
+            lambda: self.client.exec_bytes(f"cat {path}", self.timeout))
 
     def write_file(self, data: bytes, path: str) -> None:
         import base64
 
         encoded = base64.b64encode(data).decode()
         # one short command line beats streaming: the helper jar is ~4 KiB
-        result = self.client.run(f"mkdir -p $(dirname {path}); echo {encoded} | base64 -d > {path}")
+        result = self._with_reconnect(
+            lambda: self.client.run(
+                f"mkdir -p $(dirname {path}); echo {encoded} | base64 -d > {path}"))
         if result.exit_code not in (0, -1):
             raise DeviceError(f"cannot write {path}: exit {result.exit_code}")

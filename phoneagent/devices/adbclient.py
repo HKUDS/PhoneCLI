@@ -29,6 +29,7 @@ from __future__ import annotations
 
 import socket
 import ssl
+import threading
 import struct
 import tempfile
 import zlib
@@ -276,11 +277,23 @@ class AdbClient:
         self._sock = None
         self.banner = ""
         self._next_id = 1
+        self._endpoint: tuple = ()
+        self._io_lock = threading.Lock()
+        # One command at a time: the frames of two commands interleaved on the
+        # same socket is what produced "frame magic mismatch" while a task and
+        # the debug endpoint ran together.
+        self._cmd_lock = threading.RLock()
 
     # -- connection -------------------------------------------------------
 
     def connect(self, host: str, port: int) -> str:
         """Plain CNXN -> STLS -> TLS 1.3 -> device banner. Returns the banner."""
+        # Remembered so a dead connection can be rebuilt: the TLS session to
+        # adbd dies when the phone sleeps, when wireless debugging cycles, and
+        # after a failed transfer, and every later command then fails with
+        # ssl.SSLEOFError ("EOF occurred in violation of protocol") -- measured
+        # on a phone where the next task failed at round 0 with that string.
+        self._endpoint = (host, port)
         ctx = self._context()
         raw = socket.create_connection((host, port), self._timeout)
         raw.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
@@ -325,6 +338,20 @@ class AdbClient:
                 pass
             raise
 
+    def reconnect(self) -> str:
+        """Drop the socket and authenticate again, once.
+
+        The key that pairing installed is kept, so this is the same handshake
+        as the first connect. Callers wrap a command with it rather than
+        rebuilding the whole device: a phone that slept mid-task should lose
+        one command, not the task.
+        """
+        endpoint = getattr(self, "_endpoint", None)
+        if not endpoint:
+            raise AdbError("no endpoint to reconnect to")
+        self.close()
+        return self.connect(endpoint[0], endpoint[1])
+
     def close(self) -> None:
         if self._sock is not None:
             try:
@@ -358,8 +385,9 @@ class AdbClient:
         ``exec:`` is the service behind ``adb exec-out``: no PTY, so newline
         translation cannot corrupt binary payloads the way ``shell:`` would.
         """
-        with self.open_service(f"exec:{command}") as stream:
-            return stream.read_all(timeout)
+        with self._cmd_lock:
+            with self.open_service(f"exec:{command}") as stream:
+                return stream.read_all(timeout)
 
     def run(self, command: str, timeout: Optional[float] = None) -> Result:
         """Run a command and keep stdout, stderr and the exit code apart.
@@ -372,17 +400,18 @@ class AdbClient:
         """
         if self._sock is None:
             raise AdbError("not connected")
-        previous = self._sock.gettimeout()
-        if timeout is not None:
-            self._sock.settimeout(timeout)
-        try:
-            return self._run_frames(command)
-        except (socket.timeout, TimeoutError) as exc:
-            raise AdbError(
-                f"{command.strip()[:60]}: no answer within {timeout or 0:.0f}s"
-            ) from exc
-        finally:
-            self._sock.settimeout(previous)
+        with self._cmd_lock:
+            previous = self._sock.gettimeout()
+            if timeout is not None:
+                self._sock.settimeout(timeout)
+            try:
+                return self._run_frames(command)
+            except (socket.timeout, TimeoutError) as exc:
+                raise AdbError(
+                    f"{command.strip()[:60]}: no answer within {timeout or 0:.0f}s"
+                ) from exc
+            finally:
+                self._sock.settimeout(previous)
 
     def _run_frames(self, command: str) -> Result:
         local_id = self._next_id
