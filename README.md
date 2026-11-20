@@ -176,6 +176,10 @@ For your first run, try a task that does not require login:
 
 PhoneGo will open the app, perform the necessary steps, and report the result.
 
+**If a step does not work**, the sentence on screen is the fastest way in:
+**[Errors and fixes](docs/errors.md)** lists what the app can print — pairing,
+the local agent, the model key, maps — with the cause and what to do about each.
+
 ## 🌐 Language and Updates
 
 - PhoneGo supports **English and Chinese**.
@@ -230,6 +234,13 @@ Passwords, verification codes, and other sensitive authentication steps are hand
 This is the default. Settings has a switch, **Never ask me about money**, which
 turns the question off (it asks once before you enable it, and it also applies to
 shell commands that change the phone).
+
+### Something went wrong — where do I look?
+
+Start with the sentence the app printed. **[Errors and fixes](docs/errors.md)** is
+indexed by that wording: what it means, what to do, and which section of the
+[manual](docs/manual.md) has the rest. If it is not there, open an issue with the
+sentence and what you had just done.
 
 ## 📚 Documentation
 
