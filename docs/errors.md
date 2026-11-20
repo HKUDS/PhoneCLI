@@ -65,7 +65,9 @@ reopen the app and try once more.
 ### `本地 agent 没有起来：java.net.ConnectException: Failed to connect to /127.0.0.1:8765`
 **Where** the chat, after you press send.
 **Means** `127.0.0.1:8765` is the app's **own** local agent. This is not your
-network and not the model: the agent is not answering.
+network and not the model: the agent is not answering. Since 0.4.4 the
+connection to the phone's own adbd is rebuilt once when it dies, so a dropped
+socket no longer fails the task.
 **Do** since 0.4.2 the app waits longer and restarts the agent once by itself;
 if the message still appears, it says so in the same line. Then: make sure
 wireless debugging is on, restart the app from Recents, and if it persists,

@@ -13,6 +13,40 @@ versions are the app's own — the CLI in this repository has its own history.
 
 ---
 
+## 0.4.4 — 2026-11-21
+
+`PhoneGo-0.4.4-arm64.apk` · SHA-256 `fd639ff3694c4d895fa166fc060ff56e11ba405f8daa905534e151ed613d774b`
+
+**English**
+
+- **Changed**: a page that jumps to the phone's screen is pulled back to the
+  virtual display, and only followed after two attempts. Measured on
+  小红书 → 携程: four pulls, one follow, task done in 3m31s.
+- **Fixed**: the chat could hang on 执行中 forever — a `finish`-only step batch
+  returned before the terminal-state handling ran.
+- **Fixed**: the transcript and session index are written atomically (temp file,
+  fsync, rename, `.bak` fallback); a kill mid-write could leave an empty chat.
+- **Fixed**: the connection to adbd heals itself after `ssl.SSLEOFError`; a read
+  timeout retries five times instead of ending the poll.
+- **Fixed**: `returnToChat` no longer creates a second MainActivity instance; the
+  wake lock is renewed while a task is watched.
+- **Fixed**: `task_on` reads a task's own display from `am stack list` (a moved
+  task used to appear under both displays and trigger pointless follows).
+
+**中文**
+
+- **变更**：跳到手机屏幕的页面会先被搬回虚拟屏，连续两次才改为跟随。小红书 → 携程实测：
+  4 次搬回、1 次跟随，3 分 31 秒完成。
+- **修复**：对话可能永远停在「执行中…」——只有 `finish` 步骤时提前返回，跳过了终态处理。
+- **修复**：会话文件与会话索引改为原子写入（临时文件 + fsync + 重命名，读取回退 `.bak`），
+  写一半被杀不会再出现空对话。
+- **修复**：与 adbd 的连接在 `ssl.SSLEOFError` 后会自己重建；读超时改为重试 5 次而不是结束观察。
+- **修复**：`returnToChat` 不再开第二个 MainActivity 实例；唤醒锁在任务期间持续续期。
+- **修复**：`task_on` 改用 `am stack list` 读取任务所在屏（迁移过的任务曾同时出现在两块屏下，
+  导致无谓的跟随）。
+
+---
+
 ## 0.4.3 — 2026-11-20
 
 `PhoneGo-0.4.3-arm64.apk` · SHA-256 `e0cef8e8d3a858eb1bd8ef0b263b82d8e43ee957e747eb648243e1ad80950f9c`

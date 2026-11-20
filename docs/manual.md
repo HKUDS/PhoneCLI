@@ -226,7 +226,7 @@ The full list of messages the app can print, with the exact wording, is in
 | steps read `👁` / no replay | this app has no map on this phone yet | expected; build one under Maps |
 | a map crawl starts with ⛔ | that app cannot start on the virtual display | use hands-off, or pick another app |
 | *Test connection* fails | wrong key, base URL or model id | check which protocol the base URL implies |
-| an app is always on your own screen | it refuses the virtual display | expected; the agent follows it and puts it back |
+| an app is always on your own screen | its pages are tasks the system hosts on the default display | the agent moves it back up to twice, then follows it for the rest of the task |
 
 ---
 
