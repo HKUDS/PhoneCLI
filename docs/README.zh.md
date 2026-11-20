@@ -9,6 +9,7 @@
 
 | 文件 | 内容 |
 |---|---|
+| [errors.zh.md](errors.zh.md) | 报错对照表：拿屏幕上的原句查原因与处理办法 |
 | [manual.zh.md](manual.zh.md) | 使用手册：每个界面、每个设置、不会做什么，以及故障排查表 |
 | [../CHANGELOG.md](../CHANGELOG.md) | 版本历史：每个版本改了什么、对应哪个 APK（中英双语） |
 | [getting-started.zh.md](getting-started.zh.md) | 从装好 APK 到跑完第一条任务：首次启动的检查、模型设置、以及最常遇到的五个问题 |

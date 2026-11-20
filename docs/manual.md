@@ -212,6 +212,9 @@ found.
 
 ## 11. Troubleshooting
 
+The full list of messages the app can print, with the exact wording, is in
+[errors.md](errors.md).
+
 | Symptom | Cause | Fix |
 |---|---|---|
 | *No pairing identity yet* | the app has never paired | turn on wireless debugging, reopen the app, or press **Pair wireless debugging** |

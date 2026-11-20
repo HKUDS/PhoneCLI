@@ -11,6 +11,7 @@ no longer resolve.
 
 | File | Contents |
 |---|---|
+| [errors.md](errors.md) | Error catalogue: look up the sentence on screen, get the cause and the fix |
 | [manual.md](manual.md) | The manual: every screen, every setting, what it will not do, and the troubleshooting table |
 | [../CHANGELOG.md](../CHANGELOG.md) | Version history: what changed in each release, and which APK carries it |
 | [getting-started.md](getting-started.md) | From the APK to a finished task: the first-run checks, the model settings, and the five things that usually go wrong |

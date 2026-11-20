@@ -237,6 +237,7 @@ Not sure where to begin? Start with **[Getting Started](docs/getting-started.md)
 
 | Guide | What You’ll Find |
 |---|---|
+| 🧯 **[Errors and fixes](docs/errors.md)** | Look up the sentence on screen: what it means and what to do. |
 | 📘 **[User Manual](docs/manual.md)** | A complete guide to every screen, setting, feature, and common issue. |
 | 🚀 **[Getting Started](docs/getting-started.md)** | Step-by-step instructions from installing the APK to completing your first task. |
 | 🧩 **[How PhoneGo Works](docs/product-app.md)** | A clear introduction to PhoneGo’s product design and system architecture. |
