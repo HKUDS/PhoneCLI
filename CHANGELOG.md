@@ -13,6 +13,31 @@ versions are the app's own — the CLI in this repository has its own history.
 
 ---
 
+## 0.4.3 — 2026-11-20
+
+`PhoneGo-0.4.3-arm64.apk` · SHA-256 `e0cef8e8d3a858eb1bd8ef0b263b82d8e43ee957e747eb648243e1ad80950f9c`
+
+**English**
+
+- **Fixed**: `Failed to connect to /127.0.0.1:8765` could still appear after
+  0.4.2. The restart was gated on `AgentService.isReady()`, a flag that is set
+  once and never cleared, so an agent that hung after starting looked healthy.
+  The submission loop now restarts on ten refusals regardless of the flag, and
+  `restart()` clears it before rebuilding.
+- **Changed**: the failure message says the app already tried a restart.
+- **Known gap**: if the agent hangs during a task, polling stops and the task is
+  not resumed.
+
+**中文**
+
+- **修复**：0.4.2 之后仍可能看到 `Failed to connect to /127.0.0.1:8765`。重启条件挂在
+  `AgentService.isReady()` 上，而这个标志只置位、从不回退，服务假死时仍显示健康。现在提交循环
+  在连续 10 次拒绝后无条件重启，`restart()` 会先清掉该标志。
+- **变更**：失败提示会说明"已经尝试自动重启一次"。
+- **已知缺口**：任务执行中如果服务失联，轮询会停止，不会自动接回该任务。
+
+---
+
 ## 0.4.2 — 2026-11-19
 
 `PhoneGo-0.4.2-arm64.apk` · SHA-256 `81be9339552c1757453b6f1733f2e1961894f2ac55832d8b6404ff4144ad0d54`
