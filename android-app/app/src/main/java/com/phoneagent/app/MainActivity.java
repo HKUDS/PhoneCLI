@@ -2421,14 +2421,19 @@ public class MainActivity extends Activity {
     private void startTask(String text) {
         new Thread(() -> {
             Exception last = null;
+            int failures = 0;
+            boolean restarted = false;
             // the display takes a few seconds to come up; retry rather than
             // failing the user's first message
             for (int attempt = 0; attempt < 100; attempt++) {
-                // The display takes twenty seconds and the Python side another
-                // ten; past that, waiting quietly is not going to help. Restart
-                // once and keep trying -- the user pressed send, not cancel.
-                if (attempt == 25 && last != null && !AgentService.isReady()) {
-                    restartAgentService("no server for 25 s: " + last);
+                // Restart on refusals alone, not on `isReady()`: that flag is
+                // only ever set, so a server that hung after answering looks
+                // ready while refusing every connection -- measured on a phone
+                // where the heartbeat was fresh and 127.0.0.1:8765 was dead. Ten
+                // seconds of refusals is longer than a cold start needs.
+                if (failures == 10 && !restarted) {
+                    restarted = true;
+                    restartAgentService("no server after 10 attempts: " + last);
                 }
                 try {
                     HttpURLConnection conn = connect("/task");
@@ -2462,7 +2467,8 @@ public class MainActivity extends Activity {
                     return;
                 } catch (Exception e) {
                     last = e;
-                    if (attempt == 0) {
+                    failures++;
+                    if (failures == 1) {
                         ui(() -> append("PhoneGo", Tr.t("等待本地 agent 就绪…")));
                     }
                     try {
@@ -2473,10 +2479,12 @@ public class MainActivity extends Activity {
                 }
             }
             final Exception e = last;
+            final boolean tried = restarted;
             boolean noKey = !AgentConfig.hasKey(this);
             ui(() -> append("PhoneGo", noKey
                     ? Tr.t("任务没能提交：还没有配置模型密钥，点「设置」填入 API Key。\n") + e
-                    : Tr.t("本地 agent 没有起来：\n") + e));
+                    : Tr.t("本地 agent 没有起来：\n") + e
+                    + (tried ? Tr.t("\n（已经尝试自动重启一次；如果一直这样，请从最近任务里划掉 PhoneGo 再打开）") : "")));
         }).start();
     }
 

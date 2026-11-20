@@ -402,6 +402,11 @@ class AgentService : Service() {
          */
         @JvmStatic
         fun restart(context: android.content.Context) {
+            // ready is what the app consults before restarting a silent agent.
+            // It is only assigned when start_agent answers "listening", so a
+            // server that hung after that kept the flag set and the app never
+            // tried again. Clear it here: the agent is about to be rebuilt.
+            ready = false
             Thread {
                 runCatching {
                     Python.getInstance().getModule("phoneagent.ondevice")
