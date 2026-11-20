@@ -172,7 +172,7 @@ def _update(task_id: str, **fields) -> None:
     with LOCK:
         record = TASKS.setdefault(task_id, {})
         record.update(fields)
-        if fields.get("state") in ("done", "failed", "cancelled"):
+        if fields.get("state") in ("done", "partial", "failed", "cancelled"):
             # The picture is the expensive part and LAST_FRAME already keeps the
             # latest one for the capsule and the viewer.
             record["frame"] = ""
@@ -351,6 +351,8 @@ def _run(task_id: str, text: str, config: ServerConfig,
                     _update(task_id, state="failed",
                             answer=message or "adb 连接已断开，重建失败。")
                     return
+        original_screenshot = None
+        had_instance_screenshot = False
         try:
             if config.start_app and not getattr(device, "display_id", None):
                 device.start(initial_app=config.start_app)
@@ -396,7 +398,9 @@ def _run(task_id: str, text: str, config: ServerConfig,
                     for path, m in chosen
                 ))
 
+            had_instance_screenshot = "screenshot" in getattr(device, "__dict__", {})
             original = device.screenshot
+            original_screenshot = original
             capture_lock = threading.Lock()
 
             def screenshot(path=None):
@@ -569,6 +573,23 @@ def _run(task_id: str, text: str, config: ServerConfig,
             traceback.print_exc()
             _update(task_id, state="failed", answer=f"{type(exc).__name__}: {exc}")
         finally:
+            # Restore the unwrapped screenshot method on long-lived devices
+            # (keep_device=True). Otherwise each task stacks another closure on
+            # top of the previous one, re-encoding screenshots N times and
+            # resurrecting pruned tasks in TASKS with fresh frames.
+            if original_screenshot is not None:
+                try:
+                    if had_instance_screenshot:
+                        device.screenshot = original_screenshot  # type: ignore[assignment]
+                    else:
+                        delattr(device, "screenshot")
+                except AttributeError:
+                    try:
+                        device.screenshot = original_screenshot  # type: ignore[assignment]
+                    except Exception:  # noqa: BLE001 - housekeeping
+                        pass
+                except Exception:  # noqa: BLE001 - housekeeping
+                    pass
             # A task may have followed its app onto the user's display; the next
             # one should start on the agent's own screen again.
             try:
