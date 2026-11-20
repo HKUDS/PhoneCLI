@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import time
 
+import pytest
+
 from phoneagent import pacing
 
 
@@ -48,3 +50,11 @@ def test_the_cooldown_depends_on_the_kind_of_app(tmp_path):
     pacing.mark(path, "com.taobao.taobao")
     left = pacing.remaining(path, "com.taobao.taobao")
     assert left > pacing.UTILITY_COOLDOWN
+
+
+@pytest.mark.parametrize("path", ["pacing.json", "state/pacing.json"])
+def test_relative_path_cooldown_survives_reload(tmp_path, monkeypatch, path):
+    monkeypatch.chdir(tmp_path)
+    pacing.mark(path, "com.example.app", now=1000.0)
+    assert pacing.load(path)["com.example.app"] == 1000.0
+    assert pacing.remaining(path, "com.example.app", now=1005.0) == pacing.CRAWL_COOLDOWN - 5.0
