@@ -1128,6 +1128,49 @@ class Handler(BaseHTTPRequestHandler):
 
     def _post(self):
         parts = self.path.strip("/").split("/")
+        if parts == ["debug", "spill"]:
+            # Test hook, not a feature: move a package's task from the agent's
+            # display to the phone's, which is what some apps do to themselves
+            # (a NEW_TASK page the system hosts on the default display). It is
+            # the only way to exercise the pull-back path on demand instead of
+            # waiting for an app to escape during a task. Same token as every
+            # other endpoint, and it only moves a task between displays.
+            config = self.server.config  # type: ignore[attr-defined]
+            length = int(self.headers.get("Content-Length", 0))
+            try:
+                body = json.loads(self.rfile.read(length) or b"{}")
+            except ValueError:
+                return self._send(400, {"error": "bad json"})
+            package = str(body.get("package", "")).strip()
+            if not package:
+                return self._send(400, {"error": "package is required"})
+            try:
+                device = config.device_factory()
+            except Exception as exc:  # noqa: BLE001
+                return self._send(503, {"error": f"{type(exc).__name__}: {exc}"})
+            if device is None:
+                # The factory answers None while the display is being rebuilt
+                # (a reconnect right after a move does exactly that).
+                return self._send(503, {"error": "no device yet; retry"})
+            own = getattr(device, "display_id", None)
+            task = device.task_on(0, package)
+            if task:
+                return self._send(200, {"package": package, "task": task,
+                                        "moved": False,
+                                        "note": "already on the phone's display"})
+            task = device.task_on(own, package) if own is not None else 0
+            if not task:
+                return self._send(404, {"error": "no task for that package",
+                                        "display": own})
+            try:
+                device.shell(f"am display move-stack {task} 0")
+            except Exception as exc:  # noqa: BLE001
+                return self._send(500, {"error": f"{type(exc).__name__}: {exc}"})
+            time.sleep(0.6)
+            return self._send(200, {"package": package, "task": task,
+                                    "from_display": own, "moved": True,
+                                    "on_phone": bool(device.task_on(0, package))})
+
         if parts == ["risk"]:
             from . import risk as risk_mod
 

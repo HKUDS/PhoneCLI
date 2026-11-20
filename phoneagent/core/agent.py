@@ -527,6 +527,8 @@ class PhoneAgent:
         self._challenge_until: dict = {}
         #: Where the "this app asked for a captcha" record lives.
         self._risk_path = getattr(self.config, "risk_path", "")
+        #: package -> how many pulls were refused in this task
+        self._pull_attempts: dict = {}
         # (app_map, screen_id, description) the map says a finished task should
         # have landed on; set by the macro layer before handing over to the VLM
         self._expectation = None
@@ -666,6 +668,36 @@ class PhoneAgent:
                 self.log(f"could not translate the answer: {exc}")
             return answer
         return translated or answer
+
+    def _record_spill(self, package: str, pulled: bool) -> None:
+        """Count pulls that worked and pulls that did not, per app.
+
+        Written next to the risk marks so the numbers survive the process: the
+        question "which apps can be pulled back to the virtual display" should
+        be answered from data, not from the one task that happened to be tested.
+        """
+        if not package:
+            return
+        path = self._risk_path.replace("app-risks.json", "spill.json") if self._risk_path else ""
+        if not path:
+            return
+        try:
+            import json
+
+            from .atomic import write_json
+
+            try:
+                with open(path, encoding="utf-8") as handle:
+                    data = json.load(handle)
+            except (OSError, ValueError):
+                data = {}
+            if not isinstance(data, dict):
+                data = {}
+            entry = data.setdefault(package, {"ok": 0, "failed": 0})
+            entry["ok" if pulled else "failed"] += 1
+            write_json(path, data)
+        except Exception:  # noqa: BLE001 - a statistic must never fail a task
+            pass
 
     def _end_of_task_display(self) -> None:
         """Give the phone its screen back once the task is over.
@@ -2937,11 +2969,49 @@ class PhoneAgent:
         if not on_phone:
             self._dragged_back = False
             return False
-        # Mid-task, follow the app instead of pulling it back: 小红书 opens a
-        # NEW_TASK search page that the system hosts on the phone's screen, and
-        # every pull costs a round plus a fresh screenshot (measured: four in
-        # one task). The phone shows that app until the task ends; the display
-        # is put back afterwards (_end_of_task_display).
+        # Pull first, follow only when pulling keeps failing.
+        #
+        # Following was the default because a pull costs a round and a fresh
+        # screenshot, and 小红书 pulled four times in one task. The price of
+        # that choice is bigger than the rounds: the phone is taken over for
+        # the rest of the task, which is what people notice. A pull is tried
+        # first now; after two refusals for the same app the agent follows for
+        # the rest of the task, which is also when the app is worth marking.
+        # Two *attempts*, not two failures: a pull that succeeds and is
+        # immediately undone by the app (its search page is a NEW_TASK page the
+        # system hosts on the phone's screen, so it jumps again on the next
+        # keystroke) used to reset the counter, and the agent pulled six times
+        # in one subtask -- losing the typed text and the scroll position each
+        # time until the budget ran out. The cap counts every attempt.
+        attempts = self._pull_attempts.get(package, 0)
+        if attempts < 2:
+            pull = getattr(self.device, "pull_back", None)
+            own_display = getattr(self.device, "display_id", None)
+            if pull is not None and own_display not in (None, 0):
+                try:
+                    pulled = bool(pull(package))
+                except DeviceError:
+                    pulled = False
+                self._pull_attempts[package] = attempts + 1
+                if pulled:
+                    self._record_spill(package, True)
+                    self._dragged_back = False
+                    self._last_escape = "pull"
+                    # Two rounds in which launching is refused: the app is on
+                    # our display and on the page it was; relaunching it is
+                    # what re-opens 小红书's search page on the user's screen.
+                    self._launch_grace = 2
+                    self.steps.append(
+                        Step(round_no, "pull", self._app_label(package),
+                             "moved back to the agent's display")
+                    )
+                    return True
+                self._record_spill(package, False)
+                self.log(f"[agent] {package}: pull did not take "
+                         f"({self._pull_attempts[package]} tries)")
+
+        # Following: the app cannot be kept off the phone's screen, so drive it
+        # there. The display is put back at the end (_end_of_task_display).
         follow_first = getattr(self.device, "follow_to_user_display", None)
         if follow_first is not None:
             try:

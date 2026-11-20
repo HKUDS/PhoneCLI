@@ -225,7 +225,7 @@ class OpenAICompatClient:
         }
         try:
             resp = requests.post(url, json=payload, headers=headers, timeout=self.timeout)
-        except requests.RequestException as exc:
+        except (requests.RequestException, OSError) as exc:
             raise LLMError(f"request to {url} failed: {exc}") from exc
         if resp.status_code != 200:
             raise LLMError(f"HTTP {resp.status_code} from {url}: {resp.text[:300]}")
@@ -255,7 +255,7 @@ class OpenAICompatClient:
         }
         try:
             resp = requests.post(url, json=payload, headers=headers, timeout=self.timeout)
-        except requests.RequestException as exc:
+        except (requests.RequestException, OSError) as exc:
             raise LLMError(f"request to {url} failed: {exc}") from exc
         if resp.status_code != 200:
             raise LLMError(f"HTTP {resp.status_code} from {url}: {resp.text[:300]}")
@@ -370,7 +370,7 @@ class AnthropicClient:
         }
         try:
             resp = requests.post(url, json=payload, headers=headers, timeout=self.timeout)
-        except requests.RequestException as exc:
+        except (requests.RequestException, OSError) as exc:
             raise LLMError(f"request to {url} failed: {exc}") from exc
         if resp.status_code != 200:
             raise LLMError(f"HTTP {resp.status_code} from {url}: {resp.text[:300]}")
