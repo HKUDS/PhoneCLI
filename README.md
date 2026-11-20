@@ -1,4 +1,4 @@
-English · [Chinese](README_CN.md)
+English · [Chinese](README_CN.md) · [日本語](README_JA.md)
 
 <div align="center">
 
